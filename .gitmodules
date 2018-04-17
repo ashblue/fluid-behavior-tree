@@ -1,0 +1,3 @@
+[submodule "code-styling"]
+	path = code-styling
+	url = git@github.com:clever-crow-games/unity-code-standards.git
