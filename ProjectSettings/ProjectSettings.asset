@@ -296,7 +296,7 @@ PlayerSettings:
     iPhone: 1
     tvOS: 1
   m_BuildTargetGroupLightmapEncodingQuality: []
-  playModeTestRunnerEnabled: 0
+  playModeTestRunnerEnabled: 1
   runPlayModeTestAsEditModeTest: 0
   actionOnDotNetUnhandledException: 1
   enableInternalProfiler: 0
