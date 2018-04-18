@@ -1,9 +1,17 @@
-﻿namespace FluidBehaviorTree.Scripts.Nodes {
-    public class NodeRoot : INodeChild, INodeUpdate {
-        public INodeUpdate child { get; set; }
+﻿using Adnc.FluidBT.Testing;
 
-        public void Update () {
-            child.Update();
+namespace FluidBehaviorTree.Scripts.Nodes {
+    public class NodeRoot : INodeChild, INodeUpdate {
+        public INodeUpdate Child { get; set; }
+
+        public bool Enabled { get; set; } = true;
+
+        public NodeStatus Update () {
+            if (Child != null && Child.Enabled) {
+                return Child.Update();
+            }
+
+            return NodeStatus.Failure;
         }
     }
 }

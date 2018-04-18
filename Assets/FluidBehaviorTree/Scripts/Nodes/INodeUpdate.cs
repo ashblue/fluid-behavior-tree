@@ -1,5 +1,8 @@
-﻿namespace FluidBehaviorTree.Scripts.Nodes {
+﻿using Adnc.FluidBT.Testing;
+
+namespace FluidBehaviorTree.Scripts.Nodes {
     public interface INodeUpdate {
-        void Update ();
+        bool Enabled { get; set; }
+        NodeStatus Update ();
     }
 }
