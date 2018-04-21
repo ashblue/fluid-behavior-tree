@@ -2,15 +2,20 @@
 
 namespace Adnc.FluidBT.Trees {
     public class BehaviorTree {
-        private readonly NodeRoot _root = new NodeRoot();
-        public NodeRoot root {
-            get { return _root; }
-        }
+        public INodeRoot Root { get; set; } = new NodeRoot();
 
-        public NodeRoot current { get; private set; }
+        public INodeUpdate Current { get; set; }
 
         public BehaviorTree () {
-            current = root;
+            Current = Root;
+        }
+
+        public void Tick () {
+            // Update must return the currently active node that should be reticked
+            // Two different Update methods
+                // Tick: Returns the next node to be ticked
+                // Update: A status returned by a node (used by nodes that detect ticking)
+            Current.Update();
         }
     }
 }

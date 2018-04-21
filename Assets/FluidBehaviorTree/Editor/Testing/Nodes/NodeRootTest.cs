@@ -11,9 +11,11 @@ namespace Adnc.FluidBT.Testing {
             root = new NodeRoot();
         }
 
-        [Test]
-        public void It_should_initialize () {
-            Assert.IsNotNull(root);
+        public class OnInit : NodeRootTest {
+            [Test]
+            public void It_should_initialize () {
+                Assert.IsNotNull(root);
+            }
         }
 
         public class UpdateMethod : NodeRootTest {

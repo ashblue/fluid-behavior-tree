@@ -1,7 +1,7 @@
 ﻿using Adnc.FluidBT.Testing;
 
 namespace FluidBehaviorTree.Scripts.Nodes {
-    public class NodeRoot : INodeChild, INodeUpdate {
+    public class NodeRoot : INodeRoot {
         public INodeUpdate Child { get; set; }
 
         public bool Enabled { get; set; } = true;
