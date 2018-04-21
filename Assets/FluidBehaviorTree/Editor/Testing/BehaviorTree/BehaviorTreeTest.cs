@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Adnc.FluidBT.Trees;
 using FluidBehaviorTree.Scripts.Nodes;
 using NSubstitute;
@@ -8,7 +7,7 @@ using NUnit.Framework;
 namespace Adnc.FluidBT.Testing {
     public class BehaviorTreeTests {
         BehaviorTree tree;
-        
+
         [SetUp]
         public void SetBehaviorTree () {
             tree = new BehaviorTree();
@@ -57,10 +56,15 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class AddNodeMethodError : AddNodeMethod {
+                private INodeRoot actionChild;
+
+                [SetUp]
+                public void SetActionNode () {
+                    actionChild = Substitute.For<INodeRoot>();
+                }
+
                 [Test]
                 public void Cannot_add_child_nodes_that_have_already_been_added () {
-                    var actionChild = Substitute.For<INodeRoot>();
-
                     tree.AddNode(tree.Root, actionChild);
 
                     Assert.Throws<ArgumentException>(
@@ -70,8 +74,6 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Cannot_overwrite_an_already_set_child_node () {
-                    var actionChild = Substitute.For<INodeRoot>();
-
                     tree.AddNode(tree.Root, action);
 
                     Assert.Throws<ArgumentException>(
@@ -81,8 +83,6 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Cannot_add_child_nodes_to_a_parent_not_in_the_bt () {
-                    var actionChild = Substitute.For<INodeRoot>();
-
                     Assert.Throws<ArgumentException>(
                         () => tree.AddNode(actionChild, action),
                         "Cannot add a node to a parent that is not in the BT");
