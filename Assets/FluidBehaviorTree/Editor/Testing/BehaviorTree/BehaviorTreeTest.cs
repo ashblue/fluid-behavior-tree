@@ -25,12 +25,35 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
+        public class AwakeEvent : BehaviorTreeTests {
+            [Test]
+            public void Trigger_on_all_nodes_with_the_awake_interface () {
+                var node = Substitute.For<INodeAction>();
+
+                tree.AddNode(tree.Root, node);
+                tree.Setup();
+
+                node.Received().Awake();
+            }
+
+            [Test]
+            public void Calling_setup_again_should_not_refire_awake () {
+                var node = Substitute.For<INodeAction>();
+
+                tree.AddNode(tree.Root, node);
+                tree.Setup();
+                tree.Setup();
+
+                node.Received(1).Awake();
+            }
+        }
+
         public class AddNodeMethod : BehaviorTreeTests {
             private INodeUpdate action;
 
             [SetUp]
             public void SetDefaultAction () {
-                action = Substitute.For<INodeUpdate>();
+                action = Substitute.For<INodeAction>();
             }
 
             public class AddNodeMethodSuccess : AddNodeMethod {
@@ -46,7 +69,7 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Add_child_node_to_node_list () {
-                    Assert.Contains(action, tree.nodeList);
+                    Assert.Contains(action, tree.nodeAwake);
                 }
 
                 [Test]

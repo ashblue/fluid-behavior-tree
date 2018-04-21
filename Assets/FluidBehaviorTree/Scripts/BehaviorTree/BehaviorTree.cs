@@ -4,14 +4,15 @@ using System.Collections.Generic;
 
 namespace Adnc.FluidBT.Trees {
     public class BehaviorTree {
+        private bool _setup;
+
         public INodeRoot Root { get; } = new NodeRoot();
 
         public INodeUpdate Current { get; set; }
 
         public readonly HashSet<object> nodes = new HashSet<object>();
 
-        // @TODO Should only contain awake nodes
-        public readonly List<object> nodeList = new List<object>();
+        public readonly List<IEventAwake> nodeAwake = new List<IEventAwake>();
 
         public BehaviorTree () {
             Current = Root;
@@ -42,7 +43,23 @@ namespace Adnc.FluidBT.Trees {
 
             parent.Child = child;
             nodes.Add(child);
-            nodeList.Add(child);
+
+            var item = child as IEventAwake;
+            if (item != null) {
+                nodeAwake.Add(item);
+            }
+        }
+
+        public void Setup () {
+            if (!_setup) {
+                _setup = true;
+            } else {
+                return;
+            }
+
+            nodeAwake.ForEach((n) => {
+                n.Awake();
+            });
         }
 
         public void Tick () {
