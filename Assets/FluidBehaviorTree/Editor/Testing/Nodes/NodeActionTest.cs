@@ -24,7 +24,7 @@ namespace Adnc.FluidBT.Testing {
                 node = new NodeActionExample();
             }
 
-            public class StartEvent {
+            public class StartEvent : UpdateMethod {
                 [Test]
                 public void Trigger_the_start_method () {
                     node.Update();
