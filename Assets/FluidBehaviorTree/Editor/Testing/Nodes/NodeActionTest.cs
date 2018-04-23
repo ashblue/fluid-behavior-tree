@@ -5,14 +5,19 @@ namespace Adnc.FluidBT.Testing {
     public class NodeActionTest {
         public class NodeActionExample : NodeAction {
             public int StartCount { get; private set; }
+            public int InitCount { get; private set; }
             public NodeStatus status = NodeStatus.Success;
 
-            public override NodeStatus OnUpdate () {
+            protected override NodeStatus OnUpdate () {
                 return status;
             }
 
-            public override void OnStart () {
+            protected override void OnStart () {
                 StartCount++;
+            }
+
+            protected override void OnInit () {
+                InitCount++;
             }
         }
 
@@ -26,14 +31,14 @@ namespace Adnc.FluidBT.Testing {
 
             public class StartEvent : UpdateMethod {
                 [Test]
-                public void Trigger_the_start_method () {
+                public void Trigger_on_first_run () {
                     node.Update();
 
                     Assert.AreEqual(1, node.StartCount);
                 }
 
                 [Test]
-                public void Retrigger_the_start_method_when_success_is_returned () {
+                public void Retrigger_when_success_is_returned () {
                     node.Update();
                     node.Update();
 
@@ -41,7 +46,7 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 [Test]
-                public void Rerigger_the_start_method_when_failure_is_returned () {
+                public void Rerigger_when_failure_is_returned () {
                     node.status = NodeStatus.Failure;
 
                     node.Update();
@@ -51,7 +56,7 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 [Test]
-                public void Do_not_retrigger_the_start_method_when_continue_is_returned () {
+                public void Does_not_retrigger_when_continue_is_returned () {
                     node.status = NodeStatus.Continue;
 
                     node.Update();
@@ -61,7 +66,7 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 [Test]
-                public void Trigger_the_start_method_after_continue_passes () {
+                public void Triggers_after_continue_passes () {
                     node.status = NodeStatus.Continue;
 
                     node.Update();
@@ -70,6 +75,52 @@ namespace Adnc.FluidBT.Testing {
                     node.Update();
 
                     Assert.AreEqual(2, node.StartCount);
+                }
+
+                [Test]
+                public void Triggers_on_reset () {
+                    node.status = NodeStatus.Continue;
+
+                    node.Update();
+                    node.Reset();
+                    node.Update();
+                    
+                    Assert.AreEqual(2, node.StartCount);
+                }
+            }
+
+            public class InitEvent : UpdateMethod {
+                [Test]
+                public void Triggers_on_1st_update () {
+                    node.Update();
+
+                    Assert.AreEqual(1, node.InitCount);
+                }
+                
+                [Test]
+                public void Does_not_trigger_on_2nd_update () {
+                    node.Update();
+                    node.Update();
+
+                    Assert.AreEqual(1, node.InitCount);
+                }
+
+                [Test]
+                public void Does_not_trigger_on_reset () {
+                    node.Update();
+                    node.Reset();
+                    node.Update();
+
+                    Assert.AreEqual(1, node.InitCount);
+                }
+
+                [Test]
+                public void Triggers_on_reset_hard () {
+                    node.Update();
+                    node.Reset(true);
+                    node.Update();
+
+                    Assert.AreEqual(2, node.InitCount);
                 }
             }
         }

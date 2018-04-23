@@ -2,31 +2,64 @@
 
 namespace FluidBehaviorTree.Scripts.Nodes {
     public class NodeAction : INodeAction {
-        private NodeStatus _lastStatus;
+        private bool _init;
+        private bool _start;
+        
         public bool Enabled { get; set; } = true;
 
         public NodeStatus Update () {
-            if (_lastStatus != NodeStatus.Continue) {
+            if (!_init) {
+                Init();
+                _init = true;
+            }
+            
+            if (!_start) {
                 Start();
+                _start = true;
             }
 
-            _lastStatus = OnUpdate();
+            var status = OnUpdate();
 
-            return _lastStatus;
+            // Soft reset since the node has completed
+            if (status != NodeStatus.Continue) {
+                // @TODO Should this be triggered at the parent level instead?
+                Reset();
+            }
+            
+            return status;
         }
 
-        public virtual NodeStatus OnUpdate () {
+        protected virtual NodeStatus OnUpdate () {
             return NodeStatus.Failure;
         }
 
         public void Awake () {
         }
 
-        public void Start () {
+        private void Start () {
             OnStart();
         }
 
-        public virtual void OnStart () {
+        protected virtual void OnStart () {
+        }
+
+        private void Init () {
+            OnInit();
+        }
+
+        protected virtual void OnInit () {
+        }
+
+        /// <summary>
+        /// Reset the node to be re-used
+        /// </summary>
+        /// <param name="hardReset">Used to wipe the node back to its original state</param>
+        public void Reset (bool hardReset = false) {
+            _start = false;
+
+            if (hardReset) {
+                _init = false;
+            }
         }
     }
 }
