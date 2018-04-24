@@ -8,6 +8,9 @@ namespace Adnc.FluidBT.Testing {
     public class BehaviorTreeTests {
         BehaviorTree tree;
 
+        public interface INodeAwakeExample : INodeUpdate, IEventAwake {
+        }
+
         [SetUp]
         public void SetBehaviorTree () {
             tree = new BehaviorTree();
@@ -28,7 +31,7 @@ namespace Adnc.FluidBT.Testing {
         public class AwakeEvent : BehaviorTreeTests {
             [Test]
             public void Trigger_on_all_nodes_with_the_awake_interface () {
-                var node = Substitute.For<INodeAction>();
+                var node = Substitute.For<INodeAwakeExample>();
 
                 tree.AddNode(tree.Root, node);
                 tree.Setup();
@@ -38,7 +41,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Calling_setup_again_should_not_refire_awake () {
-                var node = Substitute.For<INodeAction>();
+                var node = Substitute.For<INodeAwakeExample>();
 
                 tree.AddNode(tree.Root, node);
                 tree.Setup();
@@ -53,7 +56,7 @@ namespace Adnc.FluidBT.Testing {
 
             [SetUp]
             public void SetDefaultAction () {
-                action = Substitute.For<INodeAction>();
+                action = Substitute.For<INodeAwakeExample>();
             }
 
             public class AddNodeMethodSuccess : AddNodeMethod {

@@ -35,9 +35,6 @@ namespace FluidBehaviorTree.Scripts.Nodes {
             return NodeStatus.Failure;
         }
 
-        public void Awake () {
-        }
-
         private void Start () {
             OnStart();
         }
