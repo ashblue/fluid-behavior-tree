@@ -4,6 +4,7 @@ using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Trees;
 using NSubstitute;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Testing {
     public class BehaviorTreeTests {
@@ -83,29 +84,6 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class AddNodeMethodError : AddNodeMethod {
-                private ITaskParent actionChild;
-
-                [SetUp]
-                public void SetActionNode () {
-                    actionChild = Substitute.For<ITaskParent>();
-                }
-
-                [Test]
-                public void Cannot_add_child_nodes_that_have_already_been_added () {
-                    tree.AddNode(tree.Root, actionChild);
-
-                    Assert.Throws<ArgumentException>(
-                        () => tree.AddNode(actionChild, actionChild),
-                        "Cannot set a child node that has already been added");
-                }
-
-                [Test]
-                public void Cannot_add_child_nodes_to_a_parent_not_in_the_bt () {
-                    Assert.Throws<ArgumentException>(
-                        () => tree.AddNode(actionChild, action),
-                        "Cannot add a node to a parent that is not in the BT");
-                }
-
                 [Test]
                 public void Error_if_parent_is_null () {
                     Assert.Throws<ArgumentNullException>(
@@ -131,18 +109,11 @@ namespace Adnc.FluidBT.Testing {
                 action.Update().Returns(TaskStatus.Success);
                 action.Enabled.Returns(true);
 
-                tree.Root.children.Add(action);
+                tree.Root.AddChild(action);
             }
 
             [Test]
             public void Update_the_first_child_task_on_tick () {
-                tree.Tick();
-
-                action.Received().Update();
-            }
-
-            [Test]
-            public void Tick_the_next_action_from_root () {
                 tree.Tick();
 
                 action.Received().Update();

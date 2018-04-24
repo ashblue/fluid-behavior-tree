@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskRootTest {
-        private ITaskParent root;
+        private TaskRoot root;
 
         [SetUp]
         public void SetUp () {
@@ -29,7 +29,7 @@ namespace Adnc.FluidBT.Testing {
                 action.Enabled.Returns(true);
 
                 root = new TaskRoot();
-                root.children.Add(action);
+                root.AddChild(action);
             }
 
             [Test]
@@ -48,7 +48,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Return_null_if_no_child () {
-                root.children = new List<ITask>();
+                root.children.Clear();
 
                 Assert.AreEqual(null, root.Tick());
             }

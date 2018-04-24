@@ -1,17 +1,8 @@
-﻿using System.Collections.Generic;
-using Adnc.FluidBT.Tasks;
+﻿using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
-    public class TaskRoot : ITaskParent {
-        public List<ITask> children { get; set; } = new List<ITask>();
-
-        public bool Enabled { get; set; } = true;
-
-        public TaskStatus Update () {
-            throw new System.NotImplementedException();
-        }
-
-        public ITask Tick () {
+    public class TaskRoot : TaskParentBase {
+        protected override ITask OnTick () {
             if (children.Count == 0) {
                 return null;
             }
