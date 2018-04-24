@@ -22,6 +22,8 @@ namespace FluidBehaviorTree.Scripts.Nodes {
 
             // Soft reset since the node has completed
             if (status != NodeStatus.Continue) {
+                Exit();
+
                 // @TODO Should this be triggered at the parent level instead?
                 Reset();
             }
@@ -50,10 +52,17 @@ namespace FluidBehaviorTree.Scripts.Nodes {
         protected virtual void OnInit () {
         }
 
+        private void Exit () {
+            OnExit();
+        }
+
+        protected virtual void OnExit () {
+        }
+
         /// <summary>
         /// Reset the node to be re-used
         /// </summary>
-        /// <param name="hardReset">Used to wipe the node back to its original state</param>
+        /// <param name="hardReset">Used to wipe the node back to its original state. Meant for pooling.</param>
         public void Reset (bool hardReset = false) {
             _start = false;
 

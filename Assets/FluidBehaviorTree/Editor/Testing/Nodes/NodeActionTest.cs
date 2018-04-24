@@ -6,6 +6,7 @@ namespace Adnc.FluidBT.Testing {
         public class NodeActionExample : NodeAction {
             public int StartCount { get; private set; }
             public int InitCount { get; private set; }
+            public int ExitCount { get; private set; }
             public NodeStatus status = NodeStatus.Success;
 
             protected override NodeStatus OnUpdate () {
@@ -18,6 +19,10 @@ namespace Adnc.FluidBT.Testing {
 
             protected override void OnInit () {
                 InitCount++;
+            }
+
+            protected override void OnExit () {
+                ExitCount++;
             }
         }
 
@@ -90,16 +95,18 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class InitEvent : UpdateMethod {
+                [SetUp]
+                public void TriggerUpdate () {
+                    node.Update();
+                }
+
                 [Test]
                 public void Triggers_on_1st_update () {
-                    node.Update();
-
                     Assert.AreEqual(1, node.InitCount);
                 }
                 
                 [Test]
                 public void Does_not_trigger_on_2nd_update () {
-                    node.Update();
                     node.Update();
 
                     Assert.AreEqual(1, node.InitCount);
@@ -107,7 +114,6 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Does_not_trigger_on_reset () {
-                    node.Update();
                     node.Reset();
                     node.Update();
 
@@ -116,11 +122,36 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Triggers_on_reset_hard () {
-                    node.Update();
                     node.Reset(true);
                     node.Update();
 
                     Assert.AreEqual(2, node.InitCount);
+                }
+            }
+
+            public class ExitEvent : UpdateMethod {
+                [Test]
+                public void Does_not_trigger_on_continue () {
+                    node.status = NodeStatus.Continue;
+                    node.Update();
+
+                    Assert.AreEqual(0, node.ExitCount);
+                }
+
+                [Test]
+                public void Triggers_on_success () {
+                    node.status = NodeStatus.Success;
+                    node.Update();
+
+                    Assert.AreEqual(1, node.ExitCount);
+                }
+
+                [Test]
+                public void Triggers_on_failure () {
+                    node.status = NodeStatus.Failure;
+                    node.Update();
+
+                    Assert.AreEqual(1, node.ExitCount);
                 }
             }
         }
