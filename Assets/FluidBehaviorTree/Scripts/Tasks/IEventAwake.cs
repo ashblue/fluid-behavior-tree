@@ -1,4 +1,4 @@
-﻿namespace FluidBehaviorTree.Scripts.Nodes {
+﻿namespace Adnc.FluidBT.Tasks {
     public interface IEventAwake {
         void Awake ();
     }

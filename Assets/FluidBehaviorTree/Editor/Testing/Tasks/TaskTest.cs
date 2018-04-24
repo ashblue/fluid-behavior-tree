@@ -1,15 +1,15 @@
-﻿using FluidBehaviorTree.Scripts.Nodes;
+﻿using Adnc.FluidBT.Tasks;
 using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
-    public class NodeActionTest {
-        public class NodeActionExample : NodeAction {
+    public class TaskTest {
+        public class TaskExample : Task {
             public int StartCount { get; private set; }
             public int InitCount { get; private set; }
             public int ExitCount { get; private set; }
-            public NodeStatus status = NodeStatus.Success;
+            public TaskStatus status = TaskStatus.Success;
 
-            protected override NodeStatus OnUpdate () {
+            protected override TaskStatus OnUpdate () {
                 return status;
             }
 
@@ -27,11 +27,11 @@ namespace Adnc.FluidBT.Testing {
         }
 
         public class UpdateMethod {
-            NodeActionExample node;
+            TaskExample node;
 
             [SetUp]
             public void SetUpNode () {
-                node = new NodeActionExample();
+                node = new TaskExample();
             }
 
             public class StartEvent : UpdateMethod {
@@ -52,7 +52,7 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Triggers_on_reset () {
-                    node.status = NodeStatus.Continue;
+                    node.status = TaskStatus.Continue;
 
                     node.Update();
                     node.Reset();
@@ -100,7 +100,7 @@ namespace Adnc.FluidBT.Testing {
             public class ExitEvent : UpdateMethod {
                 [Test]
                 public void Does_not_trigger_on_continue () {
-                    node.status = NodeStatus.Continue;
+                    node.status = TaskStatus.Continue;
                     node.Update();
 
                     Assert.AreEqual(0, node.ExitCount);
@@ -108,7 +108,7 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Triggers_on_success () {
-                    node.status = NodeStatus.Success;
+                    node.status = TaskStatus.Success;
                     node.Update();
 
                     Assert.AreEqual(1, node.ExitCount);
@@ -116,7 +116,7 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Triggers_on_failure () {
-                    node.status = NodeStatus.Failure;
+                    node.status = TaskStatus.Failure;
                     node.Update();
 
                     Assert.AreEqual(1, node.ExitCount);

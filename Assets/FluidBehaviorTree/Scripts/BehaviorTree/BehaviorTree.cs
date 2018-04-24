@@ -1,14 +1,15 @@
 ﻿using System;
-using FluidBehaviorTree.Scripts.Nodes;
 using System.Collections.Generic;
+using Adnc.FluidBT.TaskParents;
+using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.Trees {
     public class BehaviorTree {
         private bool _setup;
 
-        public INodeRoot Root { get; } = new NodeRoot();
+        public ITaskRoot Root { get; } = new TaskRoot();
 
-        public INodeUpdate Current { get; set; }
+        public ITaskUpdate Current { get; set; }
 
         public readonly HashSet<object> nodes = new HashSet<object>();
 
@@ -19,7 +20,7 @@ namespace Adnc.FluidBT.Trees {
             nodes.Add(Root);
         }
 
-        public void AddNode (INodeChild parent, INodeUpdate child) {
+        public void AddNode (ITaskChild parent, ITaskUpdate child) {
             if (parent == null) {
                 throw new ArgumentNullException(nameof(parent));
             }

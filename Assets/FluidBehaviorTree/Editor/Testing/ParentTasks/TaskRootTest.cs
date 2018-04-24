@@ -1,32 +1,33 @@
-﻿using FluidBehaviorTree.Scripts.Nodes;
+﻿using Adnc.FluidBT.TaskParents;
+using Adnc.FluidBT.Tasks;
 using NUnit.Framework;
 using NSubstitute;
 
 namespace Adnc.FluidBT.Testing {
-    public class NodeRootTest {
-        private NodeRoot root;
+    public class TaskRootTest {
+        private ITaskRoot root;
 
         [SetUp]
         public void SetUp () {
-            root = new NodeRoot();
+            root = new TaskRoot();
         }
 
-        public class OnInit : NodeRootTest {
+        public class OnInit : TaskRootTest {
             [Test]
             public void It_should_initialize () {
                 Assert.IsNotNull(root);
             }
         }
 
-        public class UpdateMethod : NodeRootTest {
-            private INodeUpdate action;
+        public class UpdateMethod : TaskRootTest {
+            private ITask action;
 
             [SetUp]
             public void SetUpUpdateMethod () {
-                action = Substitute.For<INodeUpdate>();
+                action = Substitute.For<ITask>();
                 action.Enabled.Returns(true);
 
-                root = new NodeRoot { Child = action };
+                root = new TaskRoot { Child = action };
             }
 
             [Test]
@@ -38,24 +39,24 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Return_status_of_child () {
-                action.Update().Returns(NodeStatus.Success);
+                action.Update().Returns(TaskStatus.Success);
 
-                Assert.AreEqual(NodeStatus.Success, root.Update());
+                Assert.AreEqual(TaskStatus.Success, root.Update());
             }
 
             [Test]
             public void Return_status_failure_if_no_child () {
                 root.Child = null;
 
-                Assert.AreEqual(NodeStatus.Failure, root.Update());
+                Assert.AreEqual(TaskStatus.Failure, root.Update());
             }
 
             [Test]
             public void Does_not_tick_a_disabled_child_node () {
                 action.Enabled.Returns(false);
-                action.Update().Returns(NodeStatus.Success);
+                action.Update().Returns(TaskStatus.Success);
 
-                Assert.AreEqual(NodeStatus.Failure, root.Update());
+                Assert.AreEqual(TaskStatus.Failure, root.Update());
             }
 
             [Test]

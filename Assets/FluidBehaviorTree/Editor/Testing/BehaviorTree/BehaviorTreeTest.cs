@@ -1,6 +1,7 @@
 ﻿using System;
+using Adnc.FluidBT.TaskParents;
+using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Trees;
-using FluidBehaviorTree.Scripts.Nodes;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -8,7 +9,7 @@ namespace Adnc.FluidBT.Testing {
     public class BehaviorTreeTests {
         BehaviorTree tree;
 
-        public interface INodeAwakeExample : INodeUpdate, IEventAwake {
+        public interface INodeAwakeExample : ITask, IEventAwake {
         }
 
         [SetUp]
@@ -52,7 +53,7 @@ namespace Adnc.FluidBT.Testing {
         }
 
         public class AddNodeMethod : BehaviorTreeTests {
-            private INodeUpdate action;
+            private ITask action;
 
             [SetUp]
             public void SetDefaultAction () {
@@ -82,11 +83,11 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class AddNodeMethodError : AddNodeMethod {
-                private INodeRoot actionChild;
+                private ITaskRoot actionChild;
 
                 [SetUp]
                 public void SetActionNode () {
-                    actionChild = Substitute.For<INodeRoot>();
+                    actionChild = Substitute.For<ITaskRoot>();
                 }
 
                 [Test]
@@ -131,12 +132,12 @@ namespace Adnc.FluidBT.Testing {
         }
 
         public class TickMethod : BehaviorTreeTests {
-            private INodeUpdate action;
+            private ITask action;
 
             [SetUp]
             public void SetDefaultAction () {
-                action = Substitute.For<INodeUpdate>();
-                action.Update().Returns(NodeStatus.Success);
+                action = Substitute.For<ITask>();
+                action.Update().Returns(TaskStatus.Success);
                 action.Enabled.Returns(true);
 
                 tree.Root.Child = action;
@@ -144,7 +145,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Update_the_current_node_on_tick () {
-                var root = Substitute.For<INodeRoot>();
+                var root = Substitute.For<ITaskRoot>();
                 tree.Current = root;
 
                 tree.Tick();
@@ -168,7 +169,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Tick_sets_root_as_current_on_status_failure () {
-                action.Update().Returns(NodeStatus.Failure);
+                action.Update().Returns(TaskStatus.Failure);
 
                 tree.Tick();
 
@@ -177,7 +178,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Tick_sets_root_as_current_on_status_continue () {
-                action.Update().Returns(NodeStatus.Continue);
+                action.Update().Returns(TaskStatus.Continue);
 
                 tree.Tick();
 

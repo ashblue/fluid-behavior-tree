@@ -1,13 +1,11 @@
-﻿using Adnc.FluidBT.Testing;
-
-namespace FluidBehaviorTree.Scripts.Nodes {
-    public class NodeAction : INodeAction {
+﻿namespace Adnc.FluidBT.Tasks {
+    public class Task : ITask {
         private bool _init;
         private bool _start;
         
         public bool Enabled { get; set; } = true;
 
-        public NodeStatus Update () {
+        public TaskStatus Update () {
             if (!_init) {
                 Init();
                 _init = true;
@@ -21,15 +19,15 @@ namespace FluidBehaviorTree.Scripts.Nodes {
             var status = OnUpdate();
 
             // Soft reset since the node has completed
-            if (status != NodeStatus.Continue) {
+            if (status != TaskStatus.Continue) {
                 Exit();
             }
             
             return status;
         }
 
-        protected virtual NodeStatus OnUpdate () {
-            return NodeStatus.Failure;
+        protected virtual TaskStatus OnUpdate () {
+            return TaskStatus.Failure;
         }
 
         private void Start () {
