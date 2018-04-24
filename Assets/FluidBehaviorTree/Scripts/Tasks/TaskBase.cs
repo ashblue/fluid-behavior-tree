@@ -26,6 +26,10 @@
             return status;
         }
 
+        public ITask Tick () {
+            throw new System.NotImplementedException();
+        }
+
         protected virtual TaskStatus OnUpdate () {
             return TaskStatus.Failure;
         }

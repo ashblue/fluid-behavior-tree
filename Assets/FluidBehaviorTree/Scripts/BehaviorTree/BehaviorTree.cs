@@ -7,9 +7,9 @@ namespace Adnc.FluidBT.Trees {
     public class BehaviorTree {
         private bool _setup;
 
-        public ITaskRoot Root { get; } = new TaskRoot();
+        public ITaskParent Root { get; } = new TaskRoot();
 
-        public ITaskUpdate Current { get; set; }
+        public ITask Current { get; set; }
 
         public readonly HashSet<object> nodes = new HashSet<object>();
 
@@ -20,13 +20,9 @@ namespace Adnc.FluidBT.Trees {
             nodes.Add(Root);
         }
 
-        public void AddNode (ITaskChild parent, ITaskUpdate child) {
+        public void AddNode (ITaskParent parent, ITask child) {
             if (parent == null) {
                 throw new ArgumentNullException(nameof(parent));
-            }
-
-            if (parent.Child != null) {
-                throw new ArgumentException("Cannot overwrite an already set child node");
             }
 
             if (child == null) {
@@ -42,7 +38,7 @@ namespace Adnc.FluidBT.Trees {
                 throw new ArgumentException("Cannot set a child node that has already been added");
             }
 
-            parent.Child = child;
+            parent.children.Add(child);
             nodes.Add(child);
 
             var item = child as IEventAwake;
@@ -68,7 +64,7 @@ namespace Adnc.FluidBT.Trees {
             // @TODO Two different Update methods
                 // Tick: Returns the next node to be ticked
                 // Update: A status returned by a node (used by nodes that detect ticking)
-            Current.Update();
+            Current.Tick();
         }
     }
 }

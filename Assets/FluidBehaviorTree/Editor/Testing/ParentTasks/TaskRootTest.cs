@@ -2,10 +2,11 @@
 using Adnc.FluidBT.Tasks;
 using NUnit.Framework;
 using NSubstitute;
+using System.Collections.Generic;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskRootTest {
-        private ITaskRoot root;
+        private ITaskParent root;
 
         [SetUp]
         public void SetUp () {
@@ -19,7 +20,7 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
-        public class UpdateMethod : TaskRootTest {
+        public class TickMethod : TaskRootTest {
             private ITask action;
 
             [SetUp]
@@ -27,28 +28,29 @@ namespace Adnc.FluidBT.Testing {
                 action = Substitute.For<ITask>();
                 action.Enabled.Returns(true);
 
-                root = new TaskRoot { Child = action };
+                root = new TaskRoot();
+                root.children.Add(action);
             }
 
             [Test]
             public void Call_update_on_a_single_node () {
-                root.Update();
+                root.Tick();
 
                 action.Received().Update();
             }
 
             [Test]
-            public void Return_status_of_child () {
+            public void Returns_null_on_child_success () {
                 action.Update().Returns(TaskStatus.Success);
 
-                Assert.AreEqual(TaskStatus.Success, root.Update());
+                Assert.AreEqual(null, root.Tick());
             }
 
             [Test]
-            public void Return_status_failure_if_no_child () {
-                root.Child = null;
+            public void Return_null_if_no_child () {
+                root.children = new List<ITask>();
 
-                Assert.AreEqual(TaskStatus.Failure, root.Update());
+                Assert.AreEqual(null, root.Tick());
             }
 
             [Test]
@@ -56,12 +58,14 @@ namespace Adnc.FluidBT.Testing {
                 action.Enabled.Returns(false);
                 action.Update().Returns(TaskStatus.Success);
 
-                Assert.AreEqual(TaskStatus.Failure, root.Update());
+                root.Tick();
+
+                action.DidNotReceive().Update();
             }
 
             [Test]
             public void Does_tick_an_enabled_child_node () {
-                root.Update();
+                root.Tick();
 
                 action.Received().Update();
             }

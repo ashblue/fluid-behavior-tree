@@ -1,4 +1,9 @@
 ﻿namespace Adnc.FluidBT.Tasks {
-    public interface ITask : ITaskUpdate {
+    public interface ITask {
+        bool Enabled { get; set; }
+        
+        TaskStatus Update ();
+
+        ITask Tick ();
     }
 }

@@ -68,7 +68,7 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Parent_node_is_added_to_the_child () {
-                    Assert.AreEqual(action, tree.Root.Child);
+                    Assert.AreEqual(action, tree.Root.children[0]);
                 }
 
                 [Test]
@@ -83,11 +83,11 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class AddNodeMethodError : AddNodeMethod {
-                private ITaskRoot actionChild;
+                private ITaskParent actionChild;
 
                 [SetUp]
                 public void SetActionNode () {
-                    actionChild = Substitute.For<ITaskRoot>();
+                    actionChild = Substitute.For<ITaskParent>();
                 }
 
                 [Test]
@@ -97,15 +97,6 @@ namespace Adnc.FluidBT.Testing {
                     Assert.Throws<ArgumentException>(
                         () => tree.AddNode(actionChild, actionChild),
                         "Cannot set a child node that has already been added");
-                }
-
-                [Test]
-                public void Cannot_overwrite_an_already_set_child_node () {
-                    tree.AddNode(tree.Root, action);
-
-                    Assert.Throws<ArgumentException>(
-                        () => tree.AddNode(tree.Root, actionChild),
-                        "Cannot overwrite an already set child node");
                 }
 
                 [Test]
@@ -140,17 +131,14 @@ namespace Adnc.FluidBT.Testing {
                 action.Update().Returns(TaskStatus.Success);
                 action.Enabled.Returns(true);
 
-                tree.Root.Child = action;
+                tree.Root.children.Add(action);
             }
 
             [Test]
-            public void Update_the_current_node_on_tick () {
-                var root = Substitute.For<ITaskRoot>();
-                tree.Current = root;
-
+            public void Update_the_first_child_task_on_tick () {
                 tree.Tick();
 
-                tree.Current.Received().Update();
+                action.Received().Update();
             }
 
             [Test]
