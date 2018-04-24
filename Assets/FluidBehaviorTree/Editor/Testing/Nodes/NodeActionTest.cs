@@ -36,50 +36,18 @@ namespace Adnc.FluidBT.Testing {
 
             public class StartEvent : UpdateMethod {
                 [Test]
-                public void Trigger_on_first_run () {
+                public void Trigger_on_1st_run () {
                     node.Update();
 
                     Assert.AreEqual(1, node.StartCount);
                 }
 
                 [Test]
-                public void Retrigger_when_success_is_returned () {
-                    node.Update();
-                    node.Update();
-
-                    Assert.AreEqual(2, node.StartCount);
-                }
-
-                [Test]
-                public void Rerigger_when_failure_is_returned () {
-                    node.status = NodeStatus.Failure;
-
-                    node.Update();
-                    node.Update();
-
-                    Assert.AreEqual(2, node.StartCount);
-                }
-
-                [Test]
-                public void Does_not_retrigger_when_continue_is_returned () {
-                    node.status = NodeStatus.Continue;
-
+                public void Do_not_trigger_on_2nd_run () {
                     node.Update();
                     node.Update();
 
                     Assert.AreEqual(1, node.StartCount);
-                }
-
-                [Test]
-                public void Triggers_after_continue_passes () {
-                    node.status = NodeStatus.Continue;
-
-                    node.Update();
-                    node.status = NodeStatus.Success;
-                    node.Update();
-                    node.Update();
-
-                    Assert.AreEqual(2, node.StartCount);
                 }
 
                 [Test]

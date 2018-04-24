@@ -23,9 +23,6 @@ namespace FluidBehaviorTree.Scripts.Nodes {
             // Soft reset since the node has completed
             if (status != NodeStatus.Continue) {
                 Exit();
-
-                // @TODO Should this be triggered at the parent level instead?
-                Reset();
             }
             
             return status;
