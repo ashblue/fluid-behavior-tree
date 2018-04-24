@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskTest {
-        public class TaskExample : Task {
+        public class TaskExample : TaskBase {
             public int StartCount { get; private set; }
             public int InitCount { get; private set; }
             public int ExitCount { get; private set; }

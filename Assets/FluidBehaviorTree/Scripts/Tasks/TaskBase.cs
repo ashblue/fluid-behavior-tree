@@ -1,5 +1,5 @@
 ﻿namespace Adnc.FluidBT.Tasks {
-    public class Task : ITask {
+    public abstract class TaskBase : ITask {
         private bool _init;
         private bool _start;
         
