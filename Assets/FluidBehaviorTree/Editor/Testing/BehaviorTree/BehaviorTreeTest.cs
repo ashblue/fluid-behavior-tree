@@ -1,10 +1,8 @@
 ﻿using System;
-using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Trees;
 using NSubstitute;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Adnc.FluidBT.Testing {
     public class BehaviorTreeTests {

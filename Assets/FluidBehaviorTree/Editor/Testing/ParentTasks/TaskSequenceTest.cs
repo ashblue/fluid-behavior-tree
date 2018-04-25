@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Adnc.FluidBT.TaskParents;
+﻿using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Adnc.FluidBT.Testing {
-    public class TaskSequenceTest : MonoBehaviour {
+    public class TaskSequenceTest {
         public class TaskExample : TaskBase {
         }
         
