@@ -2,7 +2,7 @@
 using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
-    public class TaskParentBase : ITaskParent {
+    public abstract class TaskParentBase : ITaskParent {
         public bool Enabled { get; set; } = true;
 
         public List<ITask> children { get; } = new List<ITask>();
@@ -15,6 +15,13 @@ namespace Adnc.FluidBT.TaskParents {
 
         public ITask Tick () {
             return OnTick();
+        }
+
+        public virtual void Reset (bool hardReset = false) {
+            if (children.Count <= 0) return;
+            foreach (var child in children) {
+                child.Reset(hardReset);
+            }
         }
 
         protected virtual ITask OnTick () {

@@ -5,5 +5,7 @@
         TaskStatus Update ();
 
         ITask Tick ();
+
+        void Reset (bool hardReset = false);
     }
 }

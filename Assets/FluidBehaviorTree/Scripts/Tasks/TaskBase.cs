@@ -22,12 +22,24 @@
             if (status != TaskStatus.Continue) {
                 Exit();
             }
-            
+
             return status;
         }
 
         public ITask Tick () {
             throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Reset the node to be re-used
+        /// </summary>
+        /// <param name="hardReset">Used to wipe the node back to its original state. Meant for pooling.</param>
+        public void Reset (bool hardReset = false) {
+            _start = false;
+
+            if (hardReset) {
+                _init = false;
+            }
         }
 
         protected virtual TaskStatus OnUpdate () {
@@ -53,18 +65,6 @@
         }
 
         protected virtual void OnExit () {
-        }
-
-        /// <summary>
-        /// Reset the node to be re-used
-        /// </summary>
-        /// <param name="hardReset">Used to wipe the node back to its original state. Meant for pooling.</param>
-        public void Reset (bool hardReset = false) {
-            _start = false;
-
-            if (hardReset) {
-                _init = false;
-            }
         }
     }
 }
