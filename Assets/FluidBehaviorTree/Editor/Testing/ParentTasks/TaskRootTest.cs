@@ -35,11 +35,40 @@ namespace Adnc.FluidBT.Testing {
         }
 
         public class TickMethod {
-            public class WithParentTask {
-                // @TODO Fill in parent task handling
+            public class WithParentTaskAsChild : TaskRootTest {
+                private ITaskParent taskParent;
+
+                [SetUp]
+                public void SetUpTask () {
+                    taskParent = Substitute.For<ITaskParent>();
+                    taskParent.Enabled.Returns(true);
+
+                    root.AddChild(taskParent);
+                }
+
+                [Test]
+                public void Ticks_parent_task () {
+                    taskParent.Tick();
+
+                    taskParent.Received().Tick();
+                }
+
+                [Test]
+                public void Tick_returns_parent_task_status () {
+                    taskParent.Tick().Returns(taskParent);
+
+                    Assert.AreEqual(taskParent, root.Tick());
+                }
+
+                [Test]
+                public void Does_not_run_update_on_child () {
+                    root.Tick();
+
+                    taskParent.DidNotReceive().Update();
+                }
             }
 
-            public class WithTask : TaskRootTest {
+            public class WithTaskAsChild : TaskRootTest {
                 private ITask task;
 
                 [SetUp]
@@ -48,6 +77,13 @@ namespace Adnc.FluidBT.Testing {
                     task.Enabled.Returns(true);
 
                     root.AddChild(task);
+                }
+
+                [Test]
+                public void Does_not_run_tick_on_child () {
+                    root.Tick();
+
+                    task.DidNotReceive().Tick();
                 }
 
                 [Test]

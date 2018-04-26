@@ -12,6 +12,10 @@ namespace Adnc.FluidBT.TaskParents {
             var child = children[0];
             if (!child.Enabled) return null;
 
+            if (child is ITaskParent) {
+                return child.Tick();
+            }
+
             var status = child.Update();
             if (status == TaskStatus.Continue) {
                 return this;
