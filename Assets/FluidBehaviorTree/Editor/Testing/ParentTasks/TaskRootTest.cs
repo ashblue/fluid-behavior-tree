@@ -34,119 +34,53 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
-        public class TickMethod {
-            public class WithParentTaskAsChild : TaskRootTest {
-                private ITaskParent taskParent;
+        public class UpdateMethod : TaskRootTest {
+            private ITask task;
 
-                [SetUp]
-                public void SetUpTask () {
-                    taskParent = Substitute.For<ITaskParent>();
-                    taskParent.Enabled.Returns(true);
+            [SetUp]
+            public void SetUpTask () {
+                task = Substitute.For<ITask>();
+                task.Enabled.Returns(true);
 
-                    root.AddChild(taskParent);
-                }
-
-                [Test]
-                public void Ticks_parent_task () {
-                    taskParent.Tick();
-
-                    taskParent.Received().Tick();
-                }
-
-                [Test]
-                public void Tick_returns_parent_task_status () {
-                    taskParent.Tick().Returns(taskParent);
-
-                    Assert.AreEqual(taskParent, root.Tick());
-                }
-
-                [Test]
-                public void Does_not_run_update_on_child () {
-                    root.Tick();
-
-                    taskParent.DidNotReceive().Update();
-                }
+                root.AddChild(task);
             }
 
-            public class WithTaskAsChild : TaskRootTest {
-                private ITask task;
+            [Test]
+            public void Calls_task_update () {
+                root.Update();
 
-                [SetUp]
-                public void SetUpTask () {
-                    task = Substitute.For<ITask>();
-                    task.Enabled.Returns(true);
+                task.Received().Update();
+            }
 
-                    root.AddChild(task);
-                }
+            [Test]
+            public void Returns_status_of_the_child () {
+                task.Update().Returns(TaskStatus.Failure);
 
-                [Test]
-                public void Does_not_run_tick_on_child () {
-                    root.Tick();
+                Assert.AreEqual(TaskStatus.Failure, root.Update());
+            }
 
-                    task.DidNotReceive().Tick();
-                }
+            [Test]
+            public void Return_success_if_no_child () {
+                root.children.Clear();
 
-                [Test]
-                public void Calls_task_update () {
-                    root.Tick();
+                Assert.AreEqual(TaskStatus.Success, root.Update());
+            }
 
-                    task.Received().Update();
-                }
+            [Test]
+            public void Does_not_tick_a_disabled_child_node () {
+                task.Enabled.Returns(false);
+                task.Update().Returns(TaskStatus.Success);
 
-                [Test]
-                public void Returns_null_on_task_success () {
-                    task.Update().Returns(TaskStatus.Success);
+                root.Update();
 
-                    Assert.AreEqual(null, root.Tick());
-                }
+                task.DidNotReceive().Update();
+            }
 
-                [Test]
-                public void Returns_null_on_task_failure () {
-                    task.Update().Returns(TaskStatus.Failure);
+            [Test]
+            public void Does_tick_an_enabled_child_node () {
+                root.Update();
 
-                    Assert.AreEqual(null, root.Tick());
-                }
-
-                [Test]
-                public void Returns_self_on_task_continue () {
-                    task.Update().Returns(TaskStatus.Continue);
-
-                    Assert.AreEqual(root, root.Tick());
-                }
-
-                [Test]
-                public void Reruns_node_after_task_continue () {
-                    task.Update().Returns(TaskStatus.Continue);
-
-                    root.Tick();
-                    root.Tick();
-
-                    task.Received(2).Update();
-                }
-
-                [Test]
-                public void Return_null_if_no_child () {
-                    root.children.Clear();
-
-                    Assert.AreEqual(null, root.Tick());
-                }
-
-                [Test]
-                public void Does_not_tick_a_disabled_child_node () {
-                    task.Enabled.Returns(false);
-                    task.Update().Returns(TaskStatus.Success);
-
-                    root.Tick();
-
-                    task.DidNotReceive().Update();
-                }
-
-                [Test]
-                public void Does_tick_an_enabled_child_node () {
-                    root.Tick();
-
-                    task.Received().Update();
-                }
+                task.Received().Update();
             }
         }
     }

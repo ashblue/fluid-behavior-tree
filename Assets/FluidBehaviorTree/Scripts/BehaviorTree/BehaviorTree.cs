@@ -59,8 +59,8 @@ namespace Adnc.FluidBT.Trees {
             });
         }
 
-        public void Tick () {
-            Current.Tick();
+        public void Update () {
+            Current.Update();
         }
     }
 }

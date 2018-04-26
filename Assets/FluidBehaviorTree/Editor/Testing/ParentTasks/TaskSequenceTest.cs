@@ -6,20 +6,23 @@ namespace Adnc.FluidBT.Testing {
     public class TaskSequenceTest {
         public class TaskExample : TaskBase {
         }
-        
-        // @TODO Move adding child classes to a base class
-        [Test]
-        public void Allow_adding_tasks_to_the_children_array () {
-            var seq = new TaskSequence();
 
-            seq.children.Add(new TaskExample());
-        }
-        
-        [Test]
-        public void Allow_adding_parent_tasks_to_the_children_array () {
-            var seq = new TaskSequence();
+        public class UpdateMethod {
+            public void It_should_run_update_on_all_child_tasks () {
+                
+            }
 
-            seq.children.Add(new TaskSequence());
+            public void It_should_return_success_if_all_child_tasks_pass () {
+                
+            }
+            
+            public void It_should_return_failure_if_a_child_task_fails () {
+                
+            }
+
+            public void It_should_return_continue_if_a_child_returns_continue () {
+                
+            }
         }
     }
 }

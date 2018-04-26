@@ -111,33 +111,33 @@ namespace Adnc.FluidBT.Testing {
             }
 
             [Test]
-            public void Update_the_first_child_task_on_tick () {
-                tree.Tick();
+            public void Update_the_first_child_task_on_update () {
+                tree.Update();
 
                 action.Received().Update();
             }
 
             [Test]
-            public void Tick_sets_root_as_current_on_action_status_success () {
-                tree.Tick();
+            public void Update_sets_root_as_current_on_action_status_success () {
+                tree.Update();
 
                 Assert.AreEqual(tree.Current, tree.Root);
             }
 
             [Test]
-            public void Tick_sets_root_as_current_on_status_failure () {
+            public void Update_sets_root_as_current_on_status_failure () {
                 action.Update().Returns(TaskStatus.Failure);
 
-                tree.Tick();
+                tree.Update();
 
                 Assert.AreEqual(tree.Current, tree.Root);
             }
 
             [Test]
-            public void Tick_sets_root_as_current_on_status_continue () {
+            public void Update_sets_root_as_current_on_status_continue () {
                 action.Update().Returns(TaskStatus.Continue);
 
-                tree.Tick();
+                tree.Update();
 
                 Assert.AreEqual(tree.Current, tree.Root);
             }

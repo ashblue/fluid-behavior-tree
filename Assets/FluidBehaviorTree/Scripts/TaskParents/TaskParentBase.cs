@@ -10,11 +10,11 @@ namespace Adnc.FluidBT.TaskParents {
         protected virtual int MaxChildren { get; } = -1;
         
         public TaskStatus Update () {
-            throw new System.NotImplementedException();
+            return OnUpdate();
         }
 
-        public ITask Tick () {
-            return OnTick();
+        protected virtual TaskStatus OnUpdate () {
+            return TaskStatus.Success;
         }
 
         public virtual void Reset (bool hardReset = false) {
@@ -22,10 +22,6 @@ namespace Adnc.FluidBT.TaskParents {
             foreach (var child in children) {
                 child.Reset(hardReset);
             }
-        }
-
-        protected virtual ITask OnTick () {
-            return null;
         }
 
         public void AddChild (ITask child) {
