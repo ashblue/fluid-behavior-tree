@@ -77,6 +77,78 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
 
+            public class WhenAbortSelf : UpdateMethod {
+                [SetUp]
+                public void SetAbortTypeSelf () {
+                    _sequence.AbortType = AbortType.Self;
+                }
+
+                public class DefaultCalls : WhenAbortSelf {
+                    [Test]
+                    public void It_should_not_abort_on_the_1st_update_call () {
+                        _sequence.Update();
+
+                        _childA.Received(1).Update();
+                    }
+
+                    [Test]
+                    public void It_should_not_fail_if_no_children_are_present () {
+                        _sequence.children.Clear();
+
+                        _sequence.Update();
+                    }
+
+                    [Test]
+                    public void Nested_sequence_will_return_failure_while_being_ticked_through_multiple_frames () {
+                        var parentSequence = new TaskSequence();
+                        parentSequence.AddChild(_sequence);
+                        _childB.Update().Returns(TaskStatus.Continue);
+
+                        Assert.AreEqual(TaskStatus.Continue, parentSequence.Update());
+                        _childA.Update().Returns(TaskStatus.Failure);
+
+                        Assert.AreEqual(TaskStatus.Failure, parentSequence.Update());
+                    }
+                }
+
+                public class WhenAbortIsReady : WhenAbortSelf {
+                    [SetUp]
+                    public void SetupAbort () {
+                        _childB.Update().Returns(TaskStatus.Continue);
+                        _sequence.Update();
+                        _childA.Update().Returns(TaskStatus.Failure);
+                    }
+
+                    [Test]
+                    public void Return_failure_on_tick_if_the_first_node_changes_from_success_to_failure () {
+                        Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                    }
+
+                    [Test]
+                    public void Does_not_abort_if_not_marked_abort_self () {
+                        _sequence.AbortType = AbortType.None;
+
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                    }
+
+                    [Test]
+                    public void It_should_run_end_when_aborting_on_the_active_node () {
+                        _sequence.Update();
+
+                        _childB.Received(1).End();
+                    }
+
+                    [Test]
+                    public void Triggers_reset_after_firing_abort () {
+                        _sequence.Update();
+
+                        _sequence.children.ForEach((child) => {
+                            child.Received().Reset();
+                        });
+                    }
+                }
+            }
+
             public class ReturnedStatusType : UpdateMethod {
                 [Test]
                 public void Returns_success_if_no_children () {

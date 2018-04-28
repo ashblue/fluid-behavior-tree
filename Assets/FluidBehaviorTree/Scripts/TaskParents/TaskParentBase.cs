@@ -3,6 +3,8 @@ using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
+        public AbortType AbortType { get; set; } = AbortType.None;
+
         public bool Enabled { get; set; } = true;
 
         public List<ITask> children { get; } = new List<ITask>();
@@ -11,6 +13,10 @@ namespace Adnc.FluidBT.TaskParents {
         
         public TaskStatus Update () {
             return OnUpdate();
+        }
+
+        public void End () {
+            throw new System.NotImplementedException();
         }
 
         protected virtual TaskStatus OnUpdate () {

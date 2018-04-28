@@ -4,6 +4,11 @@
         
         TaskStatus Update ();
 
+        /**
+         * Forcibly end this task. Firing all necessary completion logic
+         */
+        void End ();
+
         void Reset (bool hardReset = false);
     }
 }

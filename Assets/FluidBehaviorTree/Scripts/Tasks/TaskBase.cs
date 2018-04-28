@@ -42,6 +42,10 @@
             }
         }
 
+        public void End () {
+            Exit();
+        }
+
         protected virtual TaskStatus OnUpdate () {
             return TaskStatus.Failure;
         }

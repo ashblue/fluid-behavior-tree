@@ -5,6 +5,14 @@ namespace Adnc.FluidBT.TaskParents {
         private int childIndex;
 
         protected override TaskStatus OnUpdate () {
+            if (AbortType.HasFlag(AbortType.Self)
+                && childIndex > 0
+                && children[0].Update() == TaskStatus.Failure) {
+                children[childIndex].End();
+                Reset();
+                return TaskStatus.Failure;
+            }
+
             for (var i = childIndex; i < children.Count; i++) {
                 var child = children[childIndex];
 
