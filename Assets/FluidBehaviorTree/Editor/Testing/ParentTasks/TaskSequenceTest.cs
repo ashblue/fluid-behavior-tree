@@ -77,6 +77,35 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
 
+            public class WhenAbortLowerPriority : UpdateMethod {
+                public void Triggers_when_a_lower_priority_sibling_composite_changes_from_success_to_failure () {
+                    var seqChild = new TaskSequence { AbortType = AbortType.LowerPriority };
+                    seqChild.AddChild(_childA);
+
+                    _sequence.children.Clear();
+                    _sequence.AddChild(seqChild);
+                    _sequence.AddChild(_childB);
+                    _childB.Update().Returns(TaskStatus.Continue);
+
+                    Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                    _childA.Update().Returns(TaskStatus.Failure);
+
+                    Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                }
+
+                public void Parent_task_triggers_reset () {
+
+                }
+
+                public void Triggers_end_on_exited_pointer_task () {
+
+                }
+
+                public void Triggers_on_lower_priority_sibling_that_is_not_first () {
+
+                }
+            }
+
             public class WhenAbortSelf : UpdateMethod {
                 [SetUp]
                 public void SetAbortTypeSelf () {
@@ -84,6 +113,18 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 public class DefaultCalls : WhenAbortSelf {
+                    public void It_should_revaluate_a_condition () {
+
+                    }
+
+                    public void It_should_not_revaluate_an_action () {
+
+                    }
+
+                    public void It_should_revaulate_parent_tasks_with_an_abort_type_assigned () {
+
+                    }
+
                     [Test]
                     public void It_should_not_abort_on_the_1st_update_call () {
                         _sequence.Update();
