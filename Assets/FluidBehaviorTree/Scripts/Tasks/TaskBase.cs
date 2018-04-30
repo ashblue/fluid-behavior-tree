@@ -5,6 +5,8 @@
         
         public bool Enabled { get; set; } = true;
 
+        public bool IsLowerPriority { get; } = false;
+
         public TaskStatus Update () {
             if (!_init) {
                 Init();
@@ -26,7 +28,7 @@
             return status;
         }
 
-        public ITask Tick () {
+        public ITask GetAbortCondition () {
             throw new System.NotImplementedException();
         }
 

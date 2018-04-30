@@ -10,9 +10,17 @@ namespace Adnc.FluidBT.TaskParents {
         public List<ITask> children { get; } = new List<ITask>();
 
         protected virtual int MaxChildren { get; } = -1;
-        
+
+        public bool IsLowerPriority => AbortType.HasFlag(AbortType.LowerPriority);
+
         public TaskStatus Update () {
             return OnUpdate();
+        }
+
+        // @TODO Should allow returning multiple conditions (for selectors)
+        // @TODO Should only return a valid condition type (skips non conditions)
+        public ITask GetAbortCondition () {
+            return children[0];
         }
 
         public void End () {

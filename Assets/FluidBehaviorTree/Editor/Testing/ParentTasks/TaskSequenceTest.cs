@@ -78,22 +78,47 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class WhenAbortLowerPriority : UpdateMethod {
-                public void Triggers_when_a_lower_priority_sibling_composite_changes_from_success_to_failure () {
-                    var seqChild = new TaskSequence { AbortType = AbortType.LowerPriority };
-                    seqChild.AddChild(_childA);
+                private TaskSequence _seqChild;
+
+                [SetUp]
+                public void Setup_lower_priority_trigger () {
+                    _seqChild = new TaskSequence { AbortType = AbortType.LowerPriority };
+                    _seqChild.AddChild(_childA);
 
                     _sequence.children.Clear();
-                    _sequence.AddChild(seqChild);
+                    _sequence.AddChild(_seqChild);
                     _sequence.AddChild(_childB);
                     _childB.Update().Returns(TaskStatus.Continue);
+                }
 
+                [Test]
+                public void Does_not_trigger_abort_on_first_update () {
                     Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                }
+
+                [Test]
+                public void Triggers_when_a_lower_priority_sibling_composite_changes_from_success_to_failure () {
+                    _sequence.Update();
                     _childA.Update().Returns(TaskStatus.Failure);
 
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
 
-                public void Parent_task_triggers_reset () {
+                [Test]
+                public void Parent_task_triggers_reset_on_all_nodes () {
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    _sequence.Update();
+
+                    _childA.Received(1).Reset();
+                    _childB.Received(1).Reset();
+                }
+
+                public void Does_not_fail_on_a_conditional_abort_without_tasks () {
+
+                }
+
+                public void Does_not_recheck_conditional_aborts_after_reset_is_called () {
 
                 }
 
@@ -101,7 +126,23 @@ namespace Adnc.FluidBT.Testing {
 
                 }
 
-                public void Triggers_on_lower_priority_sibling_that_is_not_first () {
+                public void Triggers_on_lower_priority_2nd_sibling () {
+
+                }
+
+                public void Triggers_on_lower_priority_3rd_sibling () {
+
+                }
+
+                public void Triggers_on_conditionals () {
+
+                }
+
+                public void Does_not_trigger_on_actions () {
+
+                }
+
+                public void Triggers_on_sequence_with_first_node_a_condition () {
 
                 }
             }
