@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
+using UnityEngine;
 
 namespace Adnc.FluidBT.TaskParents {
     public class Sequence : TaskParentBase {
@@ -17,6 +18,7 @@ namespace Adnc.FluidBT.TaskParents {
 
             foreach (var abort in _abortLowerPriorities) {
                 if (abort.Update() != TaskStatus.Failure) continue;
+                children[_childIndex].End();
                 Reset();
                 return TaskStatus.Failure;
             }
@@ -44,8 +46,13 @@ namespace Adnc.FluidBT.TaskParents {
             return TaskStatus.Success;
         }
 
+        public override void End () {
+            children[_childIndex].End();
+        }
+
         public override void Reset (bool hardReset = false) {
             _childIndex = 0;
+            _abortLowerPriorities.Clear();
 
             base.Reset(hardReset);
         }

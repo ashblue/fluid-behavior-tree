@@ -13,15 +13,19 @@ namespace Adnc.FluidBT.Testing {
         public void SetupChild () {
             _sequence = new Sequence();
 
-            _childA = Substitute.For<ITask>();
-            _childA.Enabled.Returns(true);
-            _childA.Update().Returns(TaskStatus.Success);
+            _childA = CreateTaskStub();
             _sequence.AddChild(_childA);
 
-            _childB = Substitute.For<ITask>();
-            _childB.Enabled.Returns(true);
-            _childB.Update().Returns(TaskStatus.Success);
+            _childB = CreateTaskStub();
             _sequence.AddChild(_childB);
+        }
+
+        private ITask CreateTaskStub () {
+            var task = Substitute.For<ITask>();
+            task.Enabled.Returns(true);
+            task.Update().Returns(TaskStatus.Success);
+
+            return task;
         }
 
         public class UpdateMethod : TaskSequenceTest {
@@ -155,7 +159,30 @@ namespace Adnc.FluidBT.Testing {
                 public void Triggers_on_sequence_with_first_node_a_condition () {
                 }
 
+                [Test]
                 public void Triggers_end_on_exited_pointer_task () {
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    _sequence.Update();
+                    
+                    _childB.Received(1).End();
+                }
+                
+                [Test]
+                public void Triggers_end_on_nested_task () {
+                    var sequence = new Sequence();
+                    var child = CreateTaskStub();
+                    sequence.AddChild(child);
+                    child.Update().Returns(TaskStatus.Continue);
+
+                    _childB.Update().Returns(TaskStatus.Success);
+                    _sequence.AddChild(sequence);
+                    
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    _sequence.Update();
+                    
+                    child.Received(1).End();
                 }
 
                 public void Triggers_on_lower_priority_2nd_sibling () {

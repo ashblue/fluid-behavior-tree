@@ -28,7 +28,7 @@ namespace Adnc.FluidBT.TaskParents {
             return null;
         }
 
-        public void End () {
+        public virtual void End () {
             throw new System.NotImplementedException();
         }
 
