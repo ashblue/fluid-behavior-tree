@@ -1,5 +1,7 @@
-﻿using Adnc.FluidBT.TaskParents;
+﻿using System;
+using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Tasks.Actions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
@@ -86,13 +88,15 @@ namespace Adnc.FluidBT.Testing {
             // @TODO Builder API for tasks
             public class WhenAbortLowerPriority : UpdateMethod {
                 private Sequence _seqChild;
+                private ITask _taskCondition;
 
                 [SetUp]
                 public void Setup_lower_priority_trigger () {
                     _seqChild = new Sequence { AbortType = AbortType.LowerPriority };
-                    _seqChild.AddChild(_childA);
-                    _childA.GetAbortCondition().Returns(_childA);
 
+                    _taskCondition = A.TaskStub().WithAbortConditionSelf(true).Build();
+                    _seqChild.AddChild(_taskCondition);
+                    
                     _sequence.children.Clear();
                     _sequence.AddChild(_seqChild);
                     _sequence.AddChild(_childB);
@@ -107,7 +111,7 @@ namespace Adnc.FluidBT.Testing {
                 [Test]
                 public void Triggers_when_a_lower_priority_sibling_composite_changes_from_success_to_failure () {
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
 
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
@@ -115,10 +119,10 @@ namespace Adnc.FluidBT.Testing {
                 [Test]
                 public void Parent_task_triggers_reset_on_all_nodes () {
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     _sequence.Update();
 
-                    _childA.Received(1).Reset();
+                    _taskCondition.Received(1).Reset();
                     _childB.Received(1).Reset();
                 }
 
@@ -127,34 +131,34 @@ namespace Adnc.FluidBT.Testing {
                     _seqChild.children.Clear();
                     
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     _sequence.Update();
                 }
 
                 [Test]
                 public void Does_not_recheck_conditional_aborts_after_reset_is_called () {
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     _sequence.Update();
                     _sequence.Update();
 
-                    _childA.Received(3).Update();
+                    _taskCondition.Received(3).Update();
                 }
                 
                 [Test]
                 public void Triggers_on_valid_conditional_task () {
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
 
                 [Test]
                 public void Does_not_trigger_on_invalid_conditional_task () {
-                    _childA.GetAbortCondition().ReturnsNull();
+                    _taskCondition.GetAbortCondition().ReturnsNull();
 
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     
                     Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
                 }
@@ -163,11 +167,11 @@ namespace Adnc.FluidBT.Testing {
                 public void Triggers_abort_on_nested_sequence_with_first_node_a_condition () {
                     _seqChild.children.Clear();
                     var nestedSeqChild = new Sequence();
-                    nestedSeqChild.AddChild(_childA);
+                    nestedSeqChild.AddChild(_taskCondition);
                     _seqChild.AddChild(nestedSeqChild);
                     
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
 
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
@@ -176,13 +180,13 @@ namespace Adnc.FluidBT.Testing {
                 public void Does_not_trigger_on_nested_sequence_with_first_node_a_non_condition () {
                     _seqChild.children.Clear();
                     var nestedSeqChild = new Sequence();
-                    nestedSeqChild.AddChild(_childA);
+                    nestedSeqChild.AddChild(_taskCondition);
                     _seqChild.AddChild(nestedSeqChild);
                     
-                    _childA.GetAbortCondition().ReturnsNull();
+                    _taskCondition.GetAbortCondition().ReturnsNull();
 
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
 
                     Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
                 }
@@ -190,7 +194,7 @@ namespace Adnc.FluidBT.Testing {
                 [Test]
                 public void Triggers_end_on_exited_pointer_task () {
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     _sequence.Update();
                     
                     _childB.Received(1).End();
@@ -207,7 +211,7 @@ namespace Adnc.FluidBT.Testing {
                     _sequence.AddChild(sequence);
                     
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
                     _sequence.Update();
                     
                     child.Received(1).End();
@@ -222,7 +226,7 @@ namespace Adnc.FluidBT.Testing {
                     _sequence.AddChild(_childB);
                     
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
 
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
@@ -238,7 +242,7 @@ namespace Adnc.FluidBT.Testing {
                     _sequence.AddChild(_childB);
                     
                     _sequence.Update();
-                    _childA.Update().Returns(TaskStatus.Failure);
+                    _taskCondition.Update().Returns(TaskStatus.Failure);
 
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
