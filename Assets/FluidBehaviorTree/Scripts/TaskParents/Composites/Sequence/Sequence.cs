@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
-using UnityEngine;
 
 namespace Adnc.FluidBT.TaskParents {
     public class Sequence : TaskParentBase {
+        private ITask _selfAbortTask;
         private int _childIndex;
         private readonly List<ITask> _abortLowerPriorities = new List<ITask>();
 
         protected override TaskStatus OnUpdate () {
             if (AbortType.HasFlag(AbortType.Self)
                 && _childIndex > 0
-                && children[0].Update() == TaskStatus.Failure) {
+                && _selfAbortTask != null
+                && _selfAbortTask.Update() == TaskStatus.Failure) {
                 children[_childIndex].End();
                 Reset();
                 return TaskStatus.Failure;
@@ -44,6 +45,14 @@ namespace Adnc.FluidBT.TaskParents {
             }
 
             return TaskStatus.Success;
+        }
+        
+        public override ITaskParent AddChild (ITask child) {
+            if (children.Count == 0) {
+                _selfAbortTask = child.GetAbortCondition();
+            }
+            
+            return base.AddChild(child);
         }
 
         public override void End () {

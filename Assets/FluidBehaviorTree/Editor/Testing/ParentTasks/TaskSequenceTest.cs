@@ -1,7 +1,5 @@
-﻿using System;
-using Adnc.FluidBT.TaskParents;
+﻿using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
@@ -254,16 +252,15 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 public class DefaultCalls : WhenAbortSelf {
-                    public void Triggers_on_valid_conditional_task () {
-
-                    }
-
+                    [Test]
                     public void Does_not_trigger_on_invalid_conditional_task () {
-
-                    }
-
-                    public void It_should_revaulate_parent_tasks_with_an_abort_type_assigned () {
-
+                        _childB.Update().Returns(TaskStatus.Continue);
+                        
+                        _sequence.Update();
+                        
+                        _childA.Update().Returns(TaskStatus.Failure);
+                        
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
                     }
 
                     [Test]
@@ -282,49 +279,66 @@ namespace Adnc.FluidBT.Testing {
 
                     [Test]
                     public void Nested_sequence_will_return_failure_while_being_ticked_through_multiple_frames () {
-                        var parentSequence = new Sequence();
-                        parentSequence.AddChild(_sequence);
-                        _childB.Update().Returns(TaskStatus.Continue);
+                        var parentSequence = new Sequence {AbortType = AbortType.Self};
+                        var childSequence = new Sequence();
+                        var condition = A.TaskStub().WithAbortConditionSelf(true).Build();
+                        var action = A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build();
 
+                        parentSequence
+                            .AddChild(childSequence.AddChild(condition))
+                            .AddChild(action);
+                        
                         Assert.AreEqual(TaskStatus.Continue, parentSequence.Update());
-                        _childA.Update().Returns(TaskStatus.Failure);
+                        condition.Update().Returns(TaskStatus.Failure);
 
                         Assert.AreEqual(TaskStatus.Failure, parentSequence.Update());
                     }
                 }
 
                 public class WhenAbortIsReady : WhenAbortSelf {
+                    private Sequence _parentSequence;
+                    private ITask _condition;
+                    private ITask _action;
+                    
                     [SetUp]
                     public void SetupAbort () {
-                        _childB.Update().Returns(TaskStatus.Continue);
-                        _sequence.Update();
-                        _childA.Update().Returns(TaskStatus.Failure);
+                        _parentSequence = new Sequence {AbortType = AbortType.Self};
+                        _condition = A.TaskStub().WithAbortConditionSelf(true).Build();
+                        _action = A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build();
+                        
+                        _parentSequence
+                            .AddChild(_condition)
+                            .AddChild(_action);
+                        
+                        _parentSequence.Update();
+                        
+                        _condition.Update().Returns(TaskStatus.Failure);
                     }
 
                     [Test]
                     public void Return_failure_on_tick_if_the_first_node_changes_from_success_to_failure () {
-                        Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                        Assert.AreEqual(TaskStatus.Failure, _parentSequence.Update());
                     }
 
                     [Test]
                     public void Does_not_abort_if_not_marked_abort_self () {
-                        _sequence.AbortType = AbortType.None;
+                        _parentSequence.AbortType = AbortType.None;
 
-                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                        Assert.AreEqual(TaskStatus.Continue, _parentSequence.Update());
                     }
 
                     [Test]
                     public void It_should_run_end_when_aborting_on_the_active_node () {
-                        _sequence.Update();
+                        _parentSequence.Update();
 
-                        _childB.Received(1).End();
+                        _action.Received(1).End();
                     }
 
                     [Test]
                     public void Triggers_reset_after_firing_abort () {
-                        _sequence.Update();
+                        _parentSequence.Update();
 
-                        _sequence.children.ForEach((child) => {
+                        _parentSequence.children.ForEach((child) => {
                             child.Received().Reset();
                         });
                     }
