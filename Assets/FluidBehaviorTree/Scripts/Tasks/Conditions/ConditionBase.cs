@@ -1,6 +1,5 @@
 ﻿namespace Adnc.FluidBT.Tasks {
     public abstract class ConditionBase : TaskBase {
-        public override bool ValidAbortCondition { get; } = true;
         protected abstract bool OnUpdate ();
 
         protected override TaskStatus GetUpdate () {
@@ -9,6 +8,10 @@
             }
 
             return TaskStatus.Failure;
+        }
+
+        public override ITask GetAbortCondition () {
+            return this;
         }
     }
 }

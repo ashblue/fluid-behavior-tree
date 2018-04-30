@@ -1,6 +1,7 @@
 ﻿using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
@@ -81,6 +82,8 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
 
+            // @TODO Break up these tests into better subsections
+            // @TODO Builder API for tasks
             public class WhenAbortLowerPriority : UpdateMethod {
                 private Sequence _seqChild;
 
@@ -88,7 +91,7 @@ namespace Adnc.FluidBT.Testing {
                 public void Setup_lower_priority_trigger () {
                     _seqChild = new Sequence { AbortType = AbortType.LowerPriority };
                     _seqChild.AddChild(_childA);
-                    _childA.ValidAbortCondition.Returns(true);
+                    _childA.GetAbortCondition().Returns(_childA);
 
                     _sequence.children.Clear();
                     _sequence.AddChild(_seqChild);
@@ -148,15 +151,40 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Does_not_trigger_on_invalid_conditional_task () {
-                    _childA.ValidAbortCondition.Returns(false);
-                    
+                    _childA.GetAbortCondition().ReturnsNull();
+
                     _sequence.Update();
                     _childA.Update().Returns(TaskStatus.Failure);
                     
                     Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
                 }
                 
-                public void Triggers_on_sequence_with_first_node_a_condition () {
+                [Test]
+                public void Triggers_abort_on_nested_sequence_with_first_node_a_condition () {
+                    _seqChild.children.Clear();
+                    var nestedSeqChild = new Sequence();
+                    nestedSeqChild.AddChild(_childA);
+                    _seqChild.AddChild(nestedSeqChild);
+                    
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+
+                    Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                }
+                
+                [Test]
+                public void Does_not_trigger_on_nested_sequence_with_first_node_a_non_condition () {
+                    _seqChild.children.Clear();
+                    var nestedSeqChild = new Sequence();
+                    nestedSeqChild.AddChild(_childA);
+                    _seqChild.AddChild(nestedSeqChild);
+                    
+                    _childA.GetAbortCondition().ReturnsNull();
+
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+
+                    Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
                 }
 
                 [Test]
@@ -185,10 +213,34 @@ namespace Adnc.FluidBT.Testing {
                     child.Received(1).End();
                 }
 
+                [Test]
                 public void Triggers_on_lower_priority_2nd_sibling () {
+                    var task = CreateTaskStub();
+                    _sequence.children.Clear();
+                    _sequence.AddChild(task);
+                    _sequence.AddChild(_seqChild);
+                    _sequence.AddChild(_childB);
+                    
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+
+                    Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
 
+                [Test]
                 public void Triggers_on_lower_priority_3rd_sibling () {
+                    var task = CreateTaskStub();
+                    var taskNext = CreateTaskStub();
+                    _sequence.children.Clear();
+                    _sequence.AddChild(task);
+                    _sequence.AddChild(taskNext);
+                    _sequence.AddChild(_seqChild);
+                    _sequence.AddChild(_childB);
+                    
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+
+                    Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
             }
 

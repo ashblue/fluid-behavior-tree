@@ -19,10 +19,9 @@ namespace Adnc.FluidBT.TaskParents {
         }
 
         // @TODO Should allow returning multiple conditions (for selectors)
-        // @TODO Should only return a valid condition type (skips non conditions)
         public ITask GetAbortCondition () {
-            if (children.Count > 0 && children[0].ValidAbortCondition) {
-                return children[0];
+            if (children.Count > 0) {
+                return children[0].GetAbortCondition();
             }
 
             return null;

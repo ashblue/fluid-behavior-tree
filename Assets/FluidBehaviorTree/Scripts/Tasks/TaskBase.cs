@@ -6,7 +6,6 @@
         public bool Enabled { get; set; } = true;
 
         public bool IsLowerPriority { get; } = false;
-        public abstract bool ValidAbortCondition { get; }
 
         public TaskStatus Update () {
             if (!_init) {
@@ -29,8 +28,8 @@
             return status;
         }
 
-        public ITask GetAbortCondition () {
-            throw new System.NotImplementedException();
+        public virtual ITask GetAbortCondition () {
+            return null;
         }
 
         /// <summary>
