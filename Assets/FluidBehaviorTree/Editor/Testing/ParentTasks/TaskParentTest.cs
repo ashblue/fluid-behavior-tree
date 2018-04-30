@@ -1,5 +1,6 @@
 ﻿using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Tasks.Actions;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -18,7 +19,10 @@ namespace Adnc.FluidBT.Testing {
             protected override int MaxChildren => childCount;
         }
 
-        public class TaskExample : TaskBase {
+        public class TaskExample : ActionBase {
+            protected override TaskStatus OnUpdate () {
+                return TaskStatus.Success;
+            }
         }
 
         public class ResetMethod : TaskParentTest {

@@ -2,6 +2,7 @@
     public interface ITask {
         bool Enabled { get; set; }
         bool IsLowerPriority { get; }
+        bool ValidAbortCondition { get; }
 
         TaskStatus Update ();
 

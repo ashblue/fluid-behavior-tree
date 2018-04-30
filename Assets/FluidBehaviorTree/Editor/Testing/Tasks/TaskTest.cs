@@ -1,9 +1,10 @@
 ﻿using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Tasks.Actions;
 using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskTest {
-        public class TaskExample : TaskBase {
+        public class TaskExample : ActionBase {
             public int StartCount { get; private set; }
             public int InitCount { get; private set; }
             public int ExitCount { get; private set; }

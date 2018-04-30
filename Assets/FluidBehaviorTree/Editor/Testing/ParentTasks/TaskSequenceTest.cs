@@ -84,6 +84,7 @@ namespace Adnc.FluidBT.Testing {
                 public void Setup_lower_priority_trigger () {
                     _seqChild = new Sequence { AbortType = AbortType.LowerPriority };
                     _seqChild.AddChild(_childA);
+                    _childA.ValidAbortCondition.Returns(true);
 
                     _sequence.children.Clear();
                     _sequence.AddChild(_seqChild);
@@ -114,36 +115,53 @@ namespace Adnc.FluidBT.Testing {
                     _childB.Received(1).Reset();
                 }
 
-                public void Does_not_fail_on_a_conditional_abort_without_tasks () {
-
+                [Test]
+                public void Does_not_crash_on_a_conditional_abort_without_tasks () {
+                    _seqChild.children.Clear();
+                    
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    _sequence.Update();
                 }
 
+                [Test]
                 public void Does_not_recheck_conditional_aborts_after_reset_is_called () {
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    _sequence.Update();
+                    _sequence.Update();
 
+                    _childA.Received(3).Update();
+                }
+                
+                [Test]
+                public void Triggers_on_valid_conditional_task () {
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    
+                    Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                }
+
+                [Test]
+                public void Does_not_trigger_on_invalid_conditional_task () {
+                    _childA.ValidAbortCondition.Returns(false);
+                    
+                    _sequence.Update();
+                    _childA.Update().Returns(TaskStatus.Failure);
+                    
+                    Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                }
+                
+                public void Triggers_on_sequence_with_first_node_a_condition () {
                 }
 
                 public void Triggers_end_on_exited_pointer_task () {
-
                 }
 
                 public void Triggers_on_lower_priority_2nd_sibling () {
-
                 }
 
                 public void Triggers_on_lower_priority_3rd_sibling () {
-
-                }
-
-                public void Triggers_on_conditionals () {
-
-                }
-
-                public void Does_not_trigger_on_actions () {
-
-                }
-
-                public void Triggers_on_sequence_with_first_node_a_condition () {
-
                 }
             }
 
@@ -154,11 +172,11 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 public class DefaultCalls : WhenAbortSelf {
-                    public void It_should_revaluate_a_condition () {
+                    public void Triggers_on_valid_conditional_task () {
 
                     }
 
-                    public void It_should_not_revaluate_an_action () {
+                    public void Does_not_trigger_on_invalid_conditional_task () {
 
                     }
 

@@ -31,7 +31,10 @@ namespace Adnc.FluidBT.TaskParents {
                     }
 
                     if (child.IsLowerPriority) {
-                        _abortLowerPriorities.Add(child.GetAbortCondition());
+                        var abortCondition = child.GetAbortCondition();
+                        if (abortCondition != null) {
+                            _abortLowerPriorities.Add(abortCondition);
+                        }
                     }
                 }
 

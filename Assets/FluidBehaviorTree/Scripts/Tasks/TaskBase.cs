@@ -6,6 +6,7 @@
         public bool Enabled { get; set; } = true;
 
         public bool IsLowerPriority { get; } = false;
+        public abstract bool ValidAbortCondition { get; }
 
         public TaskStatus Update () {
             if (!_init) {
@@ -18,7 +19,7 @@
                 _start = true;
             }
 
-            var status = OnUpdate();
+            var status = GetUpdate();
 
             // Soft reset since the node has completed
             if (status != TaskStatus.Continue) {
@@ -48,7 +49,7 @@
             Exit();
         }
 
-        protected virtual TaskStatus OnUpdate () {
+        protected virtual TaskStatus GetUpdate () {
             return TaskStatus.Failure;
         }
 
