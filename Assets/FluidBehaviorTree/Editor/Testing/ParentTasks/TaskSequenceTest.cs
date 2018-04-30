@@ -85,7 +85,6 @@ namespace Adnc.FluidBT.Testing {
             }
 
             // @TODO Break up these tests into better subsections
-            // @TODO Builder API for tasks
             public class WhenAbortLowerPriority : UpdateMethod {
                 private Sequence _seqChild;
                 private ITask _taskCondition;
@@ -359,6 +358,58 @@ namespace Adnc.FluidBT.Testing {
                     _childA.Update().Returns(TaskStatus.Continue);
 
                     Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                }
+            }
+
+            public class WhenAbortSelfAndLowerPriority {
+                [Test]
+                public void Triggers_self_abort_when_valid () {
+                    var sequence = new Sequence();
+                    sequence.AbortType |= AbortType.Self;
+                    sequence.AbortType |= AbortType.LowerPriority;
+
+                    var condition = A.TaskStub()
+                        .WithAbortConditionSelf(true)
+                        .Build();
+                    sequence.AddChild(condition);
+
+                    var action = A.TaskStub()
+                        .WithUpdateStatus(TaskStatus.Continue)
+                        .Build();
+                    sequence.AddChild(action);
+
+                    Assert.AreEqual(TaskStatus.Continue, sequence.Update());
+
+                    condition.Update().Returns(TaskStatus.Failure);
+                    
+                    Assert.AreEqual(TaskStatus.Failure, sequence.Update());
+                }
+                
+                [Test]
+                public void Triggers_lower_priority_when_valid () {
+                    var sequence = new Sequence();
+                    sequence.AbortType |= AbortType.Self;
+                    sequence.AbortType |= AbortType.LowerPriority;
+                    
+                    var sequenceSub = new Sequence();
+                    sequenceSub.AbortType = AbortType.LowerPriority;
+                    sequence.AddChild(sequenceSub);
+                    
+                    var condition = A.TaskStub()
+                        .WithAbortConditionSelf(true)
+                        .Build();
+                    sequenceSub.AddChild(condition);
+
+                    var action = A.TaskStub()
+                        .WithUpdateStatus(TaskStatus.Continue)
+                        .Build();
+                    sequence.AddChild(action);
+
+                    Assert.AreEqual(TaskStatus.Continue, sequence.Update());
+
+                    condition.Update().Returns(TaskStatus.Failure);
+                    
+                    Assert.AreEqual(TaskStatus.Failure, sequence.Update());
                 }
             }
         }
