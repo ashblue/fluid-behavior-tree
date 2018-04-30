@@ -7,11 +7,11 @@ namespace Adnc.FluidBT.Testing {
     public class TaskSequenceTest {
         private ITask _childA;
         private ITask _childB;
-        private TaskSequence _sequence;
+        private Sequence _sequence;
 
         [SetUp]
         public void SetupChild () {
-            _sequence = new TaskSequence();
+            _sequence = new Sequence();
 
             _childA = Substitute.For<ITask>();
             _childA.Enabled.Returns(true);
@@ -78,11 +78,11 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class WhenAbortLowerPriority : UpdateMethod {
-                private TaskSequence _seqChild;
+                private Sequence _seqChild;
 
                 [SetUp]
                 public void Setup_lower_priority_trigger () {
-                    _seqChild = new TaskSequence { AbortType = AbortType.LowerPriority };
+                    _seqChild = new Sequence { AbortType = AbortType.LowerPriority };
                     _seqChild.AddChild(_childA);
 
                     _sequence.children.Clear();
@@ -182,7 +182,7 @@ namespace Adnc.FluidBT.Testing {
 
                     [Test]
                     public void Nested_sequence_will_return_failure_while_being_ticked_through_multiple_frames () {
-                        var parentSequence = new TaskSequence();
+                        var parentSequence = new Sequence();
                         parentSequence.AddChild(_sequence);
                         _childB.Update().Returns(TaskStatus.Continue);
 

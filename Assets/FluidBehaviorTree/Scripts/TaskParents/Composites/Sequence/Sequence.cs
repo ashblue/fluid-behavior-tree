@@ -2,7 +2,7 @@
 using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
-    public class TaskSequence : TaskParentBase {
+    public class Sequence : TaskParentBase {
         private int _childIndex;
         private readonly List<ITask> _abortLowerPriorities = new List<ITask>();
 
