@@ -390,12 +390,12 @@ namespace Adnc.FluidBT.Testing {
                     
                     var sequenceSub = new Sequence();
                     sequenceSub.AbortType = AbortType.LowerPriority;
-                    sequence.AddChild(sequenceSub);
                     
                     var condition = A.TaskStub()
                         .WithAbortConditionSelf(true)
                         .Build();
                     sequenceSub.AddChild(condition);
+                    sequence.AddChild(sequenceSub);
 
                     var action = A.TaskStub()
                         .WithUpdateStatus(TaskStatus.Continue)

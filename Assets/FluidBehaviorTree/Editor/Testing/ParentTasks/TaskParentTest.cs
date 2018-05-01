@@ -25,6 +25,28 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
+        public class EnabledProperty : TaskParentTest {
+            [Test]
+            public void Returns_disabled_if_no_children () {
+                Assert.IsFalse(taskParent.Enabled);
+            }
+            
+            [Test]
+            public void Returns_enabled_if_child () {
+                taskParent.AddChild(A.TaskStub().Build());
+                
+                Assert.IsTrue(taskParent.Enabled);
+            }
+            
+            [Test]
+            public void Returns_disabled_if_child_and_set_to_disabled () {
+                taskParent.AddChild(A.TaskStub().Build());
+                taskParent.Enabled = false;
+                
+                Assert.IsFalse(taskParent.Enabled);
+            }
+        }
+
         public class ResetMethod : TaskParentTest {
             [Test]
             public void Runs_reset_on_the_child_task () {

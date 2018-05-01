@@ -3,9 +3,14 @@ using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
+        private bool _enabled = true;
+        
         public AbortType AbortType { get; set; } = AbortType.None;
 
-        public bool Enabled { get; set; } = true;
+        public bool Enabled {
+            get { return children.Count != 0 && _enabled; }
+            set { _enabled = value; }
+        }
 
         public List<ITask> children { get; } = new List<ITask>();
 
