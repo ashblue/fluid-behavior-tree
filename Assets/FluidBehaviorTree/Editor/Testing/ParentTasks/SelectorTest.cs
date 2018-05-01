@@ -22,12 +22,6 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
 
-            public class NoNodes : UpdateMethod {
-                public void Returns_success () {
-                    Assert.AreEqual(TaskStatus.Success, _selector.Update());
-                }
-            }
-
             public class SingleNode : UpdateMethod {
                 [Test]
                 public void Returns_success_if_a_child_task_returns_success () {
