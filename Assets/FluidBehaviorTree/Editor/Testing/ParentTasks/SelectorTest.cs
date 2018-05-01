@@ -2,6 +2,7 @@
 using Adnc.FluidBT.Tasks;
 using NSubstitute;
 using System.Collections.Generic;
+using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
@@ -12,6 +13,19 @@ namespace Adnc.FluidBT.Testing {
             [SetUp]
             public void SetSelector () {
                 _selector = new Selector();
+            }
+
+            public void CheckUpdateCalls (List<int> updateCalls) {
+                for (var i = 0; i < updateCalls.Count; i++) {
+                    var child = _selector.children[i];
+                    child.Received(updateCalls[i]).Update();
+                }
+            }
+
+            public class NoNodes : UpdateMethod {
+                public void Returns_success () {
+                    Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                }
             }
 
             public class SingleNode : UpdateMethod {
@@ -54,10 +68,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 1, 0};
-                    for (var i = 0; i < updateCalls.Count; i++) {
-                        var child = _selector.children[i];
-                        child.Received(updateCalls[i]).Update();
-                    }
+                    CheckUpdateCalls(updateCalls);
                 }
                 
                 [Test]
@@ -72,10 +83,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 2};
-                    for (var i = 0; i < updateCalls.Count; i++) {
-                        var child = _selector.children[i];
-                        child.Received(updateCalls[i]).Update();
-                    }
+                    CheckUpdateCalls(updateCalls);
                 }
 
                 [Test]
@@ -103,15 +111,120 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 1, 0};
-                    for (var i = 0; i < updateCalls.Count; i++) {
-                        var child = _selector.children[i];
-                        child.Received(updateCalls[i]).Update();
-                    }
+                    CheckUpdateCalls(updateCalls);
                 }
             }
 
             public class ConditionalAbortSelf : UpdateMethod {
+                public ITask childFailure;
+                public ITask childContinue;
+                
+                [SetUp]
+                public void CreateChildren () {
+                    _selector.AbortType = AbortType.Self;
+
+                    childFailure = A.TaskStub()
+                        .WithAbortConditionSelf(true)
+                        .WithUpdateStatus(TaskStatus.Failure)
+                        .Build();
+                    
+                    childContinue = A.TaskStub()
+                        .WithUpdateStatus(TaskStatus.Continue)
+                        .Build();
+                }
+                
+                [Test]
                 public void Revaultes_first_condition_node_when_it_goes_from_failure_to_success () {
+                    _selector.AddChild(childFailure);
+                    _selector.AddChild(childContinue);
+
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+                    _selector.Update();
+
+                    var updateCalls = new List<int> {3, 1};
+                    CheckUpdateCalls(updateCalls);
+                }
+
+                [Test]
+                public void Does_not_revaluate_if_no_abort_type () {
+                    _selector.AbortType = AbortType.None;
+                    
+                    _selector.AddChild(childFailure);
+                    _selector.AddChild(childContinue);
+
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+                    _selector.Update();
+
+                    var updateCalls = new List<int> {1, 2};
+                    CheckUpdateCalls(updateCalls);
+                }
+
+                [Test]
+                public void Does_not_crash_if_self_abort_is_null () {
+                    childFailure.GetAbortCondition().ReturnsNull();
+                    
+                    _selector.AddChild(childFailure);
+                    _selector.AddChild(childContinue);
+
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+                    _selector.Update();
+
+                    var updateCalls = new List<int> {1, 2};
+                    CheckUpdateCalls(updateCalls);
+                }
+                
+                [Test]
+                public void Returns_true_when_revaluating_abort_condition () {
+                    _selector.AddChild(childFailure);
+                    _selector.AddChild(childContinue);
+
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+
+                    Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                }
+                
+                [Test]
+                public void Triggers_reset_on_abort () {
+                    _selector.AddChild(childFailure);
+                    _selector.AddChild(childContinue);
+
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+                    _selector.Update();
+                    
+                    childFailure.Received(1).Reset();
+                    childContinue.Received(1).Reset();
+                }
+
+                [Test]
+                public void Triggers_end_on_current_task_pointer () {
+                    _selector.AddChild(childFailure);
+                    _selector.AddChild(childContinue);
+
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+                    _selector.Update();
+                    
+                    childContinue.Received(1).End();
+                }
+
+                [Test]
+                public void Returns_failure_if_nested_condition_is_followed_by_failure_task () {
+                    var nestedSequence = new Sequence()
+                        .AddChild(childFailure)
+                        .AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build());
+                    
+                    _selector.AddChild(nestedSequence);
+                    _selector.AddChild(childContinue);
+                    
+                    _selector.Update();
+                    childFailure.Update().Returns(TaskStatus.Success);
+                    
+                    Assert.AreEqual(TaskStatus.Continue, _selector.Update());
                 }
             }
         }
