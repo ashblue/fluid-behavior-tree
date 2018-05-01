@@ -10,10 +10,6 @@ namespace Adnc.FluidBT.TaskParents {
             }
 
             var child = children[0];
-            if (!child.Enabled) {
-                return TaskStatus.Success;
-            }
-
             return child.Update();
         }
     }

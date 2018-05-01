@@ -8,7 +8,7 @@ namespace Adnc.FluidBT.TaskParents {
         public List<ITask> AbortLowerPriorities { get; } = new List<ITask>();
 
         public override ITaskParent AddChild (ITask child) {
-            if (children.Count == 0) {
+            if (children.Count == 0 && child.Enabled) {
                 SelfAbortTask = child.GetAbortCondition();
             }
             

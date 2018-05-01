@@ -23,17 +23,15 @@ namespace Adnc.FluidBT.TaskParents {
             for (var i = ChildIndex; i < children.Count; i++) {
                 var child = children[ChildIndex];
 
-                if (child.Enabled) {
-                    var status = child.Update();
-                    if (status != TaskStatus.Success) {
-                        return status;
-                    }
+                var status = child.Update();
+                if (status != TaskStatus.Success) {
+                    return status;
+                }
 
-                    if (child.IsLowerPriority) {
-                        var abortCondition = child.GetAbortCondition();
-                        if (abortCondition != null) {
-                            AbortLowerPriorities.Add(abortCondition);
-                        }
+                if (child.IsLowerPriority) {
+                    var abortCondition = child.GetAbortCondition();
+                    if (abortCondition != null) {
+                        AbortLowerPriorities.Add(abortCondition);
                     }
                 }
 

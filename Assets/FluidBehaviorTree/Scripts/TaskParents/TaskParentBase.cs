@@ -43,6 +43,10 @@ namespace Adnc.FluidBT.TaskParents {
         }
 
         public virtual ITaskParent AddChild (ITask child) {
+            if (!child.Enabled) {
+                return this;
+            }
+            
             if (children.Count < MaxChildren || MaxChildren < 0) {
                 children.Add(child);
             }

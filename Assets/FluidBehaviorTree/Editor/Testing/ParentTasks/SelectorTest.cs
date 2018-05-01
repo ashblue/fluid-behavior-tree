@@ -109,6 +109,11 @@ namespace Adnc.FluidBT.Testing {
                     }
                 }
             }
+
+            public class ConditionalAbortSelf : UpdateMethod {
+                public void Revaultes_first_condition_node_when_it_goes_from_failure_to_success () {
+                }
+            }
         }
     }
 }

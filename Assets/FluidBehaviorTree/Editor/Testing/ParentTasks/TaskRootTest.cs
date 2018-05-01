@@ -20,15 +20,15 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void It_should_add_a_child () {
-                root.AddChild(Substitute.For<ITask>());
+                root.AddChild(A.TaskStub().Build());
 
                 Assert.AreEqual(1, root.children.Count);
             }
 
             [Test]
             public void It_should_not_allow_two_children () {
-                root.AddChild(Substitute.For<ITask>());
-                root.AddChild(Substitute.For<ITask>());
+                root.AddChild(A.TaskStub().Build());
+                root.AddChild(A.TaskStub().Build());
 
                 Assert.AreEqual(1, root.children.Count);
             }
@@ -64,16 +64,6 @@ namespace Adnc.FluidBT.Testing {
                 root.children.Clear();
 
                 Assert.AreEqual(TaskStatus.Success, root.Update());
-            }
-
-            [Test]
-            public void Does_not_tick_a_disabled_child_node () {
-                task.Enabled.Returns(false);
-                task.Update().Returns(TaskStatus.Success);
-
-                root.Update();
-
-                task.DidNotReceive().Update();
             }
 
             [Test]

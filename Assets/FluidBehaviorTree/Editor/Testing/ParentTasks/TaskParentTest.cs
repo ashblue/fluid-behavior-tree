@@ -28,7 +28,7 @@ namespace Adnc.FluidBT.Testing {
         public class ResetMethod : TaskParentTest {
             [Test]
             public void Runs_reset_on_the_child_task () {
-                var task = Substitute.For<ITask>();
+                var task = A.TaskStub().Build();
                 task.Enabled.Returns(true);
                 taskParent.AddChild(task);
 
@@ -39,8 +39,8 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Runs_reset_on_multiple_child_tasks () {
-                var taskA = Substitute.For<ITask>();
-                var taskB = Substitute.For<ITask>();
+                var taskA = A.TaskStub().Build();
+                var taskB = A.TaskStub().Build();
                 taskParent.AddChild(taskA);
                 taskParent.AddChild(taskB);
 
@@ -80,6 +80,17 @@ namespace Adnc.FluidBT.Testing {
                 taskParent.AddChild(new TaskExample());
 
                 Assert.AreEqual(1, taskParent.children.Count);
+            }
+            
+            [Test]
+            public void Does_not_add_disabled_children () {
+                var child = A.TaskStub()
+                    .WithEnabled(false)
+                    .Build();
+                
+                taskParent.AddChild(child);
+                
+                Assert.AreEqual(0, taskParent.children.Count);
             }
         }
     }

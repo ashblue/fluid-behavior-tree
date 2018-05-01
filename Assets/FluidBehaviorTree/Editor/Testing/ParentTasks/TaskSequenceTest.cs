@@ -22,30 +22,13 @@ namespace Adnc.FluidBT.Testing {
         }
 
         private ITask CreateTaskStub () {
-            var task = Substitute.For<ITask>();
-            task.Enabled.Returns(true);
-            task.Update().Returns(TaskStatus.Success);
+            var task = A.TaskStub().Build();
 
             return task;
         }
 
         public class UpdateMethod : TaskSequenceTest {
             public class UpdateMethodMisc : UpdateMethod {
-                [Test]
-                public void Skips_nodes_marked_disabled () {
-                    _childA.Enabled.Returns(false);
-
-                    _sequence.Update();
-
-                    _sequence.children.ForEach((child) => {
-                        if (child.Enabled) {
-                            child.Received(1).Update();
-                        } else {
-                            child.Received(0).Update();
-                        }
-                    });
-                }
-
                 [Test]
                 public void It_should_run_update_on_all_success_child_tasks () {
                     _sequence.Update();

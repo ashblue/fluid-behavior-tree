@@ -1,5 +1,6 @@
 ﻿using Adnc.FluidBT.Tasks;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskStubBuilder {
@@ -32,6 +33,8 @@ namespace Adnc.FluidBT.Testing {
 
             if (_abortConditionSelf) {
                 task.GetAbortCondition().Returns(task);
+            } else {
+                task.GetAbortCondition().ReturnsNull();
             }
 
             return task;

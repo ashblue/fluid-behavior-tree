@@ -32,6 +32,7 @@ namespace Adnc.FluidBT.Testing {
             [Test]
             public void Trigger_on_all_nodes_with_the_awake_interface () {
                 var node = Substitute.For<INodeAwakeExample>();
+                node.Enabled.Returns(true);
 
                 tree.AddNode(tree.Root, node);
                 tree.Setup();
@@ -42,6 +43,7 @@ namespace Adnc.FluidBT.Testing {
             [Test]
             public void Calling_setup_again_should_not_refire_awake () {
                 var node = Substitute.For<INodeAwakeExample>();
+                node.Enabled.Returns(true);
 
                 tree.AddNode(tree.Root, node);
                 tree.Setup();
@@ -57,6 +59,7 @@ namespace Adnc.FluidBT.Testing {
             [SetUp]
             public void SetDefaultAction () {
                 action = Substitute.For<INodeAwakeExample>();
+                action.Enabled.Returns(true);
             }
 
             public class AddNodeMethodSuccess : AddNodeMethod {
@@ -103,9 +106,7 @@ namespace Adnc.FluidBT.Testing {
 
             [SetUp]
             public void SetDefaultAction () {
-                action = Substitute.For<ITask>();
-                action.Update().Returns(TaskStatus.Success);
-                action.Enabled.Returns(true);
+                action = A.TaskStub().Build();
 
                 tree.Root.AddChild(action);
             }
