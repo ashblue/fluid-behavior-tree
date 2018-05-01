@@ -3,12 +3,7 @@
 namespace Adnc.FluidBT.TaskParents {
     public class Sequence : CompositeBase {
         protected override TaskStatus OnUpdate () {
-            if (AbortType.HasFlag(AbortType.Self)
-                && ChildIndex > 0
-                && SelfAbortTask != null
-                && SelfAbortTask.Update() == TaskStatus.Failure) {
-                children[ChildIndex].End();
-                Reset();
+            if (AbortSelf(TaskStatus.Failure)) {
                 return TaskStatus.Failure;
             }
 

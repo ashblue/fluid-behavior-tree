@@ -28,5 +28,20 @@ namespace Adnc.FluidBT.TaskParents {
 
             base.Reset(hardReset);
         }
+
+        protected bool AbortSelf (TaskStatus requiredStatus) {
+            if (!AbortType.HasFlag(AbortType.Self)
+                || ChildIndex <= 0
+                || SelfAbortTask == null
+                || SelfAbortTask.Update() != requiredStatus) {
+                return false;
+            }
+            
+            children[ChildIndex].End();
+            Reset();
+            
+            return true;
+
+        }
     }
 }

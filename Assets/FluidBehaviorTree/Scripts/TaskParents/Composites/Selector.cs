@@ -3,12 +3,7 @@
 namespace Adnc.FluidBT.TaskParents {
     public class Selector : CompositeBase {
         protected override TaskStatus OnUpdate () {
-            if (AbortType.HasFlag(AbortType.Self)
-                && ChildIndex > 0
-                && SelfAbortTask != null
-                && SelfAbortTask.Update() == TaskStatus.Success) {
-                children[ChildIndex].End();
-                Reset();
+            if (AbortSelf(TaskStatus.Success)) {
                 return Update();
             }
             
