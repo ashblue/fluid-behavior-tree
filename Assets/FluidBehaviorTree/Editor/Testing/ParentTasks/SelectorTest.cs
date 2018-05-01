@@ -15,10 +15,12 @@ namespace Adnc.FluidBT.Testing {
                 _selector = new Selector();
             }
 
-            public void CheckUpdateCalls (List<int> updateCalls) {
+            public void CheckUpdateCalls (ITaskParent selector, List<int> updateCalls) {
                 for (var i = 0; i < updateCalls.Count; i++) {
-                    var child = _selector.children[i];
-                    child.Received(updateCalls[i]).Update();
+                    var child = selector.children[i];
+                    if (updateCalls[i] >= 0) {
+                        child.Received(updateCalls[i]).Update();
+                    }
                 }
             }
 
@@ -62,7 +64,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 1, 0};
-                    CheckUpdateCalls(updateCalls);
+                    CheckUpdateCalls(_selector, updateCalls);
                 }
                 
                 [Test]
@@ -77,7 +79,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 2};
-                    CheckUpdateCalls(updateCalls);
+                    CheckUpdateCalls(_selector, updateCalls);
                 }
 
                 [Test]
@@ -105,7 +107,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 1, 0};
-                    CheckUpdateCalls(updateCalls);
+                    CheckUpdateCalls(_selector, updateCalls);
                 }
             }
 
@@ -137,7 +139,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {3, 1};
-                    CheckUpdateCalls(updateCalls);
+                    CheckUpdateCalls(_selector, updateCalls);
                 }
 
                 [Test]
@@ -152,7 +154,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 2};
-                    CheckUpdateCalls(updateCalls);
+                    CheckUpdateCalls(_selector, updateCalls);
                 }
 
                 [Test]
@@ -167,7 +169,7 @@ namespace Adnc.FluidBT.Testing {
                     _selector.Update();
 
                     var updateCalls = new List<int> {1, 2};
-                    CheckUpdateCalls(updateCalls);
+                    CheckUpdateCalls(_selector, updateCalls);
                 }
                 
                 [Test]
@@ -219,6 +221,62 @@ namespace Adnc.FluidBT.Testing {
                     childFailure.Update().Returns(TaskStatus.Success);
                     
                     Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                }
+            }
+
+            public class ConditionalAbortLowerPrioritySelector {
+                public class AbortTypeSelector : UpdateMethod {
+                    [Test]
+                    public void Revaluates_from_where_a_conditional_abort_goes_from_failure_to_success () {
+                        var sequenceSub = new Sequence();
+                        sequenceSub.AbortType = AbortType.LowerPriority;
+                        
+                        var childFailure = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Failure)
+                            .Build();
+                        sequenceSub.AddChild(childFailure);
+                        sequenceSub.AddChild(A.TaskStub().Build());
+
+                        _selector
+                            .AddChild(sequenceSub)
+                            .AddChild(A.TaskStub().Build());
+
+                        _selector.Update();
+                        childFailure.Update().Returns(TaskStatus.Success);
+                        _selector.Update();
+                        
+                        CheckUpdateCalls(sequenceSub, new List<int>{3, 1});
+                        CheckUpdateCalls(_selector, new List<int>{-1, 1});
+                    }
+                    
+                    [Test]
+                    public void Returns_success_when_a_conditional_abort_goes_from_failure_to_success () {
+                        var sequenceSub = new Sequence();
+                        sequenceSub.AbortType = AbortType.LowerPriority;
+                        
+                        var childFailure = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Failure)
+                            .Build();
+                        sequenceSub.AddChild(childFailure);
+                        sequenceSub.AddChild(A.TaskStub().Build());
+
+                        _selector
+                            .AddChild(sequenceSub)
+                            .AddChild(A.TaskStub().Build());
+
+                        _selector.Update();
+                        childFailure.Update().Returns(TaskStatus.Success);
+                        
+                        Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                    }
+                    
+                    // @TODO Verify nested conditional abort runs from correct starting point (currently tests all children)
+                }
+
+                public class AbortTypeComposite {
+                    // @TODO Add composite abort type tests
                 }
             }
         }
