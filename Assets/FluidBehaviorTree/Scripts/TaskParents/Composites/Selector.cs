@@ -1,9 +1,7 @@
 ﻿using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
-    public class Selector : TaskParentBase {
-        public int ChildIndex { get; private set; }
-
+    public class Selector : CompositeBase {
         protected override TaskStatus OnUpdate () {
             for (var i = ChildIndex; i < children.Count; i++) {
                 var child = children[ChildIndex];

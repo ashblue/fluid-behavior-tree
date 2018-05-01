@@ -1,6 +1,7 @@
 ﻿using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
 using NSubstitute;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
@@ -38,56 +39,75 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
 
-            public class TwoNodes : UpdateMethod {
-                // @TODO Break off into a stops on continue test
+            public class MultipleNodes : UpdateMethod {
                 [Test]
-                public void Reruns_the_same_node_if_it_returns_continue () {
-                    var selector = new Selector();
-
-                    var childSuccess = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
-                    selector.AddChild(childSuccess);
+                public void Stops_on_continue () {
+                    var childFailure = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
+                    _selector.AddChild(childFailure);
 
                     var childContinue = A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build();
-                    selector.AddChild(childContinue);
+                    _selector.AddChild(childContinue);
+                    
+                    var childSuccess = A.TaskStub().Build();
+                    _selector.AddChild(childSuccess);
 
-                    selector.Update();
+                    _selector.Update();
 
-                    // @TODO Check child index instead
-                    childSuccess.Received(1).Update();
-                    childContinue.Received(1).Update();
+                    var updateCalls = new List<int> {1, 1, 0};
+                    for (var i = 0; i < updateCalls.Count; i++) {
+                        var child = _selector.children[i];
+                        child.Received(updateCalls[i]).Update();
+                    }
+                }
+                
+                [Test]
+                public void Reruns_the_same_node_if_it_returns_continue () {
+                    var childFailure = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
+                    _selector.AddChild(childFailure);
 
-                    selector.Update();
+                    var childContinue = A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build();
+                    _selector.AddChild(childContinue);
 
-                    childSuccess.Received(1).Update();
-                    childContinue.Received(2).Update();
+                    _selector.Update();
+                    _selector.Update();
+
+                    var updateCalls = new List<int> {1, 2};
+                    for (var i = 0; i < updateCalls.Count; i++) {
+                        var child = _selector.children[i];
+                        child.Received(updateCalls[i]).Update();
+                    }
                 }
 
-                public void Stops_on_continue () {
-
-                }
-
+                [Test]
                 public void Returns_failure_if_all_return_failure () {
+                    var childA = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
+                    _selector.AddChild(childA);
+                    
+                    var childB = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
+                    _selector.AddChild(childB);
 
+                    Assert.AreEqual(TaskStatus.Failure, _selector.Update());
                 }
 
-                public void Only_runs_first_node_if_success () {
+                [Test]
+                public void Stops_on_first_success_node () {
+                    var childFailure = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
+                    _selector.AddChild(childFailure);
 
+                    var childSuccessA = A.TaskStub().Build();
+                    _selector.AddChild(childSuccessA);
+                    
+                    var childSuccessB = A.TaskStub().Build();
+                    _selector.AddChild(childSuccessB);
+
+                    _selector.Update();
+
+                    var updateCalls = new List<int> {1, 1, 0};
+                    for (var i = 0; i < updateCalls.Count; i++) {
+                        var child = _selector.children[i];
+                        child.Received(updateCalls[i]).Update();
+                    }
                 }
-
-                public void Runs_all_nodes_on_success () {
-                }
-            }
-        }
-
-        public class EndMethod {
-            public void Calls_end_on_current_child_node () {
-
-            }
-        }
-
-        public class ResetMethod {
-            public void Sets_child_index_to_zero () {
-
             }
         }
     }

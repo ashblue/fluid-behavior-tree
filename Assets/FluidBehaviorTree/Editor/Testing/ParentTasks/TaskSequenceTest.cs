@@ -427,19 +427,6 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
         }
-
-        public class ResetMethod : TaskSequenceTest {
-            [Test]
-            public void Resets_ticking_of_child_nodes () {
-                _childB.Update().Returns(TaskStatus.Continue);
-
-                _sequence.Update();
-                _sequence.Reset();
-                _sequence.Update();
-
-                _sequence.children.ForEach((c) => c.Received(2).Update());
-            }
-        }
     }
 }
 
