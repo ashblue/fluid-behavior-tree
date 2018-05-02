@@ -209,7 +209,7 @@ namespace Adnc.FluidBT.Testing {
                 }
 
                 [Test]
-                public void Returns_failure_if_nested_condition_is_followed_by_failure_task () {
+                public void Returns_continue_if_nested_sequence_condition_is_followed_by_failure_task () {
                     var nestedSequence = new Sequence()
                         .AddChild(childFailure)
                         .AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build());
