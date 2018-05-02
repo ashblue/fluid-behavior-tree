@@ -8,7 +8,7 @@ namespace Adnc.FluidBT.TaskParents {
             }
 
             foreach (var abort in AbortLowerPriorities) {
-                if (abort.Update() != TaskStatus.Failure) continue;
+                if (abort.GetAbortStatus() != TaskStatus.Failure) continue;
                 children[ChildIndex].End();
                 Reset();
                 return TaskStatus.Failure;

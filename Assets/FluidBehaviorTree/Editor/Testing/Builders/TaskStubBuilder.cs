@@ -30,6 +30,7 @@ namespace Adnc.FluidBT.Testing {
             var task = Substitute.For<ITask>();
             task.Enabled.Returns(_enabled);
             task.Update().Returns(_status);
+            task.GetAbortStatus().Returns(i => task.Update());
 
             if (_abortConditionSelf) {
                 task.GetAbortCondition().Returns(task);

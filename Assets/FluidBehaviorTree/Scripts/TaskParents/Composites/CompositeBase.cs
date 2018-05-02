@@ -33,7 +33,7 @@ namespace Adnc.FluidBT.TaskParents {
             if (!AbortType.HasFlag(AbortType.Self)
                 || ChildIndex <= 0
                 || SelfAbortTask == null
-                || SelfAbortTask.Update() != requiredStatus) {
+                || SelfAbortTask.GetAbortStatus() != requiredStatus) {
                 return false;
             }
             

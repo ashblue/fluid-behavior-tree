@@ -226,6 +226,120 @@ namespace Adnc.FluidBT.Testing {
 
                     Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
                 }
+                
+                public class WithSelector : UpdateMethod {
+                    [Test]
+                    public void Triggers_failure_on_revaluation () {
+                        var childContinue = A.TaskStub()
+                            .WithUpdateStatus(TaskStatus.Continue)
+                            .Build();
+                        
+                        var childCondition = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Success)
+                            .Build();
+
+                        var selector = new Selector {AbortType = AbortType.LowerPriority}
+                            .AddChild(childCondition);
+                        
+                        _sequence.AddChild(selector)
+                            .AddChild(childContinue);
+                        
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+
+                        childCondition.Update().Returns(TaskStatus.Failure);
+                        
+                        Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                    }
+
+                    [Test]
+                    public void Triggers_failure_on_revaluation_of_2nd_child () {
+                        var childContinue = A.TaskStub()
+                            .WithUpdateStatus(TaskStatus.Continue)
+                            .Build();
+                        
+                        var childCondition = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Success)
+                            .Build();
+
+                        var selector = new Selector {AbortType = AbortType.LowerPriority}
+                            .AddChild(childCondition);
+                        
+                        _sequence
+                            .AddChild(A.TaskStub().Build())
+                            .AddChild(selector)
+                            .AddChild(childContinue);
+                        
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+
+                        childCondition.Update().Returns(TaskStatus.Failure);
+                        
+                        Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                    }
+
+                    [Test]
+                    public void Triggers_continue_on_revaluation_with_2nd_selector_condition_as_success () {
+                        var childContinue = A.TaskStub()
+                            .WithUpdateStatus(TaskStatus.Continue)
+                            .Build();
+                        
+                        var childConditionA = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Success)
+                            .Build();
+                        
+                        var childConditionB = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Success)
+                            .Build();
+
+                        var selector = new Selector {AbortType = AbortType.LowerPriority}
+                            .AddChild(childConditionA)
+                            .AddChild(childConditionB);
+                        
+                        _sequence
+                            .AddChild(selector)
+                            .AddChild(childContinue);
+                        
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+
+                        childConditionA.Update().Returns(TaskStatus.Failure);
+                        
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+                    }
+                    
+                    [Test]
+                    public void Triggers_failure_on_revaluation_with_2nd_condition () {
+                        var childContinue = A.TaskStub()
+                            .WithUpdateStatus(TaskStatus.Continue)
+                            .Build();
+                        
+                        var childConditionA = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Failure)
+                            .Build();
+                        
+                        var childConditionB = A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Success)
+                            .Build();
+
+                        var selector = new Selector {AbortType = AbortType.LowerPriority}
+                            .AddChild(childConditionA)
+                            .AddChild(childConditionB);
+                        
+                        _sequence
+                            .AddChild(selector)
+                            .AddChild(childContinue);
+                        
+                        Assert.AreEqual(TaskStatus.Continue, _sequence.Update());
+
+                        childConditionB.Update().Returns(TaskStatus.Failure);
+                        
+                        Assert.AreEqual(TaskStatus.Failure, _sequence.Update());
+                    }
+                }
             }
 
             public class WhenAbortSelf : UpdateMethod {

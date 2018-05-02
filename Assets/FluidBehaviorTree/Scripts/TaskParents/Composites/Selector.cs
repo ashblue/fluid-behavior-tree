@@ -8,10 +8,10 @@ namespace Adnc.FluidBT.TaskParents {
             }
             
             foreach (var abort in AbortLowerPriorities) {
-                if (abort.Update() != TaskStatus.Success) continue;
+                if (abort.GetAbortStatus() != TaskStatus.Success) continue;
                 children[ChildIndex].End();
                 Reset();
-                // @TODO Should use the abort's index to figure out what to revaluate
+                // @TODO Should use the abort's index to figure out what to revaluate (should not run entire branch)
                 return Update();
             }
             
@@ -34,6 +34,24 @@ namespace Adnc.FluidBT.TaskParents {
                 }
 
                 ChildIndex++;
+            }
+
+            return TaskStatus.Failure;
+        }
+
+        public override ITask GetAbortCondition () {
+            return this;
+        }
+
+        // @TODO Cache the abort children on first run since they will never change
+        public override TaskStatus GetAbortStatus () {
+            foreach (var child in children) {
+                var abort = child.GetAbortCondition();
+                if (abort == null) continue;
+
+                if (abort.GetAbortStatus() == TaskStatus.Success) {
+                    return TaskStatus.Success;
+                }
             }
 
             return TaskStatus.Failure;

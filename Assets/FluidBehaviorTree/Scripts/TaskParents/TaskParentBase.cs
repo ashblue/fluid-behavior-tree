@@ -23,8 +23,7 @@ namespace Adnc.FluidBT.TaskParents {
             return OnUpdate();
         }
 
-        // @TODO Should allow returning multiple conditions (for selectors)
-        public ITask GetAbortCondition () {
+        public virtual ITask GetAbortCondition () {
             if (children.Count > 0) {
                 return children[0].GetAbortCondition();
             }
@@ -57,6 +56,10 @@ namespace Adnc.FluidBT.TaskParents {
             }
 
             return this;
+        }
+
+        public virtual TaskStatus GetAbortStatus () {
+            throw new System.NotImplementedException();
         }
     }
 }

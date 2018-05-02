@@ -44,6 +44,10 @@
             }
         }
 
+        public TaskStatus GetAbortStatus () {
+            return Update();
+        }
+
         public void End () {
             Exit();
         }
