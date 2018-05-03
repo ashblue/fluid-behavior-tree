@@ -1,17 +1,31 @@
-﻿using Adnc.FluidBT.Tasks;
+﻿using System.Collections.Generic;
+using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.TaskParents {
     public class Selector : CompositeBase {
+        List<int> _lowerPriorityIndices = new List<int>();
+
         protected override TaskStatus OnUpdate () {
+            // @TODO Consider abort self being able to revaluate any immediate child condition that has already been run
             if (AbortSelf(TaskStatus.Success)) {
                 return Update();
             }
-            
+
             foreach (var abort in AbortLowerPriorities) {
                 if (abort.GetAbortStatus() != TaskStatus.Success) continue;
                 children[ChildIndex].End();
+
+                var abortIndex = AbortLowerPriorities.IndexOf(abort);
+                var restoreIndex = _lowerPriorityIndices[abortIndex];
+                var restoreAborts = AbortLowerPriorities.GetRange(0, abortIndex);
+                var restoreAbortIndices = _lowerPriorityIndices.GetRange(0, abortIndex);
+
                 Reset();
-                // @TODO Should use the abort's index to figure out what to revaluate (should not run entire branch)
+
+                ChildIndex = restoreIndex;
+                AbortLowerPriorities = restoreAborts;
+                _lowerPriorityIndices = restoreAbortIndices;
+
                 return Update();
             }
             
@@ -28,8 +42,8 @@ namespace Adnc.FluidBT.TaskParents {
                 if (child.IsLowerPriority) {
                     var abortCondition = child.GetAbortCondition();
                     if (abortCondition != null) {
-                        // @TODO Abort must include the current child index
                         AbortLowerPriorities.Add(abortCondition);
+                        _lowerPriorityIndices.Add(i);
                     }
                 }
 
@@ -41,6 +55,12 @@ namespace Adnc.FluidBT.TaskParents {
 
         public override ITask GetAbortCondition () {
             return this;
+        }
+
+        public override void Reset (bool hardReset = false) {
+            _lowerPriorityIndices.Clear();
+
+            base.Reset(hardReset);
         }
 
         // @TODO Cache the abort children on first run since they will never change

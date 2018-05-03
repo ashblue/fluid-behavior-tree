@@ -225,57 +225,90 @@ namespace Adnc.FluidBT.Testing {
             }
 
             public class ConditionalAbortLowerPrioritySelector {
-                public class AbortTypeSelector : UpdateMethod {
-                    [Test]
-                    public void Revaluates_from_where_a_conditional_abort_goes_from_failure_to_success () {
-                        var sequenceSub = new Sequence();
+                public class AbortTypeSequence : UpdateMethod {
+                    private Sequence sequenceSub;
+                    private ITask childFailure;
+                    private ITask endTask;
+
+                    [SetUp]
+                    public void SetDefaults () {
+                        sequenceSub = new Sequence();
                         sequenceSub.AbortType = AbortType.LowerPriority;
-                        
-                        var childFailure = A.TaskStub()
+
+                        childFailure = A.TaskStub()
                             .WithAbortConditionSelf(true)
                             .WithUpdateStatus(TaskStatus.Failure)
                             .Build();
                         sequenceSub.AddChild(childFailure);
                         sequenceSub.AddChild(A.TaskStub().Build());
 
+                        endTask = A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build();
+                    }
+
+                    [Test]
+                    public void Revaluates_from_where_a_conditional_abort_goes_from_failure_to_success () {
                         _selector
                             .AddChild(sequenceSub)
-                            .AddChild(A.TaskStub().Build());
+                            .AddChild(endTask);
 
                         _selector.Update();
                         childFailure.Update().Returns(TaskStatus.Success);
                         _selector.Update();
-                        
+
                         CheckUpdateCalls(sequenceSub, new List<int>{3, 1});
                         CheckUpdateCalls(_selector, new List<int>{-1, 1});
                     }
                     
                     [Test]
                     public void Returns_success_when_a_conditional_abort_goes_from_failure_to_success () {
-                        var sequenceSub = new Sequence();
-                        sequenceSub.AbortType = AbortType.LowerPriority;
-                        
-                        var childFailure = A.TaskStub()
-                            .WithAbortConditionSelf(true)
-                            .WithUpdateStatus(TaskStatus.Failure)
-                            .Build();
-                        sequenceSub.AddChild(childFailure);
-                        sequenceSub.AddChild(A.TaskStub().Build());
-
                         _selector
                             .AddChild(sequenceSub)
-                            .AddChild(A.TaskStub().Build());
+                            .AddChild(endTask);
+
+                        Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                        childFailure.Update().Returns(TaskStatus.Success);
+                        Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                    }
+
+                    [Test]
+                    public void Begins_revaluation_from_origin_of_the_conditional_abort () {
+                        _selector
+                            .AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build())
+                            .AddChild(sequenceSub)
+                            .AddChild(endTask);
 
                         _selector.Update();
                         childFailure.Update().Returns(TaskStatus.Success);
-                        
-                        Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                        _selector.Update();
+
+                        CheckUpdateCalls(sequenceSub, new List<int>{3, 1});
+                        CheckUpdateCalls(_selector, new List<int>{1, -1, 1});
                     }
-                    
-                    // @TODO Verify nested conditional abort runs from correct starting point (currently tests all children)
+
+                    [Test]
+                    public void Keeps_conditional_aborts_before_the_revaluated_abort () {
+                        var failSequence = new Sequence();
+                        failSequence.AbortType = AbortType.LowerPriority;
+                        failSequence.AddChild(A.TaskStub()
+                            .WithAbortConditionSelf(true)
+                            .WithUpdateStatus(TaskStatus.Failure)
+                            .Build());
+
+                        _selector
+                            .AddChild(failSequence)
+                            .AddChild(sequenceSub)
+                            .AddChild(endTask);
+
+                        _selector.Update();
+                        childFailure.Update().Returns(TaskStatus.Success);
+                        _selector.Update();
+
+                        Assert.AreEqual(1, _selector.AbortLowerPriorities.Count);
+                        Assert.IsTrue(_selector.AbortLowerPriorities.Contains(failSequence.children[0]));
+                    }
                 }
 
-                public class AbortTypeComposite {
+                public class AbortTypeSelector {
                     // @TODO Add composite abort type tests
                 }
             }

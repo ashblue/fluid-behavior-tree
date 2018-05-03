@@ -5,7 +5,7 @@ namespace Adnc.FluidBT.TaskParents {
     public abstract class CompositeBase : TaskParentBase {
         public ITask SelfAbortTask { get; protected set; }
         public int ChildIndex { get; protected set; }
-        public List<ITask> AbortLowerPriorities { get; } = new List<ITask>();
+        public List<ITask> AbortLowerPriorities { get; protected set; } = new List<ITask>();
 
         public override ITaskParent AddChild (ITask child) {
             if (children.Count == 0 && child.Enabled) {
