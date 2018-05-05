@@ -124,5 +124,62 @@ namespace Adnc.FluidBT.Testing {
                 }
             }
         }
+
+        public class EndMethod {
+            private TaskExample task;
+
+            [SetUp]
+            public void CreateTask () {
+                task = new TaskExample();
+            }
+
+            [Test]
+            public void Does_not_call_exit_if_not_run () {
+                task.End();
+
+                Assert.AreEqual(0, task.ExitCount);
+            }
+
+            [Test]
+            public void Does_not_call_exit_if_last_status_was_success () {
+                task.status = TaskStatus.Success;
+
+                task.Update();
+                task.End();
+
+                Assert.AreEqual(1, task.ExitCount);
+            }
+
+            [Test]
+            public void Does_not_call_exit_if_last_status_was_failure () {
+                task.status = TaskStatus.Failure;
+
+                task.Update();
+                task.End();
+
+                Assert.AreEqual(1, task.ExitCount);
+            }
+
+            [Test]
+            public void Calls_exit_if_last_status_was_continue () {
+                task.status = TaskStatus.Continue;
+
+                task.Update();
+                task.End();
+
+                Assert.AreEqual(1, task.ExitCount);
+            }
+
+            [Test]
+            public void Reset_prevents_exit_from_being_called_when_it_should () {
+                task.status = TaskStatus.Continue;
+
+                task.Update();
+                task.Reset();
+                task.End();
+
+                Assert.AreEqual(0, task.ExitCount);
+            }
+        }
     }
 }

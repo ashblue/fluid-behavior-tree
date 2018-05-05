@@ -2,8 +2,11 @@
     public abstract class TaskBase : ITask {
         private bool _init;
         private bool _start;
+        private bool _exit;
         
         public bool Enabled { get; set; } = true;
+
+        public TaskStatus LastStatus { get; private set; }
 
         public bool IsLowerPriority { get; } = false;
 
@@ -16,9 +19,11 @@
             if (!_start) {
                 Start();
                 _start = true;
+                _exit = true;
             }
 
             var status = GetUpdate();
+            LastStatus = status;
 
             // Soft reset since the node has completed
             if (status != TaskStatus.Continue) {
@@ -38,6 +43,7 @@
         /// <param name="hardReset">Used to wipe the node back to its original state. Meant for pooling.</param>
         public void Reset (bool hardReset = false) {
             _start = false;
+            _exit = false;
 
             if (hardReset) {
                 _init = false;
@@ -70,8 +76,15 @@
         protected virtual void OnInit () {
         }
 
+        /// <summary>
+        /// Exit can only be called if the exit bool has been activated (to safeguard against End() usage)
+        /// </summary>
         private void Exit () {
-            OnExit();
+            if (_exit) {
+                OnExit();
+            }
+
+            _exit = false;
         }
 
         protected virtual void OnExit () {

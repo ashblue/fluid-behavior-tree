@@ -6,6 +6,7 @@ namespace Adnc.FluidBT.TaskParents {
         private bool _enabled = true;
         
         public AbortType AbortType { get; set; } = AbortType.None;
+        public TaskStatus LastStatus { get; private set; }
 
         public bool Enabled {
             get { return children.Count != 0 && _enabled; }
@@ -20,14 +21,13 @@ namespace Adnc.FluidBT.TaskParents {
         public bool ValidAbortCondition { get; } = false;
 
         public TaskStatus Update () {
-            return OnUpdate();
+            var status = OnUpdate();
+            LastStatus = status;
+
+            return status;
         }
 
         public virtual ITask GetAbortCondition () {
-            if (children.Count > 0) {
-                return children[0].GetAbortCondition();
-            }
-
             return null;
         }
 

@@ -41,5 +41,7 @@
         /// </summary>
         /// <returns></returns>
         TaskStatus GetAbortStatus ();
+
+        TaskStatus LastStatus { get; }
     }
 }

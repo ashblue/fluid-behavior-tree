@@ -34,5 +34,13 @@ namespace Adnc.FluidBT.TaskParents {
 
             return TaskStatus.Success;
         }
+
+        public override ITask GetAbortCondition () {
+            if (children.Count > 0) {
+                return children[0].GetAbortCondition();
+            }
+
+            return null;
+        }
     }
 }
