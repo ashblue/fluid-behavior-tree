@@ -308,8 +308,260 @@ namespace Adnc.FluidBT.Testing {
                     }
                 }
 
-                public class AbortTypeSelector {
-                    // @TODO Add composite abort type tests
+                public class AbortTypeSelector : UpdateMethod {
+                    public class WhenAbortingFromFailureToSuccess : UpdateMethod {
+                        private Selector selectorSub;
+                        private ITask conditionAbort;
+
+                        [SetUp]
+                        public void Build_tree () {
+                            selectorSub = new Selector();
+                            selectorSub.AbortType = AbortType.LowerPriority;
+
+                            conditionAbort = A.TaskStub()
+                                .WithAbortConditionSelf(true)
+                                .WithUpdateStatus(TaskStatus.Failure)
+                                .Build();
+
+                            var actionContinue = A.TaskStub()
+                                .WithUpdateStatus(TaskStatus.Continue)
+                                .Build();
+
+                            _selector
+                                .AddChild(selectorSub
+                                    .AddChild(conditionAbort))
+                                .AddChild(actionContinue);
+                        }
+
+                        [Test]
+                        public void First_call_should_return_continue () {
+                            Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Revaluates_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbort.Update().Returns(TaskStatus.Success);
+                            _selector.Update();
+
+                            CheckUpdateCalls(_selector, new List<int> { -1, 1 });
+                            CheckUpdateCalls(selectorSub, new List<int> { 3 });
+                        }
+
+                        [Test]
+                        public void Returns_success_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbort.Update().Returns(TaskStatus.Success);
+                            Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                        }
+                    }
+
+                    public class WhenAbortingWithMultipleSelectorConditions : UpdateMethod {
+                        private Selector selectorSub;
+                        private ITask conditionAbortA;
+                        private ITask conditionAbortB;
+
+                        [SetUp]
+                        public void Build_tree () {
+                            selectorSub = new Selector();
+                            selectorSub.AbortType = AbortType.LowerPriority;
+
+                            conditionAbortA = A.TaskStub()
+                                .WithAbortConditionSelf(true)
+                                .WithUpdateStatus(TaskStatus.Failure)
+                                .Build();
+
+                            conditionAbortB = A.TaskStub()
+                                .WithAbortConditionSelf(true)
+                                .WithUpdateStatus(TaskStatus.Failure)
+                                .Build();
+
+                            var actionContinue = A.TaskStub()
+                                .WithUpdateStatus(TaskStatus.Continue)
+                                .Build();
+
+                            _selector
+                                .AddChild(selectorSub
+                                    .AddChild(conditionAbortA)
+                                    .AddChild(conditionAbortB))
+                                .AddChild(actionContinue);
+                        }
+
+                        [Test]
+                        public void First_call_should_return_continue () {
+                            Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Revaluates_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbortA.Update().Returns(TaskStatus.Success);
+                            _selector.Update();
+
+                            CheckUpdateCalls(_selector, new List<int> { -1, 1 });
+                            CheckUpdateCalls(selectorSub, new List<int> { 3, 1 });
+                        }
+
+                        [Test]
+                        public void Revaluates_both_conditions_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbortB.Update().Returns(TaskStatus.Success);
+                            _selector.Update();
+
+                            // @NOTE Must re-run the entire selector since it only detects that something changed in it (could be more optimized)
+                            CheckUpdateCalls(_selector, new List<int> { -1, 1 });
+                            CheckUpdateCalls(selectorSub, new List<int> { 3, 3 });
+                        }
+
+                        [Test]
+                        public void Returns_success_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbortA.Update().Returns(TaskStatus.Success);
+
+                            Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Returns_success_when_last_abort_goes_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbortB.Update().Returns(TaskStatus.Success);
+
+                            Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                        }
+                    }
+
+                    public class WhenAbortsHaveSiblings : UpdateMethod {
+                        private Selector selectorSub;
+                        private Sequence selectorSequenceSub;
+                        private ITask conditionAbortA;
+                        private ITask conditionAbortASibling;
+                        private ITask conditionAbortB;
+
+                        [SetUp]
+                        public void Build_tree () {
+                            selectorSub = new Selector();
+                            selectorSub.AbortType = AbortType.LowerPriority;
+
+                            selectorSequenceSub = new Sequence();
+
+                            conditionAbortA = A.TaskStub()
+                                .WithAbortConditionSelf(true)
+                                .WithUpdateStatus(TaskStatus.Failure)
+                                .Build();
+
+                            conditionAbortB = A.TaskStub()
+                                .WithAbortConditionSelf(true)
+                                .WithUpdateStatus(TaskStatus.Failure)
+                                .Build();
+
+                            conditionAbortASibling = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
+
+                            var actionContinue = A.TaskStub()
+                                .WithUpdateStatus(TaskStatus.Continue)
+                                .Build();
+
+                            _selector
+                                .AddChild(selectorSub
+                                    .AddChild(selectorSequenceSub
+                                        .AddChild(conditionAbortA)
+                                        .AddChild(conditionAbortASibling))
+                                    .AddChild(conditionAbortB))
+                                .AddChild(actionContinue);
+                        }
+
+                        [Test]
+                        public void First_call_should_return_continue () {
+                            Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Returns_continue_when_conditional_is_activated_but_sibling_action_returns_failure () {
+                            _selector.Update();
+                            conditionAbortA.Update().Returns(TaskStatus.Success);
+                            Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Revaluates_when_conditional_is_activated_but_sibling_action_returns_failure () {
+                            _selector.Update();
+                            conditionAbortA.Update().Returns(TaskStatus.Success);
+                            _selector.Update();
+
+                            CheckUpdateCalls(_selector, new List<int> { -1, 2 });
+                            CheckUpdateCalls(selectorSub, new List<int> { -1, 2 });
+                            CheckUpdateCalls(selectorSequenceSub, new List<int> { 3, 1 });
+                        }
+
+                        [Test]
+                        public void Returns_success_when_conditional_is_activated_but_sibling_action_returns_success () {
+                            conditionAbortASibling.Update().Returns(TaskStatus.Success);
+
+                            _selector.Update();
+                            conditionAbortA.Update().Returns(TaskStatus.Success);
+                            Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Revaluates_when_conditional_is_activated_but_sibling_action_returns_success () {
+                            conditionAbortASibling.Update().Returns(TaskStatus.Success);
+
+                            _selector.Update();
+                            conditionAbortA.Update().Returns(TaskStatus.Success);
+                            _selector.Update();
+
+                            CheckUpdateCalls(_selector, new List<int> { -1, 1 });
+                            CheckUpdateCalls(selectorSub, new List<int> { -1, 1 });
+                            CheckUpdateCalls(selectorSequenceSub, new List<int> { 3, 1 });
+                        }
+                    }
+
+                    public class WhenAbortIsNotThe1stNode : UpdateMethod {
+                        private Selector selectorSub;
+                        private ITask conditionAbort;
+
+                        [SetUp]
+                        public void Build_tree () {
+                            selectorSub = new Selector();
+                            selectorSub.AbortType = AbortType.LowerPriority;
+
+                            conditionAbort = A.TaskStub()
+                                .WithAbortConditionSelf(true)
+                                .WithUpdateStatus(TaskStatus.Failure)
+                                .Build();
+
+                            var actionContinue = A.TaskStub()
+                                .WithUpdateStatus(TaskStatus.Continue)
+                                .Build();
+
+                            _selector
+                                .AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build())
+                                .AddChild(selectorSub
+                                    .AddChild(conditionAbort))
+                                .AddChild(actionContinue);
+                        }
+
+                        [Test]
+                        public void First_call_should_return_continue () {
+                            Assert.AreEqual(TaskStatus.Continue, _selector.Update());
+                        }
+
+                        [Test]
+                        public void Revaluates_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbort.Update().Returns(TaskStatus.Success);
+                            _selector.Update();
+
+                            CheckUpdateCalls(_selector, new List<int> { 1, -1, 1 });
+                            CheckUpdateCalls(selectorSub, new List<int> { 3 });
+                        }
+
+                        [Test]
+                        public void Returns_success_when_going_from_failure_to_success () {
+                            _selector.Update();
+                            conditionAbort.Update().Returns(TaskStatus.Success);
+                            Assert.AreEqual(TaskStatus.Success, _selector.Update());
+                        }
+                    }
                 }
             }
         }

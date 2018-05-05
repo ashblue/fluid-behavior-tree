@@ -6,7 +6,7 @@ namespace Adnc.FluidBT.TaskParents {
         List<int> _lowerPriorityIndices = new List<int>();
 
         protected override TaskStatus OnUpdate () {
-            // @TODO Consider abort self being able to revaluate any immediate child condition that has already been run
+            // @NOTE Consider abort self being able to revaluate any immediate child condition that has already been run
             if (AbortSelf(TaskStatus.Success)) {
                 return Update();
             }
