@@ -30,22 +30,28 @@ namespace Adnc.FluidBT.TaskParents {
             }
 
             if (successCount == children.Count) {
-                foreach (var child in children) {
-                    child.End();
-                }
-
+                End();
                 return TaskStatus.Success;
             }
 
             if (failureCount > 0) {
-                foreach (var child in children) {
-                    child.End();
-                }
-
+                End();
                 return TaskStatus.Failure;
             }
 
             return TaskStatus.Continue;
+        }
+
+        public override void Reset (bool hardReset = false) {
+            _childStatus.Clear();
+
+            base.Reset(hardReset);
+        }
+
+        public override void End () {
+            foreach (var child in children) {
+                child.End();
+            }
         }
     }
 }

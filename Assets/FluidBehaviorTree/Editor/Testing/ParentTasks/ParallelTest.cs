@@ -5,14 +5,14 @@ using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
     public class ParallelTest {
-        public class UpdateMethod {
-            private Parallel parallel;
+        private Parallel parallel;
 
-            [SetUp]
-            public void SetParallel () {
-                parallel = new Parallel();
-            }
+        [SetUp]
+        public void SetParallel () {
+            parallel = new Parallel();
+        }
 
+        public class UpdateMethod : ParallelTest {
             public class OnSuccess : UpdateMethod {
                 [SetUp]
                 public void CreateTree () {
@@ -117,21 +117,42 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
-        public class EndMethod {
+        public class EndMethod : ParallelTest {
+            [Test]
             public void Ends_all_ongoing_tasks () {
+                parallel
+                    .AddChild(A.TaskStub().Build())
+                    .AddChild(A.TaskStub().Build());
 
-            }
+                parallel.End();
 
-            public void Does_not_end_any_tasks_if_called_before_update () {
-
+                parallel.children.ForEach((child) => child.Received(1).End());
             }
         }
 
-        public class ResetMethod {
+        public class ResetMethod : ParallelTest {
+            [Test]
             public void Does_not_recall_previous_node_status_after_usage () {
+                parallel
+                    .AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build())
+                    .AddChild(A.TaskStub().Build());
+
+                parallel.Update();
+                parallel.Reset();
+                parallel.Update();
+
+                parallel.children.ForEach((child) => child.Received(2).Update());
             }
 
+            [Test]
             public void Does_not_trigger_end_on_children () {
+                parallel
+                    .AddChild(A.TaskStub().Build())
+                    .AddChild(A.TaskStub().Build());
+
+                parallel.Reset();
+
+                parallel.children.ForEach((child) => child.Received(0).End());
             }
         }
     }
