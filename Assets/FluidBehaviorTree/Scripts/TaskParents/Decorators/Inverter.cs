@@ -9,27 +9,50 @@ namespace Adnc.FluidBT.Decorators {
         }
 
         public bool IsLowerPriority { get; } = false;
-        public TaskStatus LastStatus { get; }
+        public TaskStatus LastStatus { get; private set; }
         public ITask child;
 
         public TaskStatus Update () {
-            throw new System.NotImplementedException();
+            if (child == null) {
+                return TaskStatus.Success;
+            }
+
+            var childStatus = child.Update();
+            var status = childStatus;
+
+            switch (childStatus) {
+                case TaskStatus.Success:
+                    status = TaskStatus.Failure;
+                    break;
+                case TaskStatus.Failure:
+                    status = TaskStatus.Success;
+                    break;
+            }
+
+            // @TODO Can be moved to base class
+            LastStatus = status;
+
+            return status;
         }
 
         public ITask GetAbortCondition () {
-            throw new System.NotImplementedException();
+            if (child.GetAbortCondition() != null) {
+                return this;
+            }
+
+            return null;
         }
 
         public void End () {
-            throw new System.NotImplementedException();
+            child.End();
         }
 
         public void Reset (bool hardReset = false) {
-            throw new System.NotImplementedException();
+            child.Reset();
         }
 
         public TaskStatus GetAbortStatus () {
-            throw new System.NotImplementedException();
+            return Update();
         }
     }
 }

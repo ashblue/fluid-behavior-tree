@@ -28,6 +28,14 @@
         ITask GetAbortCondition ();
 
         /// <summary>
+        /// Query this parent task to get the correct corresponding abort type
+        /// Example selector tries all valid conditions until success (or returns failure), while
+        /// sequence returns first item
+        /// </summary>
+        /// <returns></returns>
+        TaskStatus GetAbortStatus ();
+
+        /// <summary>
         /// Forcibly end this task. Firing all necessary completion logic
         /// </summary>
         void End ();
@@ -38,13 +46,5 @@
         /// </summary>
         /// <param name="hardReset"></param>
         void Reset (bool hardReset = false);
-        
-        /// <summary>
-        /// Query this parent task to get the correct corresponding abort type
-        /// Example selector tries all valid conditions until success (or returns failure), while
-        /// sequence returns first item 
-        /// </summary>
-        /// <returns></returns>
-        TaskStatus GetAbortStatus ();
     }
 }
