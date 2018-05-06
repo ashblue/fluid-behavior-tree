@@ -1,18 +1,8 @@
 ﻿using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.Decorators {
-    public class Inverter : ITask {
-        private bool _enabled = true;
-        public bool Enabled {
-            get { return child != null && _enabled; }
-            set { _enabled = value; }
-        }
-
-        public bool IsLowerPriority { get; } = false;
-        public TaskStatus LastStatus { get; private set; }
-        public ITask child;
-
-        public TaskStatus Update () {
+    public class Inverter : DecoratorBase {
+        protected override TaskStatus OnUpdate () {
             if (child == null) {
                 return TaskStatus.Success;
             }
@@ -29,30 +19,7 @@ namespace Adnc.FluidBT.Decorators {
                     break;
             }
 
-            // @TODO Can be moved to base class
-            LastStatus = status;
-
             return status;
-        }
-
-        public ITask GetAbortCondition () {
-            if (child.GetAbortCondition() != null) {
-                return this;
-            }
-
-            return null;
-        }
-
-        public void End () {
-            child.End();
-        }
-
-        public void Reset (bool hardReset = false) {
-            child.Reset();
-        }
-
-        public TaskStatus GetAbortStatus () {
-            return Update();
         }
     }
 }
