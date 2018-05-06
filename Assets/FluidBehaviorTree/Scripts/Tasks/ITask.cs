@@ -9,7 +9,12 @@
         /// Check if this node is a valid lower priority abort
         /// </summary>
         bool IsLowerPriority { get; }
-        
+
+        /// <summary>
+        /// Last status returned by Update
+        /// </summary>
+        TaskStatus LastStatus { get; }
+
         /// <summary>
         /// Triggered every tick
         /// </summary>
@@ -41,7 +46,5 @@
         /// </summary>
         /// <returns></returns>
         TaskStatus GetAbortStatus ();
-
-        TaskStatus LastStatus { get; }
     }
 }
