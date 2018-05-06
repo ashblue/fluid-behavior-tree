@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
 
-namespace Adnc.FluidBT.TaskParents {
+namespace Adnc.FluidBT.TaskParents.Composites {
     public class Selector : CompositeBase {
         List<int> _lowerPriorityIndices = new List<int>();
 

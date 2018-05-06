@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
 
-namespace Adnc.FluidBT.TaskParents {
+namespace Adnc.FluidBT.TaskParents.Composites {
     public abstract class CompositeBase : TaskParentBase {
         public ITask SelfAbortTask { get; protected set; }
         public int ChildIndex { get; protected set; }

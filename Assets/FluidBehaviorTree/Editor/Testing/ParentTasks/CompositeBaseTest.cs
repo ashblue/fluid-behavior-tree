@@ -1,4 +1,5 @@
-﻿using Adnc.FluidBT.TaskParents;
+﻿using Adnc.FluidBT.TaskParents.Composites;
+using Adnc.FluidBT.TaskParents;
 using NSubstitute;
 using NUnit.Framework;
 

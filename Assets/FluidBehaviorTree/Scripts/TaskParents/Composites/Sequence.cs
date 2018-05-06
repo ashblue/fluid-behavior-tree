@@ -1,6 +1,6 @@
 ﻿using Adnc.FluidBT.Tasks;
 
-namespace Adnc.FluidBT.TaskParents {
+namespace Adnc.FluidBT.TaskParents.Composites {
     public class Sequence : CompositeBase {
         protected override TaskStatus OnUpdate () {
             if (AbortSelf(TaskStatus.Failure)) {

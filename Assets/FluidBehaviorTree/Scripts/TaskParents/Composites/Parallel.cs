@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
 
-namespace Adnc.FluidBT.TaskParents {
+namespace Adnc.FluidBT.TaskParents.Composites {
     public class Parallel : CompositeBase {
         private readonly Dictionary<ITask, TaskStatus> _childStatus = new Dictionary<ITask, TaskStatus>();
 
