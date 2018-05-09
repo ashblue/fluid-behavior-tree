@@ -33,7 +33,7 @@ namespace Adnc.FluidBT.Testing {
                 var decorator = new DecoratorExample { child = A.TaskStub().Build() };
                 decorator.child.Enabled.Returns(false);
 
-                Assert.IsTrue(decorator.Enabled);
+                Assert.IsFalse(decorator.Enabled);
             }
 
             [Test]

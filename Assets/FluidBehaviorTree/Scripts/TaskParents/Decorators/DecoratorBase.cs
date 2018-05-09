@@ -6,7 +6,7 @@ namespace Adnc.FluidBT.Decorators {
 
         private bool _enabled = true;
         public bool Enabled {
-            get { return child != null && _enabled; }
+            get { return child != null && child.Enabled && _enabled; }
             set { _enabled = value; }
         }
 
