@@ -1,4 +1,6 @@
-﻿namespace Adnc.FluidBT.Tasks {
+﻿using Adnc.FluidBT.Trees;
+
+namespace Adnc.FluidBT.Tasks {
     public abstract class TaskBase : ITask {
         private bool _init;
         private bool _start;
@@ -9,6 +11,7 @@
         public TaskStatus LastStatus { get; private set; }
 
         public bool IsLowerPriority { get; } = false;
+        public BehaviorTree Owner { get; set; }
 
         public TaskStatus Update () {
             if (!_init) {

@@ -1,4 +1,6 @@
-﻿namespace Adnc.FluidBT.Tasks {
+﻿using Adnc.FluidBT.Trees;
+
+namespace Adnc.FluidBT.Tasks {
     public interface ITask {
         /// <summary>
         /// Is this task enabled or not? Disabled tasks are excluded from the runtime
@@ -9,6 +11,12 @@
         /// Check if this node is a valid lower priority abort
         /// </summary>
         bool IsLowerPriority { get; }
+
+        /// <summary>
+        /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
+        /// GameObject reference
+        /// </summary>
+        BehaviorTree Owner { get; set; }
 
         /// <summary>
         /// Last status returned by Update

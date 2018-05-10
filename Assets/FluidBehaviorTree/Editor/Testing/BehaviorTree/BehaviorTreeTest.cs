@@ -82,6 +82,11 @@ namespace Adnc.FluidBT.Testing {
                 public void Add_child_node_to_nodes () {
                     Assert.IsTrue(tree.nodes.Contains(action));
                 }
+
+                [Test]
+                public void Attaches_a_reference_to_the_behavior_tree () {
+                    action.Received().Owner = tree;
+                }
             }
 
             public class AddNodeMethodError : AddNodeMethod {

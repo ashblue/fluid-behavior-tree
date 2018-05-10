@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Trees;
 
 namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
@@ -18,6 +19,7 @@ namespace Adnc.FluidBT.TaskParents {
         protected virtual int MaxChildren { get; } = -1;
 
         public bool IsLowerPriority => AbortType.HasFlag(AbortType.LowerPriority);
+        public BehaviorTree Owner { get; set; }
         public bool ValidAbortCondition { get; } = false;
 
         public TaskStatus Update () {

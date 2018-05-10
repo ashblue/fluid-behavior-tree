@@ -40,6 +40,7 @@ namespace Adnc.FluidBT.Trees {
 
             parent.AddChild(child);
             nodes.Add(child);
+            child.Owner = this;
 
             var item = child as IEventAwake;
             if (item != null) {

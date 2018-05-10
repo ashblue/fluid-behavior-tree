@@ -1,4 +1,5 @@
 ﻿using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Trees;
 
 namespace Adnc.FluidBT.Decorators {
     public abstract class DecoratorBase : ITask {
@@ -11,6 +12,7 @@ namespace Adnc.FluidBT.Decorators {
         }
 
         public bool IsLowerPriority { get; } = false;
+        public BehaviorTree Owner { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public TaskStatus Update () {

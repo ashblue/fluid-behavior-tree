@@ -1,5 +1,4 @@
 ﻿using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
 using NUnit.Framework;
 
 namespace Adnc.FluidBT.Testing {
