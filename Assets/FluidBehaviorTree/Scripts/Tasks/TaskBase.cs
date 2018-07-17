@@ -10,7 +10,6 @@ namespace Adnc.FluidBT.Tasks {
 
         public TaskStatus LastStatus { get; private set; }
 
-        public bool IsLowerPriority { get; } = false;
         public BehaviorTree Owner { get; set; }
 
         public TaskStatus Update () {
@@ -36,10 +35,6 @@ namespace Adnc.FluidBT.Tasks {
             return status;
         }
 
-        public virtual ITask GetAbortCondition () {
-            return null;
-        }
-
         /// <summary>
         /// Reset the node to be re-used
         /// </summary>
@@ -51,10 +46,6 @@ namespace Adnc.FluidBT.Tasks {
             if (hardReset) {
                 _init = false;
             }
-        }
-
-        public TaskStatus GetAbortStatus () {
-            return Update();
         }
 
         public void End () {

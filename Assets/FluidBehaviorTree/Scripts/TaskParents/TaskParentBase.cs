@@ -6,7 +6,6 @@ namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
         private bool _enabled = true;
         
-        public AbortType AbortType { get; set; } = AbortType.None;
         public TaskStatus LastStatus { get; private set; }
 
         public bool Enabled {
@@ -18,19 +17,13 @@ namespace Adnc.FluidBT.TaskParents {
 
         protected virtual int MaxChildren { get; } = -1;
 
-        public bool IsLowerPriority => AbortType.HasFlag(AbortType.LowerPriority);
         public BehaviorTree Owner { get; set; }
-        public bool ValidAbortCondition { get; } = false;
 
         public TaskStatus Update () {
             var status = OnUpdate();
             LastStatus = status;
 
             return status;
-        }
-
-        public virtual ITask GetAbortCondition () {
-            return null;
         }
 
         public virtual void End () {
@@ -58,10 +51,6 @@ namespace Adnc.FluidBT.TaskParents {
             }
 
             return this;
-        }
-
-        public virtual TaskStatus GetAbortStatus () {
-            throw new System.NotImplementedException();
         }
     }
 }
