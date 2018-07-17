@@ -20,35 +20,14 @@ namespace Adnc.FluidBT.Testing {
 
         public class AddChild : CompositeBaseTest {
             [Test]
-            public void Adds_first_node_to_self_abort_if_condition () {
-                var child = A.TaskStub().WithAbortConditionSelf(true).Build();
-
-                _composite.AbortType = AbortType.Self;
-                _composite.AddChild(child);
-
-                Assert.AreEqual(child, _composite.SelfAbortTask);
-            }
-
-            [Test]
-            public void Does_not_add_first_node_as_self_abort_if_non_condition () {
-                var child = A.TaskStub().Build();
-
-                _composite.AddChild(child);
-
-                Assert.AreEqual(null, _composite.SelfAbortTask);
-            }
-
-            [Test]
             public void Does_not_add_disabled_nodes () {
                 var child = A.TaskStub()
                     .WithEnabled(false)
-                    .WithAbortConditionSelf(true)
                     .Build();
 
-                _composite.AbortType = AbortType.Self;
                 _composite.AddChild(child);
 
-                Assert.AreEqual(null, _composite.SelfAbortTask);
+                Assert.AreEqual(0, _composite.children.Count);
             }
         }
         
@@ -76,25 +55,6 @@ namespace Adnc.FluidBT.Testing {
                 _composite.Reset();
 
                 Assert.AreEqual(0, _composite.ChildIndex);
-            }
-
-            [Test]
-            public void Clears_all_lower_priorities () {
-                _composite.AddChild(A.TaskStub().Build());
-                
-                _composite.Reset();
-                
-                Assert.AreEqual(0, _composite.AbortLowerPriorities.Count);
-            }
-
-            [Test]
-            public void Clears_self_abort_task () {
-                var condition = A.TaskStub().WithAbortConditionSelf(true).Build();
-                _composite.AddChild(condition);
-
-                _composite.Reset();
-                
-                Assert.AreEqual(null, _composite.SelfAbortTask);
             }
         }
     }

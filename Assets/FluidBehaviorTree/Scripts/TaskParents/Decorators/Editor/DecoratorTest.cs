@@ -57,35 +57,6 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
-        public class GetAbortConditionMethod {
-            [Test]
-            public void Returns_itself_as_an_abort_condition_if_child_returns () {
-                var task = A.TaskStub()
-                    .WithAbortConditionSelf(true)
-                    .Build();
-
-                var decorator = new DecoratorExample { child = task };
-
-                Assert.AreEqual(decorator, decorator.GetAbortCondition());
-            }
-
-            [Test]
-            public void Does_not_return_an_abort_condition_if_child_does_not_return () {
-                var decorator = new DecoratorExample { child = A.TaskStub().Build() };
-
-                Assert.AreEqual(null, decorator.GetAbortCondition());
-            }
-        }
-
-        public class GetAbortStatusMethod {
-            [Test]
-            public void Returns_status_from_update () {
-                var decorator = new DecoratorExample { status = TaskStatus.Failure };
-
-                Assert.AreEqual(TaskStatus.Failure, decorator.GetAbortStatus());
-            }
-        }
-
         public class EndMethod {
             [Test]
             public void Calls_end_on_child () {

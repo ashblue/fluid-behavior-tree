@@ -11,7 +11,6 @@ namespace Adnc.FluidBT.Decorators {
             set { _enabled = value; }
         }
 
-        public bool IsLowerPriority { get; } = false;
         public BehaviorTree Owner { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
@@ -23,18 +22,6 @@ namespace Adnc.FluidBT.Decorators {
         }
 
         protected abstract TaskStatus OnUpdate ();
-
-        public ITask GetAbortCondition () {
-            if (child.GetAbortCondition() != null) {
-                return this;
-            }
-
-            return null;
-        }
-
-        public TaskStatus GetAbortStatus () {
-            return Update();
-        }
 
         public void End () {
             child.End();
