@@ -30,14 +30,14 @@ namespace Adnc.FluidBT.Testing {
                 public void Ticks_all_children_at_once () {
                     parallel.Update();
 
-                    parallel.children.ForEach(child => { child.Received(1).Update(); });
+                    parallel.Children.ForEach(child => { child.Received(1).Update(); });
                 }
 
                 [Test]
                 public void Runs_end_on_all_children_when_complete () {
                     parallel.Update();
 
-                    parallel.children.ForEach(child => { child.Received(1).End(); });
+                    parallel.Children.ForEach(child => { child.Received(1).End(); });
                 }
             }
 
@@ -59,7 +59,7 @@ namespace Adnc.FluidBT.Testing {
                     parallel.Update();
                     parallel.Update();
 
-                    parallel.children[0].Received(2).Update();
+                    parallel.Children[0].Received(2).Update();
                 }
 
                 [Test]
@@ -67,13 +67,13 @@ namespace Adnc.FluidBT.Testing {
                     parallel.Update();
                     parallel.Update();
 
-                    parallel.children[1].Received(1).Update();
+                    parallel.Children[1].Received(1).Update();
                 }
 
                 [Test]
                 public void Returns_success_when_continue_changes_to_success () {
                     parallel.Update();
-                    parallel.children[0].Update().Returns(TaskStatus.Success);
+                    parallel.Children[0].Update().Returns(TaskStatus.Success);
                     parallel.Update();
 
                     Assert.AreEqual(TaskStatus.Success, parallel.Update());
@@ -82,10 +82,10 @@ namespace Adnc.FluidBT.Testing {
                 [Test]
                 public void Runs_end_on_all_children_after_changing_to_success () {
                     parallel.Update();
-                    parallel.children[0].Update().Returns(TaskStatus.Success);
+                    parallel.Children[0].Update().Returns(TaskStatus.Success);
                     parallel.Update();
 
-                    parallel.children.ForEach(child => { child.Received(1).End(); });
+                    parallel.Children.ForEach(child => { child.Received(1).End(); });
                 }
             }
 
@@ -106,13 +106,13 @@ namespace Adnc.FluidBT.Testing {
                 public void Runs_failed_tasks_after_the_failed_node () {
                     parallel.Update();
 
-                    parallel.children[1].Received(1).Update();
+                    parallel.Children[1].Received(1).Update();
                 }
 
                 [Test]
                 public void Runs_end_on_all_children_when_complete () {
                     parallel.Update();
-                    parallel.children.ForEach((child) => child.Received(1).End());
+                    parallel.Children.ForEach((child) => child.Received(1).End());
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace Adnc.FluidBT.Testing {
 
                 parallel.End();
 
-                parallel.children.ForEach((child) => child.Received(1).End());
+                parallel.Children.ForEach((child) => child.Received(1).End());
             }
         }
 
@@ -141,7 +141,7 @@ namespace Adnc.FluidBT.Testing {
                 parallel.Reset();
                 parallel.Update();
 
-                parallel.children.ForEach((child) => child.Received(2).Update());
+                parallel.Children.ForEach((child) => child.Received(2).Update());
             }
 
             [Test]
@@ -152,7 +152,7 @@ namespace Adnc.FluidBT.Testing {
 
                 parallel.Reset();
 
-                parallel.children.ForEach((child) => child.Received(0).End());
+                parallel.Children.ForEach((child) => child.Received(0).End());
             }
         }
     }

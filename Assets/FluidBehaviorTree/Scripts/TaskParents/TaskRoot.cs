@@ -5,11 +5,11 @@ namespace Adnc.FluidBT.TaskParents {
         protected override int MaxChildren { get; } = 1;
 
         protected override TaskStatus OnUpdate () {
-            if (children.Count == 0) {
+            if (Children.Count == 0) {
                 return TaskStatus.Success;
             }
 
-            var child = children[0];
+            var child = Children[0];
             return child.Update();
         }
     }

@@ -70,7 +70,7 @@ namespace Adnc.FluidBT.Testing {
 
                 [Test]
                 public void Parent_node_is_added_to_the_child () {
-                    Assert.AreEqual(action, tree.Root.children[0]);
+                    Assert.AreEqual(action, tree.Root.Children[0]);
                 }
 
                 [Test]
@@ -81,11 +81,6 @@ namespace Adnc.FluidBT.Testing {
                 [Test]
                 public void Add_child_node_to_nodes () {
                     Assert.IsTrue(tree.nodes.Contains(action));
-                }
-
-                [Test]
-                public void Attaches_a_reference_to_the_behavior_tree () {
-                    action.Received().Owner = tree;
                 }
             }
 

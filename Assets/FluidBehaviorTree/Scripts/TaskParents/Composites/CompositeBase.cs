@@ -3,8 +3,8 @@
         public int ChildIndex { get; protected set; }
 
         public override void End () {
-            if (ChildIndex < children.Count) {
-                children[ChildIndex].End();
+            if (ChildIndex < Children.Count) {
+                Children[ChildIndex].End();
             }
         }
         

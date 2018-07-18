@@ -27,7 +27,7 @@ namespace Adnc.FluidBT.Testing {
 
                 _composite.AddChild(child);
 
-                Assert.AreEqual(0, _composite.children.Count);
+                Assert.AreEqual(0, _composite.Children.Count);
             }
         }
         

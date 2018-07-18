@@ -1,23 +1,19 @@
 ﻿using System.Collections.Generic;
 using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
-        private bool _enabled = true;
-        
         public TaskStatus LastStatus { get; private set; }
 
-        public bool Enabled {
-            get { return children.Count != 0 && _enabled; }
-            set { _enabled = value; }
-        }
+        public bool Enabled { get; set; } = true;
 
-        public List<ITask> children { get; } = new List<ITask>();
+        public List<ITask> Children { get; } = new List<ITask>();
 
         protected virtual int MaxChildren { get; } = -1;
 
-        public BehaviorTree Owner { get; set; }
+        public GameObject Owner { get; set; }
 
         public TaskStatus Update () {
             var status = OnUpdate();
@@ -35,8 +31,8 @@ namespace Adnc.FluidBT.TaskParents {
         }
 
         public virtual void Reset (bool hardReset = false) {
-            if (children.Count <= 0) return;
-            foreach (var child in children) {
+            if (Children.Count <= 0) return;
+            foreach (var child in Children) {
                 child.Reset(hardReset);
             }
         }
@@ -46,8 +42,8 @@ namespace Adnc.FluidBT.TaskParents {
                 return this;
             }
             
-            if (children.Count < MaxChildren || MaxChildren < 0) {
-                children.Add(child);
+            if (Children.Count < MaxChildren || MaxChildren < 0) {
+                Children.Add(child);
             }
 
             return this;

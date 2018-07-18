@@ -1,5 +1,5 @@
 ﻿using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Decorators {
     public abstract class DecoratorBase : ITask {
@@ -11,7 +11,7 @@ namespace Adnc.FluidBT.Decorators {
             set { _enabled = value; }
         }
 
-        public BehaviorTree Owner { get; set; }
+        public GameObject Owner { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public TaskStatus Update () {

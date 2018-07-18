@@ -9,7 +9,7 @@ namespace Adnc.FluidBT.TaskParents.Composites {
             var successCount = 0;
             var failureCount = 0;
 
-            foreach (var child in children) {
+            foreach (var child in Children) {
                 TaskStatus prevStatus;
                 if (_childStatus.TryGetValue(child, out prevStatus) && prevStatus == TaskStatus.Success) {
                     successCount++;
@@ -29,7 +29,7 @@ namespace Adnc.FluidBT.TaskParents.Composites {
                 }
             }
 
-            if (successCount == children.Count) {
+            if (successCount == Children.Count) {
                 End();
                 return TaskStatus.Success;
             }
@@ -49,7 +49,7 @@ namespace Adnc.FluidBT.TaskParents.Composites {
         }
 
         public override void End () {
-            foreach (var child in children) {
+            foreach (var child in Children) {
                 child.End();
             }
         }
