@@ -18,7 +18,7 @@ namespace Adnc.FluidBT.Testing {
 
             public void CheckUpdateCalls (ITaskParent selector, List<int> updateCalls) {
                 for (var i = 0; i < updateCalls.Count; i++) {
-                    var child = selector.children[i];
+                    var child = selector.Children[i];
                     if (updateCalls[i] >= 0) {
                         child.Received(updateCalls[i]).Update();
                     }

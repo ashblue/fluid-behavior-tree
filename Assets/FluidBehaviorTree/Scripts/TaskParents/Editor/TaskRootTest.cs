@@ -22,7 +22,7 @@ namespace Adnc.FluidBT.Testing {
             public void It_should_add_a_child () {
                 root.AddChild(A.TaskStub().Build());
 
-                Assert.AreEqual(1, root.children.Count);
+                Assert.AreEqual(1, root.Children.Count);
             }
 
             [Test]
@@ -30,7 +30,7 @@ namespace Adnc.FluidBT.Testing {
                 root.AddChild(A.TaskStub().Build());
                 root.AddChild(A.TaskStub().Build());
 
-                Assert.AreEqual(1, root.children.Count);
+                Assert.AreEqual(1, root.Children.Count);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Return_success_if_no_child () {
-                root.children.Clear();
+                root.Children.Clear();
 
                 Assert.AreEqual(TaskStatus.Success, root.Update());
             }

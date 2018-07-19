@@ -68,17 +68,5 @@ namespace Adnc.FluidBT.Testing {
                 task.Received(1).End();
             }
         }
-
-        public class ResetMethod {
-            [Test]
-            public void Runs_reset_on_child () {
-                var task = A.TaskStub().Build();
-                var decorator = new DecoratorExample { child = task };
-
-                decorator.Reset();
-
-                task.Received(1).Reset();
-            }
-        }
     }
 }

@@ -34,7 +34,7 @@ namespace Adnc.FluidBT.Testing {
                 public void It_should_run_update_on_all_success_child_tasks () {
                     _sequence.Update();
 
-                    _sequence.children.ForEach((c) => c.Received(1).Update());
+                    _sequence.Children.ForEach((c) => c.Received(1).Update());
                 }
 
                 [Test]
@@ -42,7 +42,7 @@ namespace Adnc.FluidBT.Testing {
                     _sequence.Update();
                     _sequence.Update();
 
-                    _sequence.children.ForEach((c) => c.Received(1).Update());
+                    _sequence.Children.ForEach((c) => c.Received(1).Update());
                 }
 
                 [Test]
@@ -69,7 +69,7 @@ namespace Adnc.FluidBT.Testing {
             public class ReturnedStatusType : UpdateMethod {
                 [Test]
                 public void Returns_success_if_no_children () {
-                    _sequence.children.Clear();
+                    _sequence.Children.Clear();
 
                     Assert.AreEqual(TaskStatus.Success, _sequence.Update());
                 }

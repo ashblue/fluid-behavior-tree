@@ -1,4 +1,5 @@
 ﻿using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Tasks {
     public interface ITask {
@@ -11,7 +12,12 @@ namespace Adnc.FluidBT.Tasks {
         /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
         /// GameObject reference
         /// </summary>
-        BehaviorTree Owner { get; set; }
+        GameObject Owner { get; set; }
+        
+        /// <summary>
+        /// Tree this node belongs to
+        /// </summary>
+        BehaviorTree ParentTree { get; set; }
 
         /// <summary>
         /// Last status returned by Update

@@ -27,11 +27,6 @@ namespace Adnc.FluidBT.Testing {
 
         public class EnabledProperty : TaskParentTest {
             [Test]
-            public void Returns_disabled_if_no_children () {
-                Assert.IsFalse(taskParent.Enabled);
-            }
-            
-            [Test]
             public void Returns_enabled_if_child () {
                 taskParent.AddChild(A.TaskStub().Build());
                 
@@ -47,43 +42,12 @@ namespace Adnc.FluidBT.Testing {
             }
         }
 
-        public class ResetMethod : TaskParentTest {
-            [Test]
-            public void Runs_reset_on_the_child_task () {
-                var task = A.TaskStub().Build();
-                task.Enabled.Returns(true);
-                taskParent.AddChild(task);
-
-                taskParent.Reset();
-
-                task.Received().Reset();
-            }
-
-            [Test]
-            public void Runs_reset_on_multiple_child_tasks () {
-                var taskA = A.TaskStub().Build();
-                var taskB = A.TaskStub().Build();
-                taskParent.AddChild(taskA);
-                taskParent.AddChild(taskB);
-
-                taskParent.Reset();
-
-                taskA.Received().Reset();
-                taskB.Received().Reset();
-            }
-
-            [Test]
-            public void Does_not_fail_if_child_task_is_missing () {
-                taskParent.Reset();
-            }
-        }
-        
         public class AddChildMethod : TaskParentTest {
             [Test]
             public void Adds_a_child () {
                 taskParent.AddChild(new TaskExample());
                 
-                Assert.AreEqual(1, taskParent.children.Count);
+                Assert.AreEqual(1, taskParent.Children.Count);
             }
             
             [Test]
@@ -91,7 +55,7 @@ namespace Adnc.FluidBT.Testing {
                 taskParent.AddChild(new TaskExample());
                 taskParent.AddChild(new TaskExample());
 
-                Assert.AreEqual(2, taskParent.children.Count);
+                Assert.AreEqual(2, taskParent.Children.Count);
             }
             
             [Test]
@@ -101,7 +65,7 @@ namespace Adnc.FluidBT.Testing {
                 taskParent.AddChild(new TaskExample());
                 taskParent.AddChild(new TaskExample());
 
-                Assert.AreEqual(1, taskParent.children.Count);
+                Assert.AreEqual(1, taskParent.Children.Count);
             }
             
             [Test]
@@ -112,7 +76,7 @@ namespace Adnc.FluidBT.Testing {
                 
                 taskParent.AddChild(child);
                 
-                Assert.AreEqual(0, taskParent.children.Count);
+                Assert.AreEqual(0, taskParent.Children.Count);
             }
         }
     }
