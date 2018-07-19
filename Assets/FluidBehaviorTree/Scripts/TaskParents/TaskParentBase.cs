@@ -2,11 +2,10 @@
 using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Trees;
 using UnityEngine;
-using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
-        public Tree ParentTree { get; set; }
+        public BehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public bool Enabled { get; set; } = true;

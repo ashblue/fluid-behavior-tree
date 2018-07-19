@@ -1,66 +1,55 @@
-﻿using System;
-using System.Collections.Generic;
-using Adnc.FluidBT.TaskParents;
+﻿using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Trees {
     public class BehaviorTree {
-        private bool _setup;
-
+        private readonly GameObject _owner;
+        
+        public int TickCount { get; private set; }
+        
         public TaskRoot Root { get; } = new TaskRoot();
 
-        public ITask Current { get; set; }
+        public BehaviorTree (GameObject owner) {
+            _owner = owner;
+            SyncNodes(Root);
+        }
+        
+        public void Tick () {
+            if (Root.Update() != TaskStatus.Continue) {
+                TickCount++;
+            }
+        }
 
-        public readonly HashSet<object> nodes = new HashSet<object>();
-
-        public readonly List<IEventAwake> nodeAwake = new List<IEventAwake>();
-
-        public BehaviorTree () {
-            Current = Root;
-            nodes.Add(Root);
+        public void Reset () {
+            TickCount++;
         }
 
         public void AddNode (ITaskParent parent, ITask child) {
-            if (parent == null) {
-                throw new ArgumentNullException(nameof(parent));
-            }
-
-            if (child == null) {
-                throw new ArgumentNullException(nameof(child));
-            }
-
-            if (!nodes.Contains(parent)) {
-                throw new ArgumentException("Cannot add a node to a parent that is not in the BT");
-
-            }
-
-            if (nodes.Contains(child)) {
-                throw new ArgumentException("Cannot set a child node that has already been added");
-            }
-
             parent.AddChild(child);
-            nodes.Add(child);
-
-            var item = child as IEventAwake;
-            if (item != null) {
-                nodeAwake.Add(item);
-            }
+            child.ParentTree = this;
+            child.Owner = _owner;
         }
 
-        public void Setup () {
-            if (!_setup) {
-                _setup = true;
-            } else {
-                return;
-            }
+        public void Splice (ITaskParent parent, BehaviorTree tree) {
+            parent.AddChild(tree.Root);
 
-            nodeAwake.ForEach((n) => {
-                n.Awake();
-            });
+            SyncNodes(tree.Root);
         }
 
-        public void Update () {
-            Current.Update();
+        private void SyncNodes (ITaskParent taskParent) {
+            taskParent.Owner = _owner;
+            taskParent.ParentTree = this;
+            
+            foreach (var child in taskParent.Children) {
+                child.Owner = _owner;
+                child.ParentTree = this;
+
+                var parent = child as ITaskParent;
+                if (parent != null) {
+                    SyncNodes(parent);
+                }
+            }
         }
     }
 }

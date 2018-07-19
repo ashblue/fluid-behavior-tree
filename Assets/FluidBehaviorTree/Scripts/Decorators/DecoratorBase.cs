@@ -1,6 +1,6 @@
 ﻿using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Trees;
 using UnityEngine;
-using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.Decorators {
     public abstract class DecoratorBase : ITask {
@@ -13,7 +13,7 @@ namespace Adnc.FluidBT.Decorators {
         }
 
         public GameObject Owner { get; set; }
-        public Tree ParentTree { get; set; }
+        public BehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public TaskStatus Update () {

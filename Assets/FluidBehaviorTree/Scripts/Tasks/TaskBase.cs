@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Tree = Adnc.FluidBT.Trees.Tree;
+﻿using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Tasks {
     public abstract class TaskBase : ITask {
@@ -10,7 +10,7 @@ namespace Adnc.FluidBT.Tasks {
         
         public bool Enabled { get; set; } = true;
         public GameObject Owner { get; set; }
-        public Tree ParentTree { get; set; }
+        public BehaviorTree ParentTree { get; set; }
 
         public TaskStatus LastStatus { get; private set; }
 

@@ -1,9 +1,9 @@
 ﻿using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Trees;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
-using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.Testing {
     public class CompositeBaseTest {
@@ -79,7 +79,7 @@ namespace Adnc.FluidBT.Testing {
 
             [Test]
             public void Resets_pointer_if_tick_count_changes () {
-                var tree = new Tree(_go);
+                var tree = new BehaviorTree(_go);
                 tree.AddNode(tree.Root, _composite);
                 tree.AddNode(_composite, Substitute.For<ITask>());
                     
@@ -93,7 +93,7 @@ namespace Adnc.FluidBT.Testing {
             [Test]
             public void Does_not_reset_pointer_if_tick_count_does_not_change () {
                 var task = Substitute.For<ITask>();
-                var tree = new Tree(_go);
+                var tree = new BehaviorTree(_go);
                 tree.AddNode(tree.Root, _composite);
                 tree.AddNode(_composite, task);
                 _composite.status = TaskStatus.Continue;

@@ -1,6 +1,5 @@
 ﻿using Adnc.FluidBT.Trees;
 using UnityEngine;
-using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.Tasks {
     public interface ITask {
@@ -18,7 +17,7 @@ namespace Adnc.FluidBT.Tasks {
         /// <summary>
         /// Tree this node belongs to
         /// </summary>
-        Tree ParentTree { get; set; }
+        BehaviorTree ParentTree { get; set; }
 
         /// <summary>
         /// Last status returned by Update

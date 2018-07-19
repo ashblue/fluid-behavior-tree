@@ -1,8 +1,8 @@
 ﻿using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Tasks.Actions;
+using Adnc.FluidBT.Trees;
 using NUnit.Framework;
 using UnityEngine;
-using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskTest {
@@ -52,7 +52,7 @@ namespace Adnc.FluidBT.Testing {
                 
                 [Test]
                 public void Retriggers_start_if_tick_count_changes () {
-                    var tree = new Tree(_go);
+                    var tree = new BehaviorTree(_go);
                     tree.AddNode(tree.Root, node);
                     
                     tree.Tick();
@@ -65,7 +65,7 @@ namespace Adnc.FluidBT.Testing {
                 public void Does_not_retrigger_start_if_tick_count_stays_the_same () {
                     node.status = TaskStatus.Continue;
                     
-                    var tree = new Tree(_go);
+                    var tree = new BehaviorTree(_go);
                     tree.AddNode(tree.Root, node);
                     
                     tree.Tick();
