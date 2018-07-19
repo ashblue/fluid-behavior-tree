@@ -1,6 +1,8 @@
 ﻿using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Tasks.Actions;
 using NUnit.Framework;
+using UnityEngine;
+using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.Testing {
     public class TaskTest {
@@ -33,6 +35,44 @@ namespace Adnc.FluidBT.Testing {
             [SetUp]
             public void SetUpNode () {
                 node = new TaskExample();
+            }
+
+            public class TreeTickCountChange : UpdateMethod {
+                private GameObject _go;
+                
+                [SetUp]
+                public void BeforEach () {
+                    _go = new GameObject();
+                }
+
+                [TearDown]
+                public void AfterEach () {
+                    Object.DestroyImmediate(_go);
+                }
+                
+                [Test]
+                public void Retriggers_start_if_tick_count_changes () {
+                    var tree = new Tree(_go);
+                    tree.AddNode(tree.Root, node);
+                    
+                    tree.Tick();
+                    tree.Tick();
+                    
+                    Assert.AreEqual(2, node.StartCount);
+                }
+                
+                [Test]
+                public void Does_not_retrigger_start_if_tick_count_stays_the_same () {
+                    node.status = TaskStatus.Continue;
+                    
+                    var tree = new Tree(_go);
+                    tree.AddNode(tree.Root, node);
+                    
+                    tree.Tick();
+                    tree.Tick();
+                    
+                    Assert.AreEqual(1, node.StartCount);
+                }
             }
 
             public class StartEvent : UpdateMethod {
