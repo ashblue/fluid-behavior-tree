@@ -1,4 +1,5 @@
-﻿using Adnc.FluidBT.TaskParents;
+﻿using System.Collections.Generic;
+using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.Tasks;
 using UnityEngine;
 
@@ -12,8 +13,13 @@ namespace Adnc.FluidBT.Trees {
 
         public Tree (GameObject owner) {
             _owner = owner;
-            Root.ParentTree = this;
-            Root.Owner = owner;
+            SyncNodes(Root);
+        }
+        
+        public void Tick () {
+            if (Root.Update() != TaskStatus.Continue) {
+                TickCount++;
+            }
         }
 
         public void Reset () {
@@ -26,9 +32,24 @@ namespace Adnc.FluidBT.Trees {
             child.Owner = _owner;
         }
 
-        public void Tick () {
-            if (Root.Update() != TaskStatus.Continue) {
-                TickCount++;
+        public void Splice (ITaskParent parent, Tree tree) {
+            parent.AddChild(tree.Root);
+
+            SyncNodes(tree.Root);
+        }
+
+        private void SyncNodes (ITaskParent taskParent) {
+            taskParent.Owner = _owner;
+            taskParent.ParentTree = this;
+            
+            foreach (var child in taskParent.Children) {
+                child.Owner = _owner;
+                child.ParentTree = this;
+
+                var parent = child as ITaskParent;
+                if (parent != null) {
+                    SyncNodes(parent);
+                }
             }
         }
     }

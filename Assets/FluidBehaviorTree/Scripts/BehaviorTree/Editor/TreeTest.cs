@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
 using NSubstitute;
@@ -12,7 +11,7 @@ namespace Adnc.FluidBT.Trees.Testing {
         private Tree _tree;
         
         [SetUp]
-        public void SetBehaviorTree () {
+        public void BeforeEach () {
             _gameObject = new GameObject("BT");
             _tree = new Tree(_gameObject);
         }
@@ -26,6 +25,70 @@ namespace Adnc.FluidBT.Trees.Testing {
             [Test]
             public void It_should_set_the_root_node_Owner_by_default () {
                 Assert.AreEqual(_gameObject, _tree.Root.Owner);
+            }
+        }
+
+        public class SpliceMethod : TreeTest {
+            private GameObject _owner;
+            private Tree _treeAlt;
+            
+            [SetUp]
+            public void SetupTreeAlt () {
+                _owner = new GameObject("BT");
+                _treeAlt = new Tree(_owner);
+            }
+
+            [TearDown]
+            public void TeardownTreeAlt () {
+                Object.DestroyImmediate(_owner);
+            }
+            
+            [Test]
+            public void It_should_set_the_trees_root_as_a_child () {
+                _tree.Splice(_tree.Root, _treeAlt);
+                
+                Assert.AreEqual(_treeAlt.Root, _tree.Root.Children[0]);
+            }
+
+            [Test]
+            public void It_should_update_all_child_Owner_variables () {
+                var task = Substitute.For<ITask>();
+                task.Enabled.Returns(true);
+                
+                _treeAlt.AddNode(_treeAlt.Root, task);
+                var nodes = new List<ITask>{_treeAlt.Root, task};
+                
+                _tree.Splice(_tree.Root, _treeAlt);
+
+                nodes.ForEach((node) => Assert.AreEqual(_gameObject, node.Owner));
+            }
+            
+            [Test]
+            public void It_should_update_all_child_Owner_variables_with_nested_parents () {
+                var task = Substitute.For<ITask>();
+                task.Enabled.Returns(true);
+                var sequence = new Sequence();
+                
+                _treeAlt.AddNode(_treeAlt.Root, sequence);
+                _treeAlt.AddNode(sequence, task);
+                var nodes = new List<ITask>{sequence, _treeAlt.Root, task};
+                
+                _tree.Splice(_tree.Root, _treeAlt);
+
+                nodes.ForEach((node) => Assert.AreEqual(_gameObject, node.Owner));
+            }
+
+            [Test]
+            public void It_should_update_all_child_ParentTree_variables () {
+                var task = Substitute.For<ITask>();
+                task.Enabled.Returns(true);
+                
+                _treeAlt.AddNode(_treeAlt.Root, task);
+                var nodes = new List<ITask>{_treeAlt.Root, task};
+                
+                _tree.Splice(_tree.Root, _treeAlt);
+
+                nodes.ForEach((node) => Assert.AreEqual(_tree, node.ParentTree));
             }
         }
 
