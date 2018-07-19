@@ -1,4 +1,6 @@
-﻿using Adnc.FluidBT.TaskParents.Composites;
+﻿using System.Collections.Generic;
+using Adnc.FluidBT.TaskParents;
+using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
 using NSubstitute;
 using NUnit.Framework;
@@ -46,6 +48,15 @@ namespace Adnc.FluidBT.Trees.Testing {
                 _tree.AddNode(_tree.Root, action);
 
                 _tree.Root.Children[0].Received(1).Owner = _gameObject;
+            }
+        }
+
+        public class ResetMethod : TreeTest {
+            [Test]
+            public void It_should_increase_the_tick_count () {
+                _tree.Reset();
+                
+                Assert.AreEqual(1, _tree.TickCount);
             }
         }
 

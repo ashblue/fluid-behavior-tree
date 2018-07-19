@@ -16,6 +16,10 @@ namespace Adnc.FluidBT.Trees {
             Root.Owner = owner;
         }
 
+        public void Reset () {
+            TickCount++;
+        }
+
         public void AddNode (ITaskParent parent, ITask child) {
             parent.AddChild(child);
             child.ParentTree = this;
