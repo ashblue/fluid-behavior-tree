@@ -2,9 +2,11 @@
 using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Trees;
 using UnityEngine;
+using Tree = Adnc.FluidBT.Trees.Tree;
 
 namespace Adnc.FluidBT.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
+        public Tree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public bool Enabled { get; set; } = true;
@@ -15,11 +17,27 @@ namespace Adnc.FluidBT.TaskParents {
 
         public GameObject Owner { get; set; }
 
+        private int _lastTickCount;
+
         public TaskStatus Update () {
+            UpdateTicks();
+
             var status = OnUpdate();
             LastStatus = status;
 
             return status;
+        }
+
+        private void UpdateTicks () {
+            if (ParentTree == null) {
+                return;
+            }
+            
+            if (_lastTickCount != ParentTree.TickCount) {
+                Reset();
+            }
+
+            _lastTickCount = ParentTree.TickCount;
         }
 
         public virtual void End () {
@@ -31,10 +49,6 @@ namespace Adnc.FluidBT.TaskParents {
         }
 
         public virtual void Reset (bool hardReset = false) {
-            if (Children.Count <= 0) return;
-            foreach (var child in Children) {
-                child.Reset(hardReset);
-            }
         }
 
         public virtual ITaskParent AddChild (ITask child) {

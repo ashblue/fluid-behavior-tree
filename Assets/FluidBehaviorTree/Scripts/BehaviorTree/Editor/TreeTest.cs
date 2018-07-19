@@ -72,14 +72,6 @@ namespace Adnc.FluidBT.Trees.Testing {
                 }
 
                 [Test]
-                public void Runs_reset_on_2nd_run_if_success () {
-                    _tree.Tick();
-                    _tree.Tick();
-
-                    _action.Received(1).Reset();
-                }
-                
-                [Test]
                 public void Does_not_run_reset_on_2nd_run_if_continue_was_returned () {
                     _action.Update().Returns(TaskStatus.Continue);
 
@@ -139,16 +131,6 @@ namespace Adnc.FluidBT.Trees.Testing {
                     _tree.Tick();
 
                     _sequence.Children.ForEach((child) => child.Received(2).Update());
-                }
-
-                [Test]
-                public void Runs_reset_2x_on_first_action_if_it_fails () {
-                    _action.Update().Returns(TaskStatus.Failure);
-                    
-                    _tree.Tick();
-                    _tree.Tick();
-                    
-                    _action.Received(1).Reset();
                 }
                 
                 [Test]

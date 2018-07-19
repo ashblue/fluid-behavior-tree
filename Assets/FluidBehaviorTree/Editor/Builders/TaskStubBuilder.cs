@@ -22,7 +22,7 @@ namespace Adnc.FluidBT.Testing {
         public ITask Build () {
             var task = Substitute.For<ITask>();
             task.Enabled.Returns(_enabled);
-            task.Update().Returns(_status);
+            task.Update().ReturnsForAnyArgs(_status);
 
             return task;
         }
