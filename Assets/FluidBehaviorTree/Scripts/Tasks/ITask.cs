@@ -4,6 +4,11 @@ using UnityEngine;
 namespace Adnc.FluidBT.Tasks {
     public interface ITask {
         /// <summary>
+        /// Used for debugging and identification purposes
+        /// </summary>
+        string Name { get; set; }
+        
+        /// <summary>
         /// Is this task enabled or not? Disabled tasks are excluded from the runtime
         /// </summary>
         bool Enabled { get; set; }

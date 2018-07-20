@@ -15,10 +15,13 @@ namespace Adnc.FluidBT.Trees {
             SyncNodes(Root);
         }
         
-        public void Tick () {
-            if (Root.Update() != TaskStatus.Continue) {
+        public TaskStatus Tick () {
+            var status = Root.Update();
+            if (status != TaskStatus.Continue) {
                 TickCount++;
             }
+
+            return status;
         }
 
         public void Reset () {

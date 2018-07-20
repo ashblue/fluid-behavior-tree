@@ -7,6 +7,8 @@ namespace Adnc.FluidBT.Decorators {
         public ITask child;
 
         private bool _enabled = true;
+        public string Name { get; set; }
+
         public bool Enabled {
             get { return child != null && child.Enabled && _enabled; }
             set { _enabled = value; }
