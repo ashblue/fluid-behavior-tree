@@ -22,13 +22,25 @@ namespace Adnc.FluidBT.Trees {
             _tree = new BehaviorTree(owner);
             _pointer.Add(_tree.Root);
         }
-        
-        public BehaviorTreeBuilder Sequence (string name) {
-            var sequence = new Sequence { Name = name };
-            _tree.AddNode(Pointer, sequence);
-            _pointer.Add(sequence);
+
+        private BehaviorTreeBuilder ParentTask<T> (string name) where T : ITaskParent, new() {
+            var parent = new T { Name = name };
+            _tree.AddNode(Pointer, parent);
+            _pointer.Add(parent);
 
             return this;
+        }
+        
+        public BehaviorTreeBuilder Sequence (string name = "sequence") {
+            return ParentTask<Sequence>(name);
+        }
+
+        public BehaviorTreeBuilder Selector (string name = "selector") {
+            return ParentTask<Selector>(name);
+        }
+        
+        public BehaviorTreeBuilder Parallel (string name = "parallel") {
+            return ParentTask<Parallel>(name);
         }
 
         public BehaviorTreeBuilder Do (string name, Func<TaskStatus> action) {
@@ -38,6 +50,23 @@ namespace Adnc.FluidBT.Trees {
             });
             
             return this;
+        }
+        
+        public BehaviorTreeBuilder Do (Func<TaskStatus> action) {
+            return Do("action", action);
+        }
+
+        public BehaviorTreeBuilder Condition (string name, Func<bool> action) {
+            _tree.AddNode(Pointer, new ConditionGeneric {
+                Name = name,
+                updateLogic = action
+            });
+
+            return this;
+        }
+        
+        public BehaviorTreeBuilder Condition (Func<bool> action) {
+            return Condition("condition", action);
         }
 
         public BehaviorTreeBuilder End () {
