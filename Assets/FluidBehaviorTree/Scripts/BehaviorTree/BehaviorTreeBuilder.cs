@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Adnc.FluidBT.Decorators;
 using Adnc.FluidBT.TaskParents;
 using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
@@ -29,6 +30,22 @@ namespace Adnc.FluidBT.Trees {
             _pointer.Add(parent);
 
             return this;
+        }
+
+        public BehaviorTreeBuilder Decorator (string name, Func<ITask, TaskStatus> logic) {
+            var decorator = new DecoratorGeneric {
+                updateLogic = logic,
+                Name = name
+            };
+                        
+            _tree.AddNode(Pointer, decorator);
+            _pointer.Add(decorator);
+            
+            return this;
+        }
+        
+        public BehaviorTreeBuilder Decorator (Func<ITask, TaskStatus> logic) {
+            return Decorator("decorator", logic);
         }
         
         public BehaviorTreeBuilder Sequence (string name = "sequence") {

@@ -3,7 +3,7 @@
 namespace Adnc.FluidBT.Decorators {
     public class ReturnFailure : DecoratorBase {
         protected override TaskStatus OnUpdate () {
-            var status = child.Update();
+            var status = Child.Update();
             if (status == TaskStatus.Continue) {
                 return status;
             }

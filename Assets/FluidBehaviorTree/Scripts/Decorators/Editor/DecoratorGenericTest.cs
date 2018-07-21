@@ -8,24 +8,23 @@ namespace Adnc.FluidBT.Testing {
             [Test]
             public void Can_invert_status_of_child () {
                 var task = new DecoratorGeneric {
-                    child = A.TaskStub().Build(),
-                    updateLogic = (dec) => {
-                        if (dec.child.Update() == TaskStatus.Success) {
+                    updateLogic = (child) => {
+                        if (child.Update() == TaskStatus.Success) {
                             return TaskStatus.Failure;
                         }
 
                         return TaskStatus.Success;
                     }
                 };
+                task.AddChild(A.TaskStub().Build());
 
                 Assert.AreEqual(TaskStatus.Failure, task.Update());
             }
 
             [Test]
             public void Returns_child_status_without_update_logic () {
-                var task = new DecoratorGeneric {
-                    child = A.TaskStub().Build()
-                };
+                var task = new DecoratorGeneric();
+                task.AddChild(A.TaskStub().Build());
 
                 Assert.AreEqual(TaskStatus.Success, task.Update());
             }

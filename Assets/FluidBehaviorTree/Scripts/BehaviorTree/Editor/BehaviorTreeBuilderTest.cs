@@ -1,7 +1,9 @@
-﻿using Adnc.FluidBT.TaskParents.Composites;
+﻿using Adnc.FluidBT.Decorators;
+using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Tasks.Actions;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Trees.Testing {
     public class BehaviorTreeBuilderTest {
@@ -237,6 +239,78 @@ namespace Adnc.FluidBT.Trees.Testing {
                 Assert.IsNotNull(action);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
+            }
+        }
+
+        public class DecoratorMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_add_a_decorator () {
+                var tree = _builder
+                    .Decorator("decorator", child => {
+                        _invokeCount++;
+                        child.Update();
+                        return TaskStatus.Failure;
+                    })
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Success;
+                        })
+                    .Build();
+
+                var decorator = tree.Root.Children[0] as DecoratorGeneric;
+                
+                Assert.IsNotNull(decorator);
+                Assert.AreEqual(TaskStatus.Failure, tree.Tick());
+                Assert.AreEqual(2, _invokeCount);
+            }
+
+            [Test]
+            public void It_should_add_a_decorator_without_a_name () {
+                var tree = _builder
+                    .Decorator(child => {
+                        _invokeCount++;
+                        child.Update();
+                        return TaskStatus.Failure;
+                    })
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Success;
+                        })
+                    .Build();
+
+                var decorator = tree.Root.Children[0] as DecoratorGeneric;
+                
+                Assert.IsNotNull(decorator);
+                Assert.AreEqual(TaskStatus.Failure, tree.Tick());
+                Assert.AreEqual(2, _invokeCount);
+            }
+
+            [Test]
+            public void It_should_move_to_the_next_node_on_End () {
+                var tree = _builder
+                    .Sequence()
+                        .Decorator(child => {
+                            _invokeCount++;
+                            child.Update();
+                            return TaskStatus.Success;
+                        })
+                            .Do("action", () => {
+                                _invokeCount++;
+                                return TaskStatus.Success;
+                            })
+                        .End()
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Success;
+                        })
+                    .Build();
+
+                var sequence = tree.Root.Children[0] as Sequence;
+                var decorator = sequence.Children[0] as DecoratorGeneric;
+                
+                Assert.IsNotNull(decorator);
+                Assert.AreEqual(TaskStatus.Success, tree.Tick());
+                Assert.AreEqual(3, _invokeCount);
             }
         }
     }
