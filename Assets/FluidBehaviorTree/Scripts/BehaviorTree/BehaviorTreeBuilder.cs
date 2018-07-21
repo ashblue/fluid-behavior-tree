@@ -112,6 +112,19 @@ namespace Adnc.FluidBT.Trees {
             return RandomChance("random chance", chance, outOf);
         }
 
+        public BehaviorTreeBuilder Wait (string name, int turns = 1) {
+            _tree.AddNode(Pointer, new Wait {
+                Name = name,
+                turns = turns
+            });
+
+            return this;
+        }
+
+        public BehaviorTreeBuilder Wait (int turns = 1) {
+            return Wait("wait", turns);
+        }
+
         public BehaviorTreeBuilder End () {
             _pointer.RemoveAt(_pointer.Count - 1);
             
