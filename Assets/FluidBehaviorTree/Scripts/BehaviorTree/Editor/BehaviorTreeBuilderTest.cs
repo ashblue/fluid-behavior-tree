@@ -3,7 +3,6 @@ using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
 using Adnc.FluidBT.Tasks.Actions;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Adnc.FluidBT.Trees.Testing {
     public class BehaviorTreeBuilderTest {
@@ -311,6 +310,63 @@ namespace Adnc.FluidBT.Trees.Testing {
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(3, _invokeCount);
+            }
+        }
+
+        public class InverterMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_create_an_inverter () {
+                var tree = _builder
+                    .Inverter("inverter")
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Success;
+                        })
+                    .Build();
+
+                var decorator = tree.Root.Children[0] as Inverter;
+                
+                Assert.IsNotNull(decorator);
+                Assert.AreEqual(TaskStatus.Failure, tree.Tick());
+                Assert.AreEqual(1, _invokeCount);
+            }
+        }
+        
+        public class ReturnSuccessMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_create_a_ReturnSuccess () {
+                var tree = _builder
+                    .ReturnSuccess("return success")
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Failure;
+                        })
+                    .Build();
+
+                var decorator = tree.Root.Children[0] as ReturnSuccess;
+                
+                Assert.IsNotNull(decorator);
+                Assert.AreEqual(TaskStatus.Success, tree.Tick());
+                Assert.AreEqual(1, _invokeCount);
+            }
+        }
+        
+        public class ReturnFailureMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_create_a_ReturnFailure () {
+                var tree = _builder
+                    .ReturnFailure("return failure")
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Success;
+                        })
+                    .Build();
+
+                var decorator = tree.Root.Children[0] as ReturnFailure;
+                
+                Assert.IsNotNull(decorator);
+                Assert.AreEqual(TaskStatus.Failure, tree.Tick());
+                Assert.AreEqual(1, _invokeCount);
             }
         }
     }

@@ -47,6 +47,18 @@ namespace Adnc.FluidBT.Trees {
         public BehaviorTreeBuilder Decorator (Func<ITask, TaskStatus> logic) {
             return Decorator("decorator", logic);
         }
+
+        public BehaviorTreeBuilder Inverter (string name = "inverter") {
+            return ParentTask<Inverter>(name);
+        }
+        
+        public BehaviorTreeBuilder ReturnSuccess (string name = "return success") {
+            return ParentTask<ReturnSuccess>(name);
+        }
+        
+        public BehaviorTreeBuilder ReturnFailure (string name = "return failure") {
+            return ParentTask<ReturnFailure>(name);
+        }
         
         public BehaviorTreeBuilder Sequence (string name = "sequence") {
             return ParentTask<Sequence>(name);
