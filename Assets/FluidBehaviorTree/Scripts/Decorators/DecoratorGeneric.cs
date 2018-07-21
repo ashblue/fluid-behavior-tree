@@ -3,14 +3,18 @@ using Adnc.FluidBT.Tasks;
 
 namespace Adnc.FluidBT.Decorators {
     public class DecoratorGeneric : DecoratorBase {
-        public Func<DecoratorBase, TaskStatus> updateLogic;
+        public Func<ITask, TaskStatus> updateLogic;
 
         protected override TaskStatus OnUpdate () {
+            if (Child == null) {
+                return TaskStatus.Success;
+            }
+            
             if (updateLogic != null) {
-                return updateLogic(this);
+                return updateLogic(Child);
             }
 
-            return child.Update();
+            return Child.Update();
         }
     }
 }

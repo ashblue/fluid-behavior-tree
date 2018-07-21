@@ -7,7 +7,8 @@ namespace Adnc.FluidBT.Tasks {
         private bool _start;
         private bool _exit;
         private int _lastTickCount;
-        
+
+        public string Name { get; set; }
         public bool Enabled { get; set; } = true;
         public GameObject Owner { get; set; }
         public BehaviorTree ParentTree { get; set; }
