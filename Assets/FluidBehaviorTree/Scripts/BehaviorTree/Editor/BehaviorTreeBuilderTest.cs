@@ -369,5 +369,27 @@ namespace Adnc.FluidBT.Trees.Testing {
                 Assert.AreEqual(1, _invokeCount);
             }
         }
+
+        public class RandomChanceMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_add_a_random_chance () {
+                var tree = _builder
+                    .Sequence()
+                        .RandomChance("random", 1, 3)
+                        .Do("action", () => {
+                            _invokeCount++;
+                            return TaskStatus.Success;
+                        })
+                    .Build();
+    
+                var sequence = tree.Root.Children[0] as Sequence;
+                var condition = sequence.Children[0] as RandomChance;
+
+                Assert.AreEqual(sequence.Children.Count, 2);
+                Assert.IsNotNull(condition);
+                Assert.AreEqual(TaskStatus.Success, tree.Tick());
+                Assert.AreEqual(1, _invokeCount);
+            }
+        }
     }
 }

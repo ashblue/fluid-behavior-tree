@@ -97,6 +97,20 @@ namespace Adnc.FluidBT.Trees {
         public BehaviorTreeBuilder Condition (Func<bool> action) {
             return Condition("condition", action);
         }
+        
+        public BehaviorTreeBuilder RandomChance (string name, int chance, int outOf) {
+            _tree.AddNode(Pointer, new RandomChance {
+                Name = name,
+                chance = chance,
+                outOf = outOf
+            });
+
+            return this;
+        }
+
+        public BehaviorTreeBuilder RandomChance (int chance, int outOf) {
+            return RandomChance("random chance", chance, outOf);
+        }
 
         public BehaviorTreeBuilder End () {
             _pointer.RemoveAt(_pointer.Count - 1);
