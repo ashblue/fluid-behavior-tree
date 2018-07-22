@@ -7,6 +7,7 @@ namespace Adnc.FluidBT.Examples {
         public GameObject flag;
         public GameObject goalRed;
         public GameObject goalBlue;
+        public GameObject speedBoost;
 
         [HideInInspector]
         public GameObject flagStart;

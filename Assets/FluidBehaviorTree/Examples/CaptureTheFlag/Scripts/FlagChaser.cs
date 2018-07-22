@@ -19,7 +19,9 @@ namespace Adnc.FluidBT.Examples {
 		private Vector3 _origin;
 		private BehaviorTree _tree;
 		private bool _stun;
+		private bool _speedBoosted;
 		
+		private GameObject SpeedBoost => FlagManager.current.speedBoost;
 		private GameObject Flag => FlagManager.current.flag;
 
 		private GameObject Goal => team == Team.Blue ? 
@@ -31,6 +33,21 @@ namespace Adnc.FluidBT.Examples {
 			_tree = new BehaviorTreeBuilder(gameObject)
 				.Selector()
 					.Condition(() => _stun)
+					.Sequence("Grab Speed Boost")
+						.Condition("Not Carrying Flag", () => Flag != gameObject)
+						.Condition("Not a Defender", () => !defender)
+						.Condition("Speed Boost Spawned", () => SpeedBoost != null)
+						.Condition("Not speed boosted", () => !_speedBoosted)
+						.Do(() => {
+							agent.SetDestination(SpeedBoost.transform.position);
+		
+							if (Vector3.Distance(SpeedBoost.transform.position, transform.position) <= 1) {
+								GrabSpeedBoost();
+							} 
+		
+							return TaskStatus.Success;
+						})
+					.End()
 					.Sequence("Capture Flag")
 						.Condition("Not Carrying Flag", () => Flag != gameObject)
 						.Selector()
@@ -56,7 +73,7 @@ namespace Adnc.FluidBT.Examples {
 						.Do(() => {
 							agent.SetDestination(Goal.transform.position);
 					
-							if (Vector3.Distance(Goal.transform.position, transform.position) <= 1) {
+							if (Vector3.Distance(Goal.transform.position, transform.position) <= 2) {
 								ScoreGoal();
 							} 
 					
@@ -97,6 +114,28 @@ namespace Adnc.FluidBT.Examples {
 			}
 			
 			FlagManager.current.flag = gameObject;
+		}
+		
+		private void GrabSpeedBoost () {
+			Destroy(SpeedBoost);
+			
+			StopCoroutine(SpeedBoostLoop());
+			StartCoroutine(SpeedBoostLoop());
+		}
+
+		private IEnumerator SpeedBoostLoop () {
+			var speed = agent.speed;
+			var turning = agent.angularSpeed;
+
+			_speedBoosted = true;
+			agent.speed += 5;
+			agent.angularSpeed += 50;
+			
+			yield return new WaitForSeconds(10);
+			
+			_speedBoosted = false;
+			agent.speed = speed;
+			agent.angularSpeed = turning;
 		}
 
 		private void Update () {
