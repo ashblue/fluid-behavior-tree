@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Adnc.FluidBT.Trees;
+using NUnit.Framework;
 
 namespace Adnc.FluidBT.Tasks.Actions.Testing {
     public class WaitTest {
@@ -26,6 +27,16 @@ namespace Adnc.FluidBT.Tasks.Actions.Testing {
             Assert.AreEqual(TaskStatus.Continue, wait.Update());
             Assert.AreEqual(TaskStatus.Continue, wait.Update());
             Assert.AreEqual(TaskStatus.Success, wait.Update());
+        }
+
+        [Test]
+        public void It_should_trigger_continue_after_tree_restarts () {
+            var tree = new BehaviorTree(null);
+            tree.AddNode(tree.Root, new Wait());
+
+            Assert.AreEqual(TaskStatus.Continue, tree.Tick());
+            Assert.AreEqual(TaskStatus.Success, tree.Tick());
+            Assert.AreEqual(TaskStatus.Continue, tree.Tick());
         }
     }
 }
