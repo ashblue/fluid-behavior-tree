@@ -9,9 +9,5 @@
 
             return TaskStatus.Failure;
         }
-
-        public override ITask GetAbortCondition () {
-            return this;
-        }
     }
 }

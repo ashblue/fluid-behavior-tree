@@ -1,22 +1,28 @@
 ﻿using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 namespace Adnc.FluidBT.Tasks {
     public interface ITask {
+        /// <summary>
+        /// Used for debugging and identification purposes
+        /// </summary>
+        string Name { get; set; }
+        
         /// <summary>
         /// Is this task enabled or not? Disabled tasks are excluded from the runtime
         /// </summary>
         bool Enabled { get; set; }
         
         /// <summary>
-        /// Check if this node is a valid lower priority abort
-        /// </summary>
-        bool IsLowerPriority { get; }
-
-        /// <summary>
         /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
         /// GameObject reference
         /// </summary>
-        BehaviorTree Owner { get; set; }
+        GameObject Owner { get; set; }
+        
+        /// <summary>
+        /// Tree this node belongs to
+        /// </summary>
+        BehaviorTree ParentTree { get; set; }
 
         /// <summary>
         /// Last status returned by Update
@@ -28,20 +34,6 @@ namespace Adnc.FluidBT.Tasks {
         /// </summary>
         /// <returns></returns>
         TaskStatus Update ();
-
-        /// <summary>
-        /// Returns the valid abort condition
-        /// </summary>
-        /// <returns></returns>
-        ITask GetAbortCondition ();
-
-        /// <summary>
-        /// Query this parent task to get the correct corresponding abort type
-        /// Example selector tries all valid conditions until success (or returns failure), while
-        /// sequence returns first item
-        /// </summary>
-        /// <returns></returns>
-        TaskStatus GetAbortStatus ();
 
         /// <summary>
         /// Forcibly end this task. Firing all necessary completion logic
