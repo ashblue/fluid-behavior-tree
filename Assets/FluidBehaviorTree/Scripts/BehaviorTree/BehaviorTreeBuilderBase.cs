@@ -102,18 +102,19 @@ namespace Adnc.FluidBT.Trees {
             return Condition("condition", action);
         }
         
-        public T RandomChance (string name, int chance, int outOf) {
+        public T RandomChance (string name, int chance, int outOf, int seed = 0) {
             _tree.AddNode(Pointer, new RandomChance {
                 Name = name,
                 chance = chance,
-                outOf = outOf
+                outOf = outOf,
+                seed = seed
             });
 
             return (T)this;
         }
 
-        public T RandomChance (int chance, int outOf) {
-            return RandomChance("random chance", chance, outOf);
+        public T RandomChance (int chance, int outOf, int seed = 0) {
+            return RandomChance("random chance", chance, outOf, seed);
         }
 
         public T Wait (string name, int turns = 1) {
