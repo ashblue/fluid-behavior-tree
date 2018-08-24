@@ -71,11 +71,11 @@ You can create a generic action on the fly. If you find yourself re-using the sa
 look into the section on writing your own custom actions.
 
 ```C#
-    .Sequence()
-        .Do("Custom Action", () => {
-            return TaskStatus.Success;
-        })
-    .End()
+.Sequence()
+    .Do("Custom Action", () => {
+        return TaskStatus.Success;
+    })
+.End()
 ```
 
 #### Wait
@@ -83,13 +83,11 @@ look into the section on writing your own custom actions.
 Skip a number of ticks on the Behavior Tree.
 
 ```C#
-    .Sequence()
-        // Wait for 1 tick on the tree before continuing
-        .Wait(1)
-        .Do("Custom Action", () => {
-            return TaskStatus.Success;
-        })
-    .End()
+.Sequence()
+    // Wait for 1 tick on the tree before continuing
+    .Wait(1)
+    .Do(MyAction)
+.End()
 ```
 
 ### Conditions
@@ -100,14 +98,12 @@ You can create a generic condition on the fly. If you find yourself re-using the
 look into the section on writing your own custom conditions.
 
 ```C#
-    .Sequence()
-        .Condition("Custom Action", () => {
-            return true;
-        })
-        .Do("Custom Action", () => {
-            return TaskStatus.Success;
-        })
-    .End()
+.Sequence()
+    .Condition("Custom Condtion", () => {
+        return true;
+    })
+    .Do(MyAction)
+.End()
 ```
 
 #### Random Chance
@@ -115,22 +111,59 @@ look into the section on writing your own custom conditions.
 Randomly evaluate a node as true or false based upon the passed chance.
 
 ```C#
-    .Sequence()
-        // 50% chance this will return success
-        .RandomChance(1, 2)
-        .Do("Custom Action", () => {
-            return TaskStatus.Success;
-        })
-    .End()
+.Sequence()
+    // 50% chance this will return success
+    .RandomChance(1, 2)
+    .Do(MyAction)
+.End()
 ```
 
 ### Composites
 
 #### Sequence
 
+Runs each child node in order and expects a *Success* status to tick the next node. If *Failure* is returned, the sequence will stop executing child nodes and return *Failure* to the parent.
+
+```C#
+.Sequence()
+    .Do(() => { return TaskStatus.Success; })
+    .Do(() => { return TaskStatus.Success; })
+    
+    // All tasks after this will not run and the sequence will exit
+    .Do(() => { return TaskStatus.Failure; })
+
+    .Do(() => { return TaskStatus.Success; })
+.End()
+```
+
 #### Selector
 
+Runs each child node until *Success* is returned.
+
+```C#
+.Selector()
+    // Runs but fails
+    .Do(() => { return TaskStatus.Failure; })
+
+    // Will stop here since the node returns success
+    .Do(() => { return TaskStatus.Success; })
+    
+    // Does not run
+    .Do(() => { return TaskStatus.Success; })
+.End()
+```
+
 #### Parallel
+
+Runs all child nodes at the same time until they all return *Success*. Exits and stops all running nodes if ANY of them return *Failure*.
+
+```C#
+.Parallel()
+    // Both of these tasks will run every frame
+    .Do(() => { return TaskStatus.Continue; })
+    .Do(() => { return TaskStatus.Continue; })
+.End()
+```
 
 ### Decorators
 
