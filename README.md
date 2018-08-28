@@ -4,7 +4,20 @@ A pure code behavior tree micro-framework built for Unity3D projects.
 Granting developers the power to dictate their GUI presentation.
 Inspired by Fluent Behavior Tree.
 
-@TODO Table of contents
+**Highlights**
+
+* Extendible, write your own custom re-usable nodes
+* Pre-built library of tasks to kickstart your AI
+* Heavily tested with TDD and unit tests
+
+Other Features
+
+* Minimal runtime footprint
+* Tracks the last position of your Behavior Tree and restores it the next frame
+* Documentation on how to use and extend
+* Open source and free
+* Built for Unity (no integration overhead)
+* Includes a usage example of CTF
 
 ## Getting Started
 
@@ -174,7 +187,7 @@ extremely powerful and a great compliment to actions, conditions, and composites
 
 You can wrap any node with your own custom decorator code. This allows you to customize re-usable functionality.
 
-*NOTE*: You must manually call `Update()` on the child node or it will not fire.
+**NOTE**: You must manually call `Update()` on the child node or it will not fire.
 
 ```C#
 .Sequence()
