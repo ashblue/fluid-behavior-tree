@@ -167,15 +167,67 @@ Runs all child nodes at the same time until they all return *Success*. Exits and
 
 ### Decorators
 
+Decorators are parent elements that wrap any node to change the return value (or execute special logic). They are
+extremely powerful and a great compliment to actions, conditions, and composites.
+
 #### Generic
+
+You can wrap any node with your own custom decorator code. This allows you to customize re-usable functionality.
+
+*NOTE*: You must manually call `Update()` on the child node or it will not fire.
+
+```C#
+.Sequence()
+    .Decorator("Return Success", child => {
+        child.Update();
+        return TaskStatus.Success;
+    })
+        .Do(() => { return TaskStatus.Failure; })
+    .End()
+    .Do(() => { return TaskStatus.Success; })
+.End()
+```
 
 #### Inverter
 
+Reverse the returned status of the child node if it's `TaskStatus.Success` or `TaskStatus.Failure`. 
+Does not change `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .Inverter()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
 #### ReturnSuccess
+
+Return `TaskStatus.Success` if the child returns `TaskStatus.Failure`.
+Does not change `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .ReturnSuccess()
+        .Do(() => { return TaskStatus.Failure; })
+    .End()
+.End()
+```
 
 #### ReturnFailure
 
-## Creating your own custom nodes
+Return `TaskStatus.Failure` if the child returns `TaskStatus.Success`.
+Does not change `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .ReturnFailure()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+## Creating custom re-usable nodes
 
 ### Actions
 
