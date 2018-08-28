@@ -1,5 +1,7 @@
 # fluid-behavior-tree
 
+@TODO Make sure copy / paste examples work correctly (custom node tutorial, quick start snippet).
+
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
 Inspired by Fluent Behavior Tree.
@@ -28,6 +30,9 @@ Grab the latest `*.unitypackage` from the [releases page](https://github.com/ash
 When creating trees you'll need to store them in a variable to properly cache all the necessary data.
 
 ```C#
+using Adnc.FluidBT.Trees;
+using UnityEngine;
+
 public class MyCustomAi : MonoBehaviour {
     private BehaviorTree _tree;
     
@@ -137,6 +142,9 @@ Randomly evaluate a node as true or false based upon the passed chance.
 
 Runs each child node in order and expects a *Success* status to tick the next node. If *Failure* is returned, the sequence will stop executing child nodes and return *Failure* to the parent.
 
+**NOTE** It's important that every composite is followed by a `.End()` statement. This makes sure that your nodes
+are properly nested when the tree is built.
+
 ```C#
 .Sequence()
     .Do(() => { return TaskStatus.Success; })
@@ -187,7 +195,8 @@ extremely powerful and a great compliment to actions, conditions, and composites
 
 You can wrap any node with your own custom decorator code. This allows you to customize re-usable functionality.
 
-**NOTE**: You must manually call `Update()` on the child node or it will not fire.
+**NOTE**: You must manually call `Update()` on the child node or it will not fire. Also every decorator must be followed
+by a `.End()` statement. Otherwise the tree will not build correctly.
 
 ```C#
 .Sequence()
@@ -240,15 +249,142 @@ Does not change `TaskStatus.Continue`.
 .End()
 ```
 
-## Creating custom re-usable nodes
+## Creating Reusable Behavior Trees
 
-### Actions
+@TODO Document splicing with an example
 
-### Conditions
+## Creating Custom Reusable Nodes
 
-### Composites
+What makes Fluid Behavior Tree so powerful is the ability to write your own nodes and extend the tree builder to inject custom parameters. For example we can write a new tree builder method like this that sets the target of your AI system.
 
-### Decorators
+```C#
+var tree = new TreeBuilderCustom(gameObject)
+    .Sequence()
+        .AgentDestination("Find Enemy", target)
+        .Do(() => {
+            // Activate chase enemy code
+            return TaskStatus.Success; 
+        })
+    .End()
+    .Build();
+```
+
+We'll cover how to build this in the next section **Actions**. It should take about 10 minutes to setup your first custom
+action and extend the pre-existing Behavior Tree Builder.
+
+### Your First Custom Node and Tree
+
+Creating the custom action code is quite simple. Below you'll find a complete overview of additional
+methods supported by a custom action.
+
+```C#
+using Adnc.FluidBT.Tasks;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class AgentDestination : ActionBase {
+    public NavMeshAgent agent;
+    public Transform target;
+
+    protected override void OnInit () {
+        agent = Owner.GetComponent<NavMeshAgent>();
+    }
+
+    protected override TaskStatus OnUpdate () {
+        agent.SetDestination(target.position);
+        return TaskStatus.Success;
+    }
+}
+```
+
+New method added to the builder script. This is pretty simple and easy to customize since most of the overhead is
+abstracted away.
+
+```C#
+using Adnc.FluidBT.Trees;
+
+public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
+    // This is always required for class extension reasons (will error without)
+    public TreeBuilderCustom (GameObject owner) : base(owner) {
+    }
+    
+    public TreeBuilderCustom AgentDestination (Transform target) {
+        _tree.AddNode(Pointer, new AgentDestination {
+            Name = "Agent Destination",
+            target = target
+        });
+
+        return this;
+    }
+}
+```
+
+Be sure when you create trees that you use your new `TreeBuilderCustom` class. For example:
+
+```C#
+_tree = new TreeBuilderCustom(gameObject)
+    .Sequence()
+        .AgentDestination("Find Target", target)
+        ...
+    .End()
+    .Build();
+```
+
+And you're done! You've now created a custom action and extendable Behavior Tree Builder. The following examples
+will be more of the same. But each covers a different node type.
+
+### Custom Actions
+
+Custom action example template.
+
+```C#
+using UnityEngine;
+using Adnc.FluidBT.Tasks;
+
+public class CustomAction : ActionBase {
+    // Triggers only the first time this node is run (great for caching data)
+    protected override void OnInit () {
+    }
+
+    // Triggers every time this node starts running. Does not trigger if TaskStatus.Continue was last returned by this node
+    protected override void OnStart () {
+    }
+
+    // Triggers every time `Tick()` is called on the tree and this node is run
+    protected override TaskStatus OnUpdate () {
+        // Points to the GameObject of whoever owns the Behavior Tree
+        Debug.Log(Owner.name);
+        return TaskStatus.Success;
+    }
+
+    // Triggers whenever this node exits after running
+    protected override void OnExit () {
+    }
+}
+```
+
+Code required to modify your tree builder.
+
+```C#
+using Adnc.FluidBT.Trees;
+
+public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
+    ...
+    public TreeBuilderCustom CustomAction (string name) {
+        _tree.AddNode(Pointer, new CustomAction {
+            Name = name
+        });
+
+        return this;
+    }
+}
+```
+
+### Custom Conditions
+
+### Custom Composites
+
+### Custom Decorators
 
 ## Submitting your own actions, conditions, ect
 
@@ -256,4 +392,4 @@ Please fill out the following details if you'd like to contribute new code to th
 
 1. Clone this project for the core code with tests
 2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
-3. Submit a PR
+3. Submit a pull request to the `develop` branch
