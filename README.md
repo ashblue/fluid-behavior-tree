@@ -251,7 +251,42 @@ Does not change `TaskStatus.Continue`.
 
 ## Creating Reusable Behavior Trees
 
-@TODO Document splicing with an example
+Trees can be combined with just a few line of code. This can allow you to create injectable template that bundles different
+nodes for complex functionality such as searching or attacking.
+
+Be warned that spliced trees require a newly built tree for injection, as nodes are not deep copied on splice.
+
+```C#
+using Adnc.FluidBT.Trees;
+using UnityEngine;
+
+public class MyCustomAi : MonoBehaviour {
+    private BehaviorTree _tree;
+    
+    private void Awake () {
+        var injectTree = new BehaviorTreeBuilder(gameObject)
+            .Sequence()
+                .Do("Custom Action", () => {
+                    return TaskStatus.Success;
+                })
+            .End();
+
+        _tree = new BehaviorTreeBuilder(gameObject)
+            .Sequence()
+                .Splice(injectTree.Build())
+                .Do("Custom Action", () => {
+                    return TaskStatus.Success;
+                })
+            .End()
+            .Build();
+    }
+
+    private void Update () {
+        // Update our tree every frame
+        _tree.Tick();
+    }
+}
+```
 
 ## Creating Custom Reusable Nodes
 
@@ -554,7 +589,7 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
     public TreeBuilderCustom (GameObject owner) : base(owner) {
     }
 
-    public TreeBuilderCustom (string name = "My Custom Decorator") {
+    public TreeBuilderCustom CustomDecorator (string name = "My Custom Decorator") {
         return ParentTask<CustomDecorator>(name);
 
         // Or you can code this manually if you need more specifics

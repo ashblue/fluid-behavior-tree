@@ -130,6 +130,12 @@ namespace Adnc.FluidBT.Trees {
             return Wait("wait", turns);
         }
 
+        public T Splice (BehaviorTree tree) {
+            _tree.Splice(Pointer, tree);
+
+            return (T)this;
+        }
+
         public T End () {
             _pointer.RemoveAt(_pointer.Count - 1);
             
