@@ -335,7 +335,8 @@ will be more of the same. But each covers a different node type.
 
 ### Custom Actions
 
-Custom action example template.
+You can create your own custom actions with the following template. This is useful for bundling up code
+that you're using constantly.
 
 ```C#
 using UnityEngine;
@@ -363,14 +364,16 @@ public class CustomAction : ActionBase {
 }
 ```
 
-Code required to modify your tree builder.
+Add your new node to a custom tree builder.
 
 ```C#
 using Adnc.FluidBT.Trees;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    ...
-    public TreeBuilderCustom CustomAction (string name) {
+    public TreeBuilderCustom (GameObject owner) : base(owner) {
+    }
+
+    public TreeBuilderCustom CustomAction (string name = "Custom Action") {
         _tree.AddNode(Pointer, new CustomAction {
             Name = name
         });
@@ -382,7 +385,8 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 
 ### Custom Conditions
 
-Custom condition example template.
+Custom conditions can be added with the following example template. You'll want to use these for checks such as sight,
+if the AI can move to a location, and other tasks that require a complex check.
 
 ```C#
 using UnityEngine;
@@ -410,14 +414,16 @@ public class CustomCondition : ConditionBase {
 }
 ```
 
-Code required to modify your tree builder.
+Add the new condition to your behavior tree builder with the following snippet.
 
 ```C#
 using Adnc.FluidBT.Trees;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    ...
-    public TreeBuilderCustom CustomCondition (string name) {
+    public TreeBuilderCustom (GameObject owner) : base(owner) {
+    }
+
+    public TreeBuilderCustom CustomCondition (string name = "My Condition") {
         _tree.AddNode(Pointer, new CustomCondition {
             Name = name
         });
@@ -428,6 +434,85 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 ```
 
 ### Custom Composites
+
+Fluid Behavior Tree isn't limited to just custom actions and conditions. You can create new composite types with a fairly
+simple API. Here is an example of a new selector variation that randomly chooses an execution order.
+
+```C#
+using Adnc.FluidBT.TaskParents.Composites;
+using Adnc.FluidBT.Tasks;
+using Random = System.Random;
+
+public class SelectorRandom : CompositeBase {
+    private bool _init;
+    
+    // Triggers each time this node is ticked
+    protected override TaskStatus OnUpdate () {
+        if (!_init) {
+            ShuffleChildren();
+            _init = true;
+        }
+        
+        for (var i = ChildIndex; i < Children.Count; i++) {
+            var child = Children[ChildIndex];
+
+            switch (child.Update()) {
+                case TaskStatus.Success:
+                    return TaskStatus.Success;
+                case TaskStatus.Continue:
+                    return TaskStatus.Continue;
+            }
+
+            ChildIndex++;
+        }
+
+        return TaskStatus.Failure;
+    }
+
+    // Reset is triggered when the Behavior Tree ends, then runs again ticking this node
+    public override void Reset (bool hardReset = false) {
+        base.Reset(hardReset);
+                    
+        ShuffleChildren();
+    }
+
+    private void ShuffleChildren () {
+        var rng = new Random();
+        var n = Children.Count;  
+        while (n > 1) {  
+            n--;  
+            var k = rng.Next(n + 1);  
+            var value = Children[k];  
+            Children[k] = Children[n];  
+            Children[n] = value;  
+        }
+    }
+}
+```
+
+Adding custom composites to your behavior tree only takes a line of code. Below is a commented out chunk
+of code if you need more control over the parameters of your composite.
+
+```C#
+using Adnc.FluidBT.Trees;
+
+public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
+    public TreeBuilderCustom (GameObject owner) : base(owner) {
+    }
+
+    public TreeBuilderCustom CustomComposite (string name = "My Custom Composite") {
+        return ParentTask<CustomComposite>(name);
+
+        // Or you can code this manually if you need more specifics
+        //
+        // var parent = new CustomComposite { Name = name };
+        // _tree.AddNode(Pointer, parent);
+        // _pointer.Add(parent);
+        //
+        // return this;
+    }
+}
+```
 
 ### Custom Decorators
 
