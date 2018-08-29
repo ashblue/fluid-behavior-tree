@@ -1,6 +1,6 @@
 # fluid-behavior-tree
 
-@TODO Make sure copy / paste examples work correctly (custom node tutorial, quick start snippet).
+@TODO Make sure copy / paste examples work correctly (custom node tutorial, splicing, quick start snippet).
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
@@ -381,6 +381,51 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 ```
 
 ### Custom Conditions
+
+Custom condition example template.
+
+```C#
+using UnityEngine;
+using Adnc.FluidBT.Tasks;
+
+public class CustomCondition : ConditionBase {
+    // Triggers only the first time this node is run (great for caching data)
+    protected override void OnInit () {
+    }
+
+    // Triggers every time this node starts running. Does not trigger if TaskStatus.Continue was last returned by this node
+    protected override void OnStart () {
+    }
+
+    // Triggers every time `Tick()` is called on the tree and this node is run
+    protected override bool OnUpdate () {
+        // Points to the GameObject of whoever owns the Behavior Tree
+        Debug.Log(Owner.name);
+        return true;
+    }
+
+    // Triggers whenever this node exits after running
+    protected override void OnExit () {
+    }
+}
+```
+
+Code required to modify your tree builder.
+
+```C#
+using Adnc.FluidBT.Trees;
+
+public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
+    ...
+    public TreeBuilderCustom CustomCondition (string name) {
+        _tree.AddNode(Pointer, new CustomCondition {
+            Name = name
+        });
+
+        return this;
+    }
+}
+```
 
 ### Custom Composites
 
