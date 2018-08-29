@@ -516,6 +516,58 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 
 ### Custom Decorators
 
+Decorators can also be custom written to cut down on repetitive code.
+
+```C#
+using Adnc.FluidBT.Tasks;
+
+public class Inverter : DecoratorBase {
+    protected override TaskStatus OnUpdate () {
+        if (Child == null) {
+            return TaskStatus.Success;
+        }
+
+        var childStatus = Child.Update();
+        var status = childStatus;
+
+        switch (childStatus) {
+            case TaskStatus.Success:
+                status = TaskStatus.Failure;
+                break;
+            case TaskStatus.Failure:
+                status = TaskStatus.Success;
+                break;
+        }
+
+        return status;
+    }
+}
+```
+
+Implementing decorators is a lot like composites and can be done in a more complex manner if desired for more customization.
+See the commented area for more details.
+
+```C#
+using Adnc.FluidBT.Trees;
+
+public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
+    public TreeBuilderCustom (GameObject owner) : base(owner) {
+    }
+
+    public TreeBuilderCustom (string name = "My Custom Decorator") {
+        return ParentTask<CustomDecorator>(name);
+
+        // Or you can code this manually if you need more specifics
+        //
+        // var parent = new CustomComposite { Name = name };
+        // _tree.AddNode(Pointer, parent);
+        // _pointer.Add(parent);
+        //
+        // return this;
+    }
+}
+```
+
 ## Submitting your own actions, conditions, ect
 
 Please fill out the following details if you'd like to contribute new code to this project.
