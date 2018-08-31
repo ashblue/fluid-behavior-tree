@@ -15,11 +15,17 @@ Inspired by Fluent Behavior Tree.
 Other Features
 
 * Minimal runtime footprint
-* Tracks the last position of your Behavior Tree and restores it the next frame
+* Tracks the last position of your behavior tree and restores it the next frame
 * Documentation on how to use and extend
 * Open source and free
 * Built for Unity (no integration overhead)
 * Includes a usage example of CTF
+
+**Need Help?**
+
+Have questions or need help? Join us on Slack.
+
+[Join Slack Group](https://join.slack.com/t/fluidbehaviortree/shared_invite/enQtNDI4MjM4NzA0NjMxLTAzYTAxODRjMDNlOGE4ZTBjOGExNjU3Zjg5NWFhOTM2YTEzMDY2ZjljMjY0OWJmOTU5NGY1NTc5YTk2NGM1MGM)
 
 ## Getting Started
 
@@ -30,8 +36,9 @@ Grab the latest `*.unitypackage` from the [releases page](https://github.com/ash
 When creating trees you'll need to store them in a variable to properly cache all the necessary data.
 
 ```C#
-using Adnc.FluidBT.Trees;
 using UnityEngine;
+using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Trees;
 
 public class MyCustomAi : MonoBehaviour {
     private BehaviorTree _tree;
@@ -56,7 +63,7 @@ public class MyCustomAi : MonoBehaviour {
 }
 ```
 
-### What a returned TaskStatus does
+### What a Returned TaskStatus Does
 
 Depending on what you return for a task status different things will happen.
 
@@ -66,15 +73,44 @@ Depending on what you return for a task status different things will happen.
 
 ### WTF is a Behavior Tree?
 
-If you aren't super familiar with Behavior Trees you might want to watch this video.
+If you aren't super familiar with behavior trees you might want to watch this video.
 
 https://www.youtube.com/watch?v=YCMvUCxzWz8
 
+## Table of Contents
+
+  * [Getting Started](#getting-started)
+  * [Example Scene](#example-scene)
+  * [Library](#library)
+    + [Actions](#actions)
+      - [Generic](#generic)
+      - [Wait](#wait)
+    + [Conditions](#conditions)
+      - [Generic](#generic-1)
+      - [Random Chance](#random-chance)
+    + [Composites](#composites)
+      - [Sequence](#sequence)
+      - [Selector](#selector)
+      - [Parallel](#parallel)
+    + [Decorators](#decorators)
+      - [Generic](#generic-2)
+      - [Inverter](#inverter)
+      - [ReturnSuccess](#returnsuccess)
+      - [ReturnFailure](#returnfailure)
+  * [Creating Reusable Behavior Trees](#creating-reusable-behavior-trees)
+  * [Creating Custom Reusable Nodes](#creating-custom-reusable-nodes)
+    + [Your First Custom Node and Tree](#your-first-custom-node-and-tree)
+    + [Custom Actions](#custom-actions)
+    + [Custom Conditions](#custom-conditions)
+    + [Custom Composites](#custom-composites)
+    + [Custom Decorators](#custom-decorators)
+  * [Submitting your own actions, conditions, ect](#submitting-your-own-actions--conditions--ect)
+
 ## Example Scene
 
-You might want to look at the capture the flag example project located at `/Assets/FluidBehaviorTree/Examples/CaptureTheFlag/CaptureTheFlag.unity` 
-for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage of this library
-with units who will attempt to capture the flag while grabbing power ups to try and gain the upper hand.
+You might want to look at the capture the flag example project `/Assets/FluidBehaviorTree/Examples/CaptureTheFlag/CaptureTheFlag.unity` 
+for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
+with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
 ## Library
 
@@ -98,7 +134,7 @@ look into the section on writing your own custom actions.
 
 #### Wait
 
-Skip a number of ticks on the Behavior Tree.
+Skip a number of ticks on the behavior tree.
 
 ```C#
 .Sequence()
@@ -251,13 +287,14 @@ Does not change `TaskStatus.Continue`.
 
 ## Creating Reusable Behavior Trees
 
-Trees can be combined with just a few line of code. This can allow you to create injectable template that bundles different
+Trees can be combined with just a few line of code. This allows you to create injectable behavior trees that bundles different
 nodes for complex functionality such as searching or attacking.
 
-Be warned that spliced trees require a newly built tree for injection, as nodes are not deep copied on splice.
+Be warned that spliced trees require a newly built tree for injection, as nodes are only deep copied on `.Build()`.
 
 ```C#
 using Adnc.FluidBT.Trees;
+using Adnc.FluidBT.Tasks;
 using UnityEngine;
 
 public class MyCustomAi : MonoBehaviour {
@@ -290,7 +327,8 @@ public class MyCustomAi : MonoBehaviour {
 
 ## Creating Custom Reusable Nodes
 
-What makes Fluid Behavior Tree so powerful is the ability to write your own nodes and extend the tree builder to inject custom parameters. For example we can write a new tree builder method like this that sets the target of your AI system.
+What makes Fluid Behavior Tree so powerful is the ability to write your own nodes and extend the tree builder to inject 
+custom parameters. For example we can write a new tree builder method like this that sets the target of your AI system.
 
 ```C#
 var tree = new TreeBuilderCustom(gameObject)
@@ -304,16 +342,14 @@ var tree = new TreeBuilderCustom(gameObject)
     .Build();
 ```
 
-We'll cover how to build this in the next section **Actions**. It should take about 10 minutes to setup your first custom
-action and extend the pre-existing Behavior Tree Builder.
-
 ### Your First Custom Node and Tree
 
-Creating the custom action code is quite simple. Below you'll find a complete overview of additional
-methods supported by a custom action.
+It should take about 10 minutes to setup your first custom
+action and extend the pre-existing behavior tree builder script.
 
 ```C#
 using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Tasks.Actions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -337,6 +373,7 @@ abstracted away.
 
 ```C#
 using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
     // This is always required for class extension reasons (will error without)
@@ -365,7 +402,7 @@ _tree = new TreeBuilderCustom(gameObject)
     .Build();
 ```
 
-And you're done! You've now created a custom action and extendable Behavior Tree Builder. The following examples
+And you're done! You've now created a custom action and extendable behavior tree builder. The following examples
 will be more of the same. But each covers a different node type.
 
 ### Custom Actions
@@ -376,6 +413,7 @@ that you're using constantly.
 ```C#
 using UnityEngine;
 using Adnc.FluidBT.Tasks;
+using Adnc.FluidBT.Tasks.Actions;
 
 public class CustomAction : ActionBase {
     // Triggers only the first time this node is run (great for caching data)
@@ -388,7 +426,7 @@ public class CustomAction : ActionBase {
 
     // Triggers every time `Tick()` is called on the tree and this node is run
     protected override TaskStatus OnUpdate () {
-        // Points to the GameObject of whoever owns the Behavior Tree
+        // Points to the GameObject of whoever owns the behavior tree
         Debug.Log(Owner.name);
         return TaskStatus.Success;
     }
@@ -403,6 +441,7 @@ Add your new node to a custom tree builder.
 
 ```C#
 using Adnc.FluidBT.Trees;
+using UnityEngine;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
     public TreeBuilderCustom (GameObject owner) : base(owner) {
@@ -438,7 +477,7 @@ public class CustomCondition : ConditionBase {
 
     // Triggers every time `Tick()` is called on the tree and this node is run
     protected override bool OnUpdate () {
-        // Points to the GameObject of whoever owns the Behavior Tree
+        // Points to the GameObject of whoever owns the behavior tree
         Debug.Log(Owner.name);
         return true;
     }
@@ -452,6 +491,7 @@ public class CustomCondition : ConditionBase {
 Add the new condition to your behavior tree builder with the following snippet.
 
 ```C#
+using UnityEngine;
 using Adnc.FluidBT.Trees;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
@@ -478,6 +518,7 @@ using Adnc.FluidBT.TaskParents.Composites;
 using Adnc.FluidBT.Tasks;
 using Random = System.Random;
 
+// Makes a selector randomize its order of running child tasks
 public class SelectorRandom : CompositeBase {
     private bool _init;
     
@@ -504,7 +545,7 @@ public class SelectorRandom : CompositeBase {
         return TaskStatus.Failure;
     }
 
-    // Reset is triggered when the Behavior Tree ends, then runs again ticking this node
+    // Reset is triggered when the behavior tree ends, then runs again ticking this node
     public override void Reset (bool hardReset = false) {
         base.Reset(hardReset);
                     
@@ -529,6 +570,7 @@ Adding custom composites to your behavior tree only takes a line of code. Below 
 of code if you need more control over the parameters of your composite.
 
 ```C#
+using UnityEngine;
 using Adnc.FluidBT.Trees;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
@@ -539,11 +581,9 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
         return ParentTask<CustomComposite>(name);
 
         // Or you can code this manually if you need more specifics
-        //
         // var parent = new CustomComposite { Name = name };
         // _tree.AddNode(Pointer, parent);
         // _pointer.Add(parent);
-        //
         // return this;
     }
 }
@@ -554,6 +594,7 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 Decorators can also be custom written to cut down on repetitive code.
 
 ```C#
+using Adnc.FluidBT.Decorators;
 using Adnc.FluidBT.Tasks;
 
 public class Inverter : DecoratorBase {
@@ -579,10 +620,11 @@ public class Inverter : DecoratorBase {
 }
 ```
 
-Implementing decorators is a lot like composites and can be done in a more complex manner if desired for more customization.
+Implementing decorators is similar to composites (alternative commented out code for more complex integration).
 See the commented area for more details.
 
 ```C#
+using UnityEngine;
 using Adnc.FluidBT.Trees;
 
 public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
@@ -593,11 +635,9 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
         return ParentTask<CustomDecorator>(name);
 
         // Or you can code this manually if you need more specifics
-        //
         // var parent = new CustomComposite { Name = name };
         // _tree.AddNode(Pointer, parent);
         // _pointer.Add(parent);
-        //
         // return this;
     }
 }
@@ -608,5 +648,6 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 Please fill out the following details if you'd like to contribute new code to this project.
 
 1. Clone this project for the core code with tests
-2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
-3. Submit a pull request to the `develop` branch
+2. Put your new code in a separate branch
+3. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
+4. Submit a pull request to the `develop` branch
