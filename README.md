@@ -1,14 +1,12 @@
 # fluid-behavior-tree
 
-@TODO Make sure copy / paste examples work correctly (custom node tutorial, splicing, quick start snippet).
-
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
 Inspired by Fluent Behavior Tree.
 
 **Highlights**
 
-* Extendible, write your own custom re-usable nodes
+* Extendable, write your own custom re-usable nodes
 * Pre-built library of tasks to kickstart your AI
 * Heavily tested with TDD and unit tests
 
@@ -83,17 +81,17 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
   * [Example Scene](#example-scene)
   * [Library](#library)
     + [Actions](#actions)
-      - [Generic](#generic)
+      - [Generic](#action-generic)
       - [Wait](#wait)
     + [Conditions](#conditions)
-      - [Generic](#generic-1)
+      - [Generic](#condition-generic)
       - [Random Chance](#random-chance)
     + [Composites](#composites)
       - [Sequence](#sequence)
       - [Selector](#selector)
       - [Parallel](#parallel)
     + [Decorators](#decorators)
-      - [Generic](#generic-2)
+      - [Generic](#decorator-generic)
       - [Inverter](#inverter)
       - [ReturnSuccess](#returnsuccess)
       - [ReturnFailure](#returnfailure)
@@ -104,7 +102,7 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
-  * [Submitting your own actions, conditions, ect](#submitting-your-own-actions--conditions--ect)
+  * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
 
 ## Example Scene
 
@@ -119,7 +117,7 @@ to help speed up your development process.
 
 ### Actions
 
-#### Generic
+#### Action Generic
 
 You can create a generic action on the fly. If you find yourself re-using the same actions you might want to
 look into the section on writing your own custom actions.
@@ -146,7 +144,7 @@ Skip a number of ticks on the behavior tree.
 
 ### Conditions
 
-#### Generic
+#### Condition Generic
 
 You can create a generic condition on the fly. If you find yourself re-using the same actions you might want to
 look into the section on writing your own custom conditions.
@@ -227,7 +225,7 @@ Runs all child nodes at the same time until they all return *Success*. Exits and
 Decorators are parent elements that wrap any node to change the return value (or execute special logic). They are
 extremely powerful and a great compliment to actions, conditions, and composites.
 
-#### Generic
+#### Decorator Generic
 
 You can wrap any node with your own custom decorator code. This allows you to customize re-usable functionality.
 
@@ -643,7 +641,7 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 }
 ```
 
-## Submitting your own actions, conditions, ect
+## Submitting code to this project
 
 Please fill out the following details if you'd like to contribute new code to this project.
 
