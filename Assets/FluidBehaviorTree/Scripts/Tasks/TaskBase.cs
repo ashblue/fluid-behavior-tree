@@ -78,7 +78,7 @@ namespace Adnc.FluidBT.Tasks {
         }
 
         /// <summary>
-        /// Run the first time this node is run or after a hard reset
+        /// Triggers the first time this node is run or after a hard reset
         /// </summary>
         protected virtual void OnInit () {
         }
