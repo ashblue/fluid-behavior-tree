@@ -23,7 +23,7 @@ Other Features
 
 Have questions or need help? Join us on Slack.
 
-[Join Slack Group](https://join.slack.com/t/fluidbehaviortree/shared_invite/enQtNDI4MjM4NzA0NjMxLTAzYTAxODRjMDNlOGE4ZTBjOGExNjU3Zjg5NWFhOTM2YTEzMDY2ZjljMjY0OWJmOTU5NGY1NTc5YTk2NGM1MGM)
+[Join The Slack Group](https://join.slack.com/t/fluidbehaviortree/shared_invite/enQtNDg3NDA1NDk1ODYwLTM1ZjdhZjE2NTQ1MjZjMWQyODQ4ZTQ1MjEwZjYzOTVkMDcxNTZlZmI0YjgxNDQxM2M2ZTE2ODdmN2VhOWUxMDA)
 
 ## Getting Started
 
