@@ -19,12 +19,6 @@ Other Features
 * Built for Unity (no integration overhead)
 * Includes a usage example of CTF
 
-**Need Help?**
-
-Have questions or need help? Join us on Slack.
-
-[Join The Slack Group](https://join.slack.com/t/fluidbehaviortree/shared_invite/enQtNDg3NDA1NDk1ODYwLTM1ZjdhZjE2NTQ1MjZjMWQyODQ4ZTQ1MjEwZjYzOTVkMDcxNTZlZmI0YjgxNDQxM2M2ZTE2ODdmN2VhOWUxMDA)
-
 ## Getting Started
 
 Grab the latest `*.unitypackage` from the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
