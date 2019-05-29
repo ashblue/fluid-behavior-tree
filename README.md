@@ -12,7 +12,7 @@ Inspired by Fluent Behavior Tree.
 * Tracks the last position of your behavior tree and restores it the next frame
 * Built for Unity (no integration overhead)
 
-## Support
+**Support**
 
 Join the [Discord Community](https://discord.gg/8QHFfzn) if you have questions or need help.
 
@@ -70,7 +70,6 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
 
 ## Table of Contents
 
-  * [Getting Started](#getting-started)
   * [Example Scene](#example-scene)
   * [Library](#library)
     + [Actions](#actions)
