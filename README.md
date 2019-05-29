@@ -1,4 +1,4 @@
-# fluid-behavior-tree
+# Fluid Behavior Tree
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
@@ -15,6 +15,8 @@ Inspired by Fluent Behavior Tree.
 ## Support
 
 Join the [Discord Community](https://discord.gg/8QHFfzn) if you have questions or need help.
+
+See upcoming features and development progress on the [Trello Board](https://trello.com/b/BCc33Bcs/fluid-behavior-tree).
 
 ## Getting Started
 
