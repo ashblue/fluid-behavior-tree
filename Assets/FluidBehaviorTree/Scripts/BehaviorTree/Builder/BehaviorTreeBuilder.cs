@@ -26,10 +26,8 @@ namespace Adnc.FluidBT.Trees {
 
         public BehaviorTreeBuilder ParentTask<P> (string name) where P : ITaskParent, new() {
             var parent = new P { Name = name };
-            AddNode(parent);
-            _pointers.Add(parent);
 
-            return this;
+            return AddNodeWithPointer(parent);
         }
 
         public BehaviorTreeBuilder Decorator (string name, Func<ITask, TaskStatus> logic) {
@@ -37,9 +35,13 @@ namespace Adnc.FluidBT.Trees {
                 updateLogic = logic,
                 Name = name
             };
-                        
-            AddNode(decorator);
-            _pointers.Add(decorator);
+
+            return AddNodeWithPointer(decorator);
+        }
+
+        public BehaviorTreeBuilder AddNodeWithPointer (ITaskParent task) {
+            AddNode(task);
+            _pointers.Add(task);
             
             return this;
         }

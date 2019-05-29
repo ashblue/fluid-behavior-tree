@@ -10,9 +10,6 @@ namespace Adnc.FluidBT.Trees.Testing {
     }
     
     public class BehaviorTreeExtensionCompositesTest {
-        public class ExtensionComposite : CompositeBase {
-        }
-        
         [Test]
         public void It_should_run_the_custom_action () {
             var result = false;

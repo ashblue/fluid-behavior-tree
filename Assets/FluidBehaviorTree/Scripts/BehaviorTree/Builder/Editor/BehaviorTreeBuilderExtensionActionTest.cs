@@ -6,12 +6,10 @@ using NUnit.Framework;
 namespace Adnc.FluidBT.Trees.Testing {
     public static class BehaviorTreeExtensionActionExamples {
         public static BehaviorTreeBuilder ExampleAction (this BehaviorTreeBuilder builder, string name, Action callback) {
-            builder.AddNode(new BehaviorTreeBuilderExtensionActionTest.ExtensionAction {
+            return builder.AddNode(new BehaviorTreeBuilderExtensionActionTest.ExtensionAction {
                 Name = name,
                 callback = callback,
             });
-            
-            return builder;
         }
     }
     
