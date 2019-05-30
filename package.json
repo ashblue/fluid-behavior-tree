@@ -1,6 +1,6 @@
 {
   "name": "com.fluid.behavior-tree",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "unity": "2018.1",
   "displayName": "Fluid Behavior Tree",
   "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
@@ -40,6 +40,7 @@
     "@commitlint/travis-cli": "^7.6.1",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/exec": "^3.3.2",
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.10",
     "@semantic-release/npm": "^5.1.7",

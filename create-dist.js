@@ -16,6 +16,8 @@ async function init () {
     copyFiles();
     crossPopulatePackages();
     fs.copyFileSync(`${SOURCE}/package.json`, `${OUTPUT}/package.json`);
+    
+    console.log(`Copied files from ${SOURCE} to ${OUTPUT}`);
 }
 
 function copyFiles() {
