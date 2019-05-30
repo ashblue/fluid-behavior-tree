@@ -105,6 +105,7 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
+  * [Development Environment](#development-environment)
   * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
 
 ## Example Scene
@@ -558,11 +559,18 @@ public static class BehaviorTreeBuilderExtensions {
 }
 ```
 
+## Development Environment
+
+If you wish to run to run the development environment you'll need to install [node.js](#). Then run the following from the root once.
+
+`npm install`
+
+If you wish to create a build run `npm run build` from the root and it will populate the `dist` folder.
+
 ## Submitting code to this project
 
-Please fill out the following details if you'd like to contribute new code to this project.
+Please do the following if you wish to contribute code to this project.
 
-1. Clone this project for the core code with tests
-2. Put your new code in a separate branch
-3. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
-4. Submit a pull request to the `develop` branch
+1. Create your feature in a `feature` branch off of `develop`
+2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
+3. Submit a pull request to the `develop` branch

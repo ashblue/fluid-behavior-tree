@@ -1,0 +1,23 @@
+{
+  "name": "com.fluid.behavior-tree",
+  "version": "1.0.0",
+  "description": "Light distribution scripting for cloud support with Fluid Behaivor Tree",
+  "main": "create-dist.js",
+  "scripts": {
+    "build": "node create-dist.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashblue/fluid-behavior-tree.git"
+  },
+  "author": "Ash Blue (twitter: @AshBlueWD)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashblue/fluid-behavior-tree/issues"
+  },
+  "homepage": "https://github.com/ashblue/fluid-behavior-tree#readme",
+  "devDependencies": {
+    "copy-dir": "^1.1.0",
+    "del": "^4.1.1"
+  }
+}
