@@ -14,7 +14,8 @@ async function init () {
     await del([OUTPUT]);
     
     copyFiles();
-    updateVersionNumber();
+    crossPopulatePackages();
+    fs.copyFileSync(`${SOURCE}/package.json`, `${OUTPUT}/package.json`);
 }
 
 function copyFiles() {
@@ -25,11 +26,31 @@ function copyFiles() {
     });
 }
 
-function updateVersionNumber() {
-    const npmPackage = JSON.parse(fs.readFileSync('package.json').toString());
-    const unityPackage = JSON.parse(fs.readFileSync(`${SOURCE}/package.json`).toString());
-    unityPackage.version = npmPackage.version;
-    fs.writeFileSync(`${OUTPUT}/package.json`, JSON.stringify(unityPackage, null, 2));
+function crossPopulatePackages() {
+    copyJsonFields('package.json', `${SOURCE}/package.json`, [
+        'name',
+        'displayName',
+        'description',
+        'version',
+        'unity',
+        'repository',
+        'license',
+        'bugs',
+        'homepage',
+        'keywords',
+        'author',
+    ]);
+}
+
+function copyJsonFields(sourcePath, destPath, fields) {
+    const source = JSON.parse(fs.readFileSync(sourcePath).toString());
+    const dest = JSON.parse(fs.readFileSync(destPath).toString());
+    
+    fields.forEach((field) => {
+       dest[field] = source[field]; 
+    });
+
+    fs.writeFileSync(destPath, JSON.stringify(dest, null, 2));
 }
 
 init();
