@@ -20,7 +20,18 @@ See upcoming features and development progress on the [Trello Board](https://tre
 
 ## Getting Started
 
-Grab the latest `*.unitypackage` from the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
+Fluid Behavior Tree is used through [Unity's Package Manager](). In order to use it you'll need to add the following two lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity.
+
+```json
+{
+  "registry": "https://registry.npmjs.org",
+  "dependencies": {
+    "com.fluid.behavior-tree": "0.0.0"
+  }
+}
+```
+
+Archives of specific versions and release notes are available on the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
 
 ### Creating a Behavior Tree
 
@@ -98,7 +109,7 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
 
 ## Example Scene
 
-You might want to look at the capture the flag example project `/Assets/FluidBehaviorTree/Examples/CaptureTheFlag/CaptureTheFlag.unity` 
+You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
 for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
 with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
