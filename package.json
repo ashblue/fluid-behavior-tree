@@ -15,6 +15,11 @@
     "behavior tree",
     "builder pattern"
   ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ashblue/fluid-behavior-tree.git"
@@ -30,15 +35,19 @@
   },
   "homepage": "https://github.com/ashblue/fluid-behavior-tree#readme",
   "devDependencies": {
+    "@commitlint/cli": "^7.6.1",
+    "@commitlint/config-conventional": "^7.6.0",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.10",
     "@semantic-release/npm": "^5.1.7",
     "@semantic-release/release-notes-generator": "^7.1.4",
+    "commitizen": "^3.1.1",
     "copy-dir": "^1.1.0",
     "cz-conventional-changelog": "^2.1.0",
     "del": "^4.1.1",
+    "husky": "^2.3.0",
     "semantic-release": "^15.13.12"
   },
   "config": {
