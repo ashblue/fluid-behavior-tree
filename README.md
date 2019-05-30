@@ -567,6 +567,16 @@ If you wish to run to run the development environment you'll need to install [no
 
 If you wish to create a build run `npm run build` from the root and it will populate the `dist` folder.
 
+### Making Commits
+
+All commits should be made using [Commitizen](https://github.com/commitizen/cz-cli) (which is automatically installed when running `npm install`). Commits are automatically compiled to version numbers on release so this is very important. PRs that don't have Commitizen based commits will be rejected.
+
+To make a commit type the following into a terminal from the root
+
+```bash
+npm run commit
+```
+
 ## Submitting code to this project
 
 Please do the following if you wish to contribute code to this project.
