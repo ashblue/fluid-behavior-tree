@@ -1,23 +1,42 @@
 {
   "name": "com.fluid.behavior-tree",
   "version": "1.0.0",
-  "description": "Light distribution scripting for cloud support with Fluid Behaivor Tree",
+  "unity": "2018.1",
+  "displayName": "Fluid Behavior Tree",
+  "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
   "main": "create-dist.js",
   "scripts": {
-    "build": "node create-dist.js"
+    "build": "node create-dist.js",
+    "semantic-release": "semantic-release"
   },
+  "keywords": [
+    "ai",
+    "behavior tree",
+    "builder pattern"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ashblue/fluid-behavior-tree.git"
   },
-  "author": "Ash Blue (twitter: @AshBlueWD)",
-  "license": "ISC",
+  "author": {
+    "name": "Ash Blue",
+    "email": "ash@blueashes.com",
+    "url": "https://twitter.com/ashbluewd"
+  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ashblue/fluid-behavior-tree/issues"
   },
   "homepage": "https://github.com/ashblue/fluid-behavior-tree#readme",
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.10",
+    "@semantic-release/npm": "^5.1.7",
+    "@semantic-release/release-notes-generator": "^7.1.4",
     "copy-dir": "^1.1.0",
-    "del": "^4.1.1"
+    "del": "^4.1.1",
+    "semantic-release": "^15.13.12"
   }
 }
