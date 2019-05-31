@@ -1,10 +1,10 @@
-﻿using Adnc.FluidBT.Decorators;
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+﻿using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Trees.Testing {
+namespace CleverCrow.Fluid.BTs.Trees.Testing {
     public class BehaviorTreeBuilderTest {
         private int _invokeCount;
         private BehaviorTreeBuilder _builder;

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Decorators {
+namespace CleverCrow.Fluid.BTs.Decorators {
     public abstract class DecoratorBase : ITaskParent {
         public List<ITask> Children { get; } = new List<ITask>();
 

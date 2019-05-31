@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Adnc.FluidBT.Tasks {
+namespace CleverCrow.Fluid.BTs.Tasks {
     public class RandomChance : ConditionBase {
         public float chance = 1;
         public float outOf = 1;

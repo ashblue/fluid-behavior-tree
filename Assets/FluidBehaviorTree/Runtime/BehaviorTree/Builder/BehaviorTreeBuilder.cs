@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Adnc.FluidBT.Decorators;
-using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Trees {
+namespace CleverCrow.Fluid.BTs.Trees {
     public class BehaviorTreeBuilder {
         private readonly BehaviorTree _tree;
         private readonly List<ITaskParent> _pointers = new List<ITaskParent>();

@@ -1,11 +1,11 @@
-﻿using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Trees;
+﻿using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class CompositeBaseTest {
         private CompositeExample _composite;
         

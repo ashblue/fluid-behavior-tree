@@ -1,4 +1,4 @@
-﻿namespace Adnc.FluidBT.Tasks.Actions {
+﻿namespace CleverCrow.Fluid.BTs.Tasks.Actions {
     public class Wait : ActionBase {
         public int turns = 1;
         

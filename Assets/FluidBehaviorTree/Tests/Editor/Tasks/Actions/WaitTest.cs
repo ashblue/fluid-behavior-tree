@@ -1,7 +1,7 @@
-﻿using Adnc.FluidBT.Trees;
+﻿using CleverCrow.Fluid.BTs.Trees;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Tasks.Actions.Testing {
+namespace CleverCrow.Fluid.BTs.Tasks.Actions.Testing {
     public class WaitTest {
         [Test]
         public void It_should_trigger_continue_on_first_tick () {

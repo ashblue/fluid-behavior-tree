@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Adnc.FluidBT.Tasks.Actions {
+namespace CleverCrow.Fluid.BTs.Tasks.Actions {
     public class ActionGeneric : ActionBase {
         public Func<TaskStatus> updateLogic;
         public Action startLogic;

@@ -39,8 +39,8 @@ When creating trees you'll need to store them in a variable to properly cache al
 
 ```C#
 using UnityEngine;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
 
 public class MyCustomAi : MonoBehaviour {
     private BehaviorTree _tree;
@@ -295,8 +295,8 @@ nodes for complex functionality such as searching or attacking.
 Be warned that spliced trees require a newly built tree for injection, as nodes are only deep copied on `.Build()`.
 
 ```C#
-using Adnc.FluidBT.Trees;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
+using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
 
 public class MyCustomAi : MonoBehaviour {
@@ -348,8 +348,8 @@ var tree = new BehaviorTreeBuilder(gameObject)
 It should take about 3 minutes to create your first custom action and implement it. First create a new action.
 
 ```C#
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -371,7 +371,7 @@ public class AgentDestination : ActionBase {
 Next we need to extend the `BehaviorTreeBuilder` script with our new AgentDestination action. For more information on C# class extensions see the [official docs](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods).
 
 ```C#
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Trees;
 
 public static class BehaviorTreeBuilderExtensions {
     public static BehaviorTreeBuilder AgentDestination (this BehaviorTreeBuilder builder, string name, Transform target) {
@@ -392,8 +392,8 @@ that you're using constantly.
 
 ```C#
 using UnityEngine;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 
 public class CustomAction : ActionBase {
     // Triggers only the first time this node is run (great for caching data)
@@ -420,7 +420,7 @@ public class CustomAction : ActionBase {
 Add your new node to an extension.
 
 ```c#
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Trees;
 
 public static class BehaviorTreeBuilderExtensions {
     public static BehaviorTreeBuilder CustomAction (this BehaviorTreeBuilder builder, string name = "My Action") {
@@ -438,7 +438,7 @@ if the AI can move to a location, and other tasks that require a complex check.
 
 ```C#
 using UnityEngine;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
 public class CustomCondition : ConditionBase {
     // Triggers only the first time this node is run (great for caching data)
@@ -465,7 +465,7 @@ public class CustomCondition : ConditionBase {
 Add the new condition to your behavior tree builder with the following snippet.
 
 ```c#
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Trees;
 
 public static class BehaviorTreeBuilderExtensions {
     public static BehaviorTreeBuilder CustomCondition (this BehaviorTreeBuilder builder, string name = "My Condition") {
@@ -482,8 +482,8 @@ Fluid Behavior Tree isn't limited to just custom actions and conditions. You can
 simple API. Here is an example of a basic sequence.
 
 ```C#
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
 
 public class CustomSequence : CompositeBase {
     protected override TaskStatus OnUpdate () {            
@@ -506,7 +506,7 @@ public class CustomSequence : CompositeBase {
 Adding custom composites to your behavior tree is just as simple as adding actions. Just takes one line of code.
 
 ```c#
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Trees;
 
 public static class BehaviorTreeBuilderExtensions {
     public static BehaviorTreeBuilder CustomSequence (this BehaviorTreeBuilder builder, string name = "My Sequence") {
@@ -520,8 +520,8 @@ public static class BehaviorTreeBuilderExtensions {
 Decorators can also be custom written to cut down on repetitive code.
 
 ```C#
-using Adnc.FluidBT.Decorators;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.Tasks;
 
 public class CustomInverter : DecoratorBase {
     protected override TaskStatus OnUpdate () {
@@ -549,7 +549,7 @@ public class CustomInverter : DecoratorBase {
 Implementing decorators is similar to composites. If you need to set arguments on the composite you'll want to take a loot at the method `BehaviorTreeBuilder.AddNodeWithPointer()`.
 
 ```c#
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Trees;
 
 public static class BehaviorTreeBuilderExtensions {
     public static BehaviorTreeBuilder CustomInverter (this BehaviorTreeBuilder builder, string name = "My Inverter") {

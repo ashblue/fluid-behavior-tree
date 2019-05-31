@@ -1,9 +1,9 @@
-﻿using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Tasks;
 using NUnit.Framework;
 using NSubstitute;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class TaskRootTest {
         private TaskRoot root;
 

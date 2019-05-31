@@ -1,7 +1,7 @@
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 using Random = System.Random;
 
-namespace Adnc.FluidBT.TaskParents.Composites {
+namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     /// <summary>
     /// Randomly selects a child node with a shuffle algorithm
     /// </summary>

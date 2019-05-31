@@ -1,8 +1,8 @@
-﻿using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class ActionGenericTest {
         public class UpdateMethod {
             [Test]
