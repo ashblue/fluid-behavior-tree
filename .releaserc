@@ -6,6 +6,7 @@
     [
       "@semantic-release/exec",
       {
+        "verifyConditionsCmd": "npm run build",
         "prepareCmd": "npm run build"
       }
     ],
