@@ -108,7 +108,7 @@ public class ExampleUsage : MonoBehaviour {
     public void Awake () {
         var bt = new BehaviorTreeBuilder(gameObject)
             .Sequence()
-            .CustomAction()
+                .CustomAction()
             .End();
     }
 }
@@ -121,6 +121,7 @@ public class ExampleUsage : MonoBehaviour {
     + [Actions](#actions)
       - [Generic](#action-generic)
       - [Wait](#wait)
+      - [Wait Time](#wait-time)
     + [Conditions](#conditions)
       - [Generic](#condition-generic)
       - [Random Chance](#random-chance)
@@ -177,6 +178,17 @@ Skip a number of ticks on the behavior tree.
 .Sequence()
     // Wait for 1 tick on the tree before continuing
     .Wait(1)
+    .Do(MyAction)
+.End()
+```
+
+#### Wait Time
+
+Waits until the passed number of seconds have expired in `deltaTime`.
+
+```C#
+.Sequence()
+    .WaitTime(2.5f)
     .Do(MyAction)
 .End()
 ```
