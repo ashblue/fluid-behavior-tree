@@ -4,6 +4,19 @@
 ### Bug Fixes
 
 * **github:** fixed corrupt GitHub archive generation ([f94a140](https://github.com/ashblue/fluid-behavior-tree/commit/f94a140))
+* **semantic-release:** prevents a crash due to no version number change ([55aa2ba](https://github.com/ashblue/fluid-behavior-tree/commit/55aa2ba))
+
+
+### BREAKING CHANGES
+
+* **github:** Artifical breaking change to make the number match with the correct version
+
+# [2.0.0](https://github.com/ashblue/fluid-behavior-tree/compare/v1.0.0...v2.0.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* **github:** fixed corrupt GitHub archive generation ([f94a140](https://github.com/ashblue/fluid-behavior-tree/commit/f94a140))
 
 
 ### BREAKING CHANGES
