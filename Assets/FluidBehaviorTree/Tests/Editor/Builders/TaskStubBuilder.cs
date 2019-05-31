@@ -1,8 +1,8 @@
-﻿using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.Tasks;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class TaskStubBuilder {
         private bool _enabled = true;
         private TaskStatus _status = TaskStatus.Success;

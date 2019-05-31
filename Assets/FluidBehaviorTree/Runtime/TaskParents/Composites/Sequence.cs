@@ -1,6 +1,6 @@
-﻿using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.Tasks;
 
-namespace Adnc.FluidBT.TaskParents.Composites {
+namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class Sequence : CompositeBase {
         protected override TaskStatus OnUpdate () {            
             for (var i = ChildIndex; i < Children.Count; i++) {

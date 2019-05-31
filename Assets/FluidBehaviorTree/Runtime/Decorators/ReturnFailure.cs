@@ -1,6 +1,6 @@
-﻿using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.Tasks;
 
-namespace Adnc.FluidBT.Decorators {
+namespace CleverCrow.Fluid.BTs.Decorators {
     public class ReturnFailure : DecoratorBase {
         protected override TaskStatus OnUpdate () {
             var status = Child.Update();

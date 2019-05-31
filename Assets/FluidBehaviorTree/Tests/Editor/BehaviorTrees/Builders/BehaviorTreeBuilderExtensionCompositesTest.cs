@@ -1,8 +1,8 @@
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Trees.Testing {
+namespace CleverCrow.Fluid.BTs.Trees.Testing {
     public static class BehaviorTreeExtensionCompositeExamples {
         public static BehaviorTreeBuilder CustomSequence (this BehaviorTreeBuilder builder, string name) {
             return builder.ParentTask<Sequence>(name);

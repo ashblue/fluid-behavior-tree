@@ -1,11 +1,11 @@
-﻿using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.TaskParents;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class TaskSequenceTest {
         private ITask _childA;
         private ITask _childB;

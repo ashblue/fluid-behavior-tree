@@ -1,10 +1,10 @@
-﻿using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
-using Adnc.FluidBT.Trees;
+﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Trees;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class TaskTest {
         public class TaskExample : ActionBase {
             public int StartCount { get; private set; }

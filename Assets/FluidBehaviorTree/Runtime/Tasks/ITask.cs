@@ -1,7 +1,7 @@
-﻿using Adnc.FluidBT.Trees;
+﻿using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Tasks {
+namespace CleverCrow.Fluid.BTs.Tasks {
     public interface ITask {
         /// <summary>
         /// Used for debugging and identification purposes

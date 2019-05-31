@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Trees.Testing {
+namespace CleverCrow.Fluid.BTs.Trees.Testing {
     public class BehaviorTreeTest {
         private GameObject _gameObject;
         private BehaviorTree _tree;

@@ -1,7 +1,7 @@
 ﻿using System;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
-namespace Adnc.FluidBT.Decorators {
+namespace CleverCrow.Fluid.BTs.Decorators {
     public class DecoratorGeneric : DecoratorBase {
         public Func<ITask, TaskStatus> updateLogic;
 

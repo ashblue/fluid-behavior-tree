@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
-namespace Adnc.FluidBT.TaskParents {
+namespace CleverCrow.Fluid.BTs.TaskParents {
     public interface ITaskParent : ITask {
         List<ITask> Children { get; }
         ITaskParent AddChild (ITask child);

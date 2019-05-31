@@ -1,4 +1,4 @@
-﻿namespace Adnc.FluidBT.TaskParents.Composites {
+﻿namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public abstract class CompositeBase : TaskParentBase {
         public int ChildIndex { get; protected set; }
 

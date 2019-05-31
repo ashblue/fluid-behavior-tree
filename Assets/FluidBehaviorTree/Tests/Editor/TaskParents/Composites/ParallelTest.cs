@@ -1,9 +1,9 @@
-﻿using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class ParallelTest {
         private Parallel parallel;
 

@@ -1,7 +1,7 @@
-﻿using Adnc.FluidBT.Trees;
+﻿using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Tasks {
+namespace CleverCrow.Fluid.BTs.Tasks {
     public abstract class TaskBase : ITask {
         private bool _init;
         private bool _start;

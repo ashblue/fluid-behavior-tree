@@ -1,8 +1,8 @@
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Testing;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Testing;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.TaskParents.Composites.Editors.Tests {
+namespace CleverCrow.Fluid.BTs.TaskParents.Composites.Editors.Tests {
     public class SelectorRandomTest {
         public class UpdateMethod {
             [Test]

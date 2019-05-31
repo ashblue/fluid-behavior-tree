@@ -1,8 +1,8 @@
-﻿using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
 
-namespace Adnc.FluidBT.Trees {
+namespace CleverCrow.Fluid.BTs.Trees {
     public class BehaviorTree {
         private readonly GameObject _owner;
         

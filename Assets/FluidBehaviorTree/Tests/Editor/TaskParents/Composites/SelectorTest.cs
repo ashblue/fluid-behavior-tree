@@ -1,12 +1,12 @@
-﻿using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
-using NSubstitute;
+﻿using NSubstitute;
 using System.Collections.Generic;
+using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class SelectorTest {
         public class UpdateMethod {
             private Selector _selector;

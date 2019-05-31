@@ -1,10 +1,10 @@
-﻿using Adnc.FluidBT.TaskParents;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+﻿using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class TaskParentTest {
         private TaskParentExample taskParent;
 

@@ -1,4 +1,4 @@
-﻿namespace Adnc.FluidBT.Tasks.Actions {
+﻿namespace CleverCrow.Fluid.BTs.Tasks.Actions {
     public abstract class ActionBase : TaskBase {
         protected abstract TaskStatus OnUpdate ();
 

@@ -1,9 +1,9 @@
-﻿using Adnc.FluidBT.Decorators;
-using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.Tasks;
 using NUnit.Framework;
 using Assert = UnityEngine.Assertions.Assert;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class ReturnSuccessTest {
         public class UpdateMethod {
             [Test]

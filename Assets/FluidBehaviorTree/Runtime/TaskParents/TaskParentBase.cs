@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
-namespace Adnc.FluidBT.TaskParents {
+namespace CleverCrow.Fluid.BTs.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
         public BehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }

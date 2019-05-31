@@ -1,8 +1,8 @@
-﻿using Adnc.FluidBT.Decorators;
-using Adnc.FluidBT.Tasks;
+﻿using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.Tasks;
 using NUnit.Framework;
 
-namespace Adnc.FluidBT.Testing {
+namespace CleverCrow.Fluid.BTs.Testing {
     public class InverterTest {
         public class UpdateMethod {
             [Test]

@@ -1,4 +1,4 @@
-﻿namespace Adnc.FluidBT.Tasks {
+﻿namespace CleverCrow.Fluid.BTs.Tasks {
     public interface IEventAwake {
         void Awake ();
     }
