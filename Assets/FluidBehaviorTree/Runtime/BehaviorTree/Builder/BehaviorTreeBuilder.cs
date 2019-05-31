@@ -70,6 +70,15 @@ namespace Adnc.FluidBT.Trees {
             return ParentTask<Selector>(name);
         }
         
+        /// <summary>
+        /// Selects the first node to return success
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public BehaviorTreeBuilder SelectorRandom (string name = "selector random") {
+            return ParentTask<SelectorRandom>(name);
+        }
+        
         public BehaviorTreeBuilder Parallel (string name = "parallel") {
             return ParentTask<Parallel>(name);
         }

@@ -55,14 +55,9 @@ namespace Adnc.FluidBT.Tasks {
         /// <summary>
         /// Reset the node to be re-used
         /// </summary>
-        /// <param name="hardReset">Used to wipe the node back to its original state. Meant for pooling.</param>
-        public void Reset (bool hardReset = false) {
+        public void Reset () {
             _start = false;
             _exit = false;
-
-            if (hardReset) {
-                _init = false;
-            }
         }
 
         public void End () {

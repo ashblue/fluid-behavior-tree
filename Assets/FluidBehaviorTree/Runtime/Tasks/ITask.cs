@@ -41,10 +41,9 @@ namespace Adnc.FluidBT.Tasks {
         void End ();
 
         /// <summary>
-        /// Reset this task back to its initial state. Hard reset should run all
-        /// one time run only logic (meant for pooling)
+        /// Reset this task back to its initial state to run again. Triggered after the behavior
+        /// tree finishes with a task status other than continue.
         /// </summary>
-        /// <param name="hardReset"></param>
-        void Reset (bool hardReset = false);
+        void Reset ();
     }
 }
