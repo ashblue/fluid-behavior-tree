@@ -20,7 +20,7 @@ See upcoming features and development progress on the [Trello Board](https://tre
 
 ## Getting Started
 
-Fluid Behavior Tree is used through [Unity's Package Manager](). In order to use it you'll need to add the following two lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity.
+Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following two lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity.
 
 ```json
 {
@@ -561,7 +561,7 @@ public static class BehaviorTreeBuilderExtensions {
 
 ## Development Environment
 
-If you wish to run to run the development environment you'll need to install [node.js](#). Then run the following from the root once.
+If you wish to run to run the development environment you'll need to install [node.js](https://nodejs.org/en/). Then run the following from the root once.
 
 `npm install`
 
