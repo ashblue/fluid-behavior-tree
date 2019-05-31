@@ -50,7 +50,8 @@
     "cz-conventional-changelog": "^2.1.0",
     "del": "^4.1.1",
     "husky": "^2.3.0",
-    "semantic-release": "^15.13.12"
+    "semantic-release": "^15.13.12",
+    "zip-a-folder": "0.0.8"
   },
   "config": {
     "commitizen": {
