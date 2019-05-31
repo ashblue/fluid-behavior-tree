@@ -124,10 +124,11 @@ public class ExampleUsage : MonoBehaviour {
       - [Wait Time](#wait-time)
     + [Conditions](#conditions)
       - [Generic](#condition-generic)
-      - [Random Chance](#random-chance)
+      - [RandomChance](#random-chance)
     + [Composites](#composites)
       - [Sequence](#sequence)
       - [Selector](#selector)
+      - [SelectorRandom](#selector-random)
       - [Parallel](#parallel)
     + [Decorators](#decorators)
       - [Generic](#decorator-generic)
@@ -209,7 +210,7 @@ look into the section on writing your own custom conditions.
 .End()
 ```
 
-#### Random Chance
+#### RandomChance
 
 Randomly evaluate a node as true or false based upon the passed chance.
 
@@ -256,6 +257,18 @@ Runs each child node until *Success* is returned.
     
     // Does not run
     .Do(() => { return TaskStatus.Success; })
+.End()
+```
+
+#### SelectorRandom
+
+Randomly selects a child node with a shuffle algorithm. Looks until `Success` is returned or every node fails. Shuffles every time the tree initially start running it.
+
+```C#
+.SelectorRandom()
+    .Do(() => { return TaskStatus.Failure; })
+    .Do(() => { return TaskStatus.Success; })
+    .Do(() => { return TaskStatus.Failure; })
 .End()
 ```
 
