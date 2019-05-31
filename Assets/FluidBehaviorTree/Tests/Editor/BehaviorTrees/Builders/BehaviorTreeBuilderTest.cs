@@ -16,6 +16,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
         }
 
         public class SelectorRandomMethod : BehaviorTreeBuilderTest {
+            [Test]
             public void It_should_add_a_random_selector () {
                 var tree = _builder
                     .SelectorRandom("random selector")
@@ -425,6 +426,30 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 Assert.AreEqual(TaskStatus.Continue, tree.Tick());
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
+            }
+        }
+
+        public class WaitTimeMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_add_a_WaitTime_action () {
+                var tree = _builder
+                    .WaitTime("Custom")
+                    .Build();
+    
+                var waitTime = tree.Root.Children[0] as WaitTime;
+                
+                Assert.IsNotNull(waitTime);
+            }
+            
+            [Test]
+            public void It_should_set_WaitTime_duration () {
+                var tree = _builder
+                    .WaitTime(2f)
+                    .Build();
+    
+                var waitTime = tree.Root.Children[0] as WaitTime;
+                
+                Assert.AreEqual(2f, waitTime.time);
             }
         }
     }

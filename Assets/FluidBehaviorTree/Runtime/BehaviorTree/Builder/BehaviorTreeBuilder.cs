@@ -93,6 +93,28 @@ namespace CleverCrow.Fluid.BTs.Trees {
         public BehaviorTreeBuilder Do (Func<TaskStatus> action) {
             return Do("action", action);
         }
+        
+        /// <summary>
+        /// Return continue until time has passed
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public BehaviorTreeBuilder WaitTime (string name, float time = 1f) {
+            return AddNode(new WaitTime(new TimeMonitor()) {
+                Name = name,
+                time = time
+            });
+        }
+        
+        /// <summary>
+        /// Return continue until time has passed
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public BehaviorTreeBuilder WaitTime (float time = 1f) {
+            return WaitTime("Wait Time", time);
+        }
 
         public BehaviorTreeBuilder Condition (string name, Func<bool> action) {
             return AddNode(new ConditionGeneric {
