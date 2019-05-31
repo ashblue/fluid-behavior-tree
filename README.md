@@ -26,7 +26,7 @@ Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity
 {
   "registry": "https://registry.npmjs.org",
   "dependencies": {
-    "com.fluid.behavior-tree": "2.0.0"
+    "com.fluid.behavior-tree": "2.0.1"
   }
 }
 ```

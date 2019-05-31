@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/ashblue/fluid-behavior-tree/compare/v2.0.0...v2.0.1) (2019-05-31)
+
+
+### Bug Fixes
+
+* missing meta files no longer crash the dist package ([32f782d](https://github.com/ashblue/fluid-behavior-tree/commit/32f782d))
+
 # [2.0.0](https://github.com/ashblue/fluid-behavior-tree/compare/v1.0.0...v2.0.0) (2019-05-31)
 
 
