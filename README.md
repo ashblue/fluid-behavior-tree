@@ -81,11 +81,38 @@ Depending on what you return for a task status different things will happen.
 * Failure: Same as success, except informs that the node failed
 * Continue: Rerun this node the next time `tree.Tick()` is called. A pointer reference is tracked by the tree and can only be cleared if `tree.Reset()` is called.
 
-### WTF is a Behavior Tree?
+### Extending Trees
 
-If you aren't super familiar with behavior trees you might want to watch this video.
+You can safely add new code to your behavior trees with several lines. Allowing you to customize BTs while supporting future version upgrades. 
 
-https://www.youtube.com/watch?v=YCMvUCxzWz8
+```c#
+using UnityEngine;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Trees;
+
+public class CustomAction : ActionBase {
+    protected override TaskStatus OnUpdate () {
+        Debug.Log(Owner.name);
+        return TaskStatus.Success;
+    }
+}
+
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder CustomAction (this BehaviorTreeBuilder builder, string name = "My Action") {
+        return builder.AddNode(new CustomAction { Name = name });
+    }
+}
+
+public class ExampleUsage : MonoBehaviour {
+    public void Awake () {
+        var bt = new BehaviorTreeBuilder(gameObject)
+            .Sequence()
+            .CustomAction()
+            .End();
+    }
+}
+```
 
 ## Table of Contents
 
