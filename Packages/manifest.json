@@ -1,5 +1,13 @@
 {
-  "registry": "https://registry.npmjs.org",
+  "scopedRegistries": [
+    {
+      "name": "NPM",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "clever-crow"
+      ]
+    }
+  ],
   "dependencies": {
     "clever-crow.nsubstitute": "2.0.3",
     "com.unity.ads": "2.0.8",
