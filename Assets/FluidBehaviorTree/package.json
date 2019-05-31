@@ -1,6 +1,6 @@
 {
   "name": "com.fluid.behavior-tree",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "displayName": "Fluid Behavior Tree",
   "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
   "unity": "2018.1",

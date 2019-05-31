@@ -1,6 +1,7 @@
 const del = require('del');
 const copyDir = require('copy-dir');
 const fs = require('fs');
+const {zip} = require('zip-a-folder');
 
 const OUTPUT = 'dist';
 const SOURCE = 'Assets/FluidBehaviorTree';
@@ -16,6 +17,7 @@ async function init () {
     copyFiles();
     crossPopulatePackages();
     fs.copyFileSync(`${SOURCE}/package.json`, `${OUTPUT}/package.json`);
+    await zip(OUTPUT, `${OUTPUT}.zip`);
     
     console.log(`Copied files from ${SOURCE} to ${OUTPUT}`);
 }
