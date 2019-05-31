@@ -13,20 +13,22 @@ const COPY_FILES = [
 
 async function init () {
     await del([OUTPUT]);
-    
-    copyFiles();
+
+    copyDir.sync(SOURCE, OUTPUT, {});
     crossPopulatePackages();
     fs.copyFileSync(`${SOURCE}/package.json`, `${OUTPUT}/package.json`);
+    copyFiles();
     await zip(OUTPUT, `${OUTPUT}.zip`);
     
     console.log(`Copied files from ${SOURCE} to ${OUTPUT}`);
 }
 
 function copyFiles() {
-    copyDir.sync(SOURCE, OUTPUT, {});
     COPY_FILES.forEach((file) => {
+        const dest = `${OUTPUT}/${file}`;
         if (!fs.existsSync(file)) return;
-        fs.copyFileSync(file, `${OUTPUT}/${file}`);
+        if (fs.existsSync(dest)) fs.unlinkSync(dest);
+        fs.copyFileSync(file, dest);
     });
 }
 
