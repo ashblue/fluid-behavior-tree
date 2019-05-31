@@ -1,33 +1,37 @@
-# fluid-behavior-tree
+# Fluid Behavior Tree
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
 Inspired by Fluent Behavior Tree.
 
-**Highlights**
+**Features**
 
 * Extendable, write your own custom re-usable nodes
 * Pre-built library of tasks to kickstart your AI
 * Heavily tested with TDD and unit tests
-
-Other Features
-
-* Minimal runtime footprint
 * Tracks the last position of your behavior tree and restores it the next frame
-* Documentation on how to use and extend
-* Open source and free
 * Built for Unity (no integration overhead)
-* Includes a usage example of CTF
 
-**Need Help?**
+**Support**
 
-Have questions or need help? Join us on Slack.
+Join the [Discord Community](https://discord.gg/8QHFfzn) if you have questions or need help.
 
-[Join Slack Group](https://join.slack.com/t/fluidbehaviortree/shared_invite/enQtNDI4MjM4NzA0NjMxLTAzYTAxODRjMDNlOGE4ZTBjOGExNjU3Zjg5NWFhOTM2YTEzMDY2ZjljMjY0OWJmOTU5NGY1NTc5YTk2NGM1MGM)
+See upcoming features and development progress on the [Trello Board](https://trello.com/b/BCc33Bcs/fluid-behavior-tree).
 
 ## Getting Started
 
-Grab the latest `*.unitypackage` from the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
+Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following two lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity.
+
+```json
+{
+  "registry": "https://registry.npmjs.org",
+  "dependencies": {
+    "com.fluid.behavior-tree": "0.0.0"
+  }
+}
+```
+
+Archives of specific versions and release notes are available on the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
 
 ### Creating a Behavior Tree
 
@@ -35,8 +39,8 @@ When creating trees you'll need to store them in a variable to properly cache al
 
 ```C#
 using UnityEngine;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Trees;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
 
 public class MyCustomAi : MonoBehaviour {
     private BehaviorTree _tree;
@@ -77,7 +81,6 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
 
 ## Table of Contents
 
-  * [Getting Started](#getting-started)
   * [Example Scene](#example-scene)
   * [Library](#library)
     + [Actions](#actions)
@@ -97,16 +100,17 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
       - [ReturnFailure](#returnfailure)
   * [Creating Reusable Behavior Trees](#creating-reusable-behavior-trees)
   * [Creating Custom Reusable Nodes](#creating-custom-reusable-nodes)
-    + [Your First Custom Node and Tree](#your-first-custom-node-and-tree)
+    + [Your First Custom Node and Tree](#your-first-custom-node-and-extension)
     + [Custom Actions](#custom-actions)
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
+  * [Development Environment](#development-environment)
   * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
 
 ## Example Scene
 
-You might want to look at the capture the flag example project `/Assets/FluidBehaviorTree/Examples/CaptureTheFlag/CaptureTheFlag.unity` 
+You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
 for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
 with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
@@ -291,8 +295,8 @@ nodes for complex functionality such as searching or attacking.
 Be warned that spliced trees require a newly built tree for injection, as nodes are only deep copied on `.Build()`.
 
 ```C#
-using Adnc.FluidBT.Trees;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Trees;
+using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
 
 public class MyCustomAi : MonoBehaviour {
@@ -325,11 +329,10 @@ public class MyCustomAi : MonoBehaviour {
 
 ## Creating Custom Reusable Nodes
 
-What makes Fluid Behavior Tree so powerful is the ability to write your own nodes and extend the tree builder to inject 
-custom parameters. For example we can write a new tree builder method like this that sets the target of your AI system.
+What makes Fluid Behavior Tree so powerful is the ability to write your own nodes and add them to the builder without editing any source. You can even create Unity packages that add new builder functionality. For example we can write a new tree builder method like this that sets the target of your AI system with just a few lines of code.
 
 ```C#
-var tree = new TreeBuilderCustom(gameObject)
+var tree = new BehaviorTreeBuilder(gameObject)
     .Sequence()
         .AgentDestination("Find Enemy", target)
         .Do(() => {
@@ -340,68 +343,47 @@ var tree = new TreeBuilderCustom(gameObject)
     .Build();
 ```
 
-### Your First Custom Node and Tree
+### Your First Custom Node and Extension
 
-It should take about 10 minutes to setup your first custom
-action and extend the pre-existing behavior tree builder script.
+It should take about 3 minutes to create your first custom action and implement it. First create a new action.
 
 ```C#
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AgentDestination : ActionBase {
-    public NavMeshAgent agent;
+    private NavMeshAgent _agent;
     public Transform target;
 
     protected override void OnInit () {
-        agent = Owner.GetComponent<NavMeshAgent>();
+        _agent = Owner.GetComponent<NavMeshAgent>();
     }
 
     protected override TaskStatus OnUpdate () {
-        agent.SetDestination(target.position);
+        _agent.SetDestination(target.position);
         return TaskStatus.Success;
     }
 }
 ```
 
-New method added to the builder script. This is pretty simple and easy to customize since most of the overhead is
-abstracted away.
+Next we need to extend the `BehaviorTreeBuilder` script with our new AgentDestination action. For more information on C# class extensions see the [official docs](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods).
 
 ```C#
-using Adnc.FluidBT.Trees;
-using UnityEngine;
+using CleverCrow.Fluid.BTs.Trees;
 
-public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    // This is always required for class extension reasons (will error without)
-    public TreeBuilderCustom (GameObject owner) : base(owner) {
-    }
-    
-    public TreeBuilderCustom AgentDestination (Transform target) {
-        _tree.AddNode(Pointer, new AgentDestination {
-            Name = "Agent Destination",
-            target = target
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder AgentDestination (this BehaviorTreeBuilder builder, string name, Transform target) {
+        return builder.AddNode(new AgentDestination {
+            Name = name,
+            target = target,
         });
-
-        return this;
     }
 }
 ```
 
-Be sure when you create trees that you use your new `TreeBuilderCustom` class. For example:
-
-```C#
-_tree = new TreeBuilderCustom(gameObject)
-    .Sequence()
-        .AgentDestination("Find Target", target)
-        ...
-    .End()
-    .Build();
-```
-
-And you're done! You've now created a custom action and extendable behavior tree builder. The following examples
-will be more of the same. But each covers a different node type.
+And you're done! You've now created a custom action and extendable behavior tree builder that's future proofed for new versions. The following examples will be more of the same. But each covers a different node type.
 
 ### Custom Actions
 
@@ -410,8 +392,8 @@ that you're using constantly.
 
 ```C#
 using UnityEngine;
-using Adnc.FluidBT.Tasks;
-using Adnc.FluidBT.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 
 public class CustomAction : ActionBase {
     // Triggers only the first time this node is run (great for caching data)
@@ -435,22 +417,16 @@ public class CustomAction : ActionBase {
 }
 ```
 
-Add your new node to a custom tree builder.
+Add your new node to an extension.
 
-```C#
-using Adnc.FluidBT.Trees;
-using UnityEngine;
+```c#
+using CleverCrow.Fluid.BTs.Trees;
 
-public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    public TreeBuilderCustom (GameObject owner) : base(owner) {
-    }
-
-    public TreeBuilderCustom CustomAction (string name = "Custom Action") {
-        _tree.AddNode(Pointer, new CustomAction {
-            Name = name
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder CustomAction (this BehaviorTreeBuilder builder, string name = "My Action") {
+        return builder.AddNode(new CustomAction {
+            Name = name,
         });
-
-        return this;
     }
 }
 ```
@@ -462,7 +438,7 @@ if the AI can move to a location, and other tasks that require a complex check.
 
 ```C#
 using UnityEngine;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
 public class CustomCondition : ConditionBase {
     // Triggers only the first time this node is run (great for caching data)
@@ -488,20 +464,14 @@ public class CustomCondition : ConditionBase {
 
 Add the new condition to your behavior tree builder with the following snippet.
 
-```C#
-using UnityEngine;
-using Adnc.FluidBT.Trees;
+```c#
+using CleverCrow.Fluid.BTs.Trees;
 
-public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    public TreeBuilderCustom (GameObject owner) : base(owner) {
-    }
-
-    public TreeBuilderCustom CustomCondition (string name = "My Condition") {
-        _tree.AddNode(Pointer, new CustomCondition {
-            Name = name
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder CustomCondition (this BehaviorTreeBuilder builder, string name = "My Condition") {
+        return builder.AddNode(new CustomCondition {
+            Name = name,
         });
-
-        return this;
     }
 }
 ```
@@ -509,80 +479,38 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 ### Custom Composites
 
 Fluid Behavior Tree isn't limited to just custom actions and conditions. You can create new composite types with a fairly
-simple API. Here is an example of a new selector variation that randomly chooses an execution order.
+simple API. Here is an example of a basic sequence.
 
 ```C#
-using Adnc.FluidBT.TaskParents.Composites;
-using Adnc.FluidBT.Tasks;
-using Random = System.Random;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Tasks;
 
-// Makes a selector randomize its order of running child tasks
-public class SelectorRandom : CompositeBase {
-    private bool _init;
-    
-    // Triggers each time this node is ticked
-    protected override TaskStatus OnUpdate () {
-        if (!_init) {
-            ShuffleChildren();
-            _init = true;
-        }
-        
+public class CustomSequence : CompositeBase {
+    protected override TaskStatus OnUpdate () {            
         for (var i = ChildIndex; i < Children.Count; i++) {
             var child = Children[ChildIndex];
 
-            switch (child.Update()) {
-                case TaskStatus.Success:
-                    return TaskStatus.Success;
-                case TaskStatus.Continue:
-                    return TaskStatus.Continue;
+            var status = child.Update();
+            if (status != TaskStatus.Success) {
+                return status;
             }
 
             ChildIndex++;
         }
 
-        return TaskStatus.Failure;
-    }
-
-    // Reset is triggered when the behavior tree ends, then runs again ticking this node
-    public override void Reset (bool hardReset = false) {
-        base.Reset(hardReset);
-                    
-        ShuffleChildren();
-    }
-
-    private void ShuffleChildren () {
-        var rng = new Random();
-        var n = Children.Count;  
-        while (n > 1) {  
-            n--;  
-            var k = rng.Next(n + 1);  
-            var value = Children[k];  
-            Children[k] = Children[n];  
-            Children[n] = value;  
-        }
+        return TaskStatus.Success;
     }
 }
 ```
 
-Adding custom composites to your behavior tree only takes a line of code. Below is a commented out chunk
-of code if you need more control over the parameters of your composite.
+Adding custom composites to your behavior tree is just as simple as adding actions. Just takes one line of code.
 
-```C#
-using UnityEngine;
-using Adnc.FluidBT.Trees;
+```c#
+using CleverCrow.Fluid.BTs.Trees;
 
-public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    public TreeBuilderCustom (GameObject owner) : base(owner) {
-    }
-
-    public TreeBuilderCustom CustomComposite (string name = "My Custom Composite") {
-        return ParentTask<CustomComposite>(name);
-
-        // Or you can code this manually if you need more specifics
-        // var parent = new CustomComposite { Name = name };
-        // _tree.AddNode(Pointer, parent);
-        // _pointer.Add(parent);
-        // return this;
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder CustomSequence (this BehaviorTreeBuilder builder, string name = "My Sequence") {
+        return builder.ParentTask<CustomSequence>(name);
     }
 }
 ```
@@ -592,10 +520,10 @@ public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
 Decorators can also be custom written to cut down on repetitive code.
 
 ```C#
-using Adnc.FluidBT.Decorators;
-using Adnc.FluidBT.Tasks;
+using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.Tasks;
 
-public class Inverter : DecoratorBase {
+public class CustomInverter : DecoratorBase {
     protected override TaskStatus OnUpdate () {
         if (Child == null) {
             return TaskStatus.Success;
@@ -618,34 +546,41 @@ public class Inverter : DecoratorBase {
 }
 ```
 
-Implementing decorators is similar to composites (alternative commented out code for more complex integration).
-See the commented area for more details.
+Implementing decorators is similar to composites. If you need to set arguments on the composite you'll want to take a loot at the method `BehaviorTreeBuilder.AddNodeWithPointer()`.
 
-```C#
-using UnityEngine;
-using Adnc.FluidBT.Trees;
+```c#
+using CleverCrow.Fluid.BTs.Trees;
 
-public class TreeBuilderCustom : BehaviorTreeBuilderBase<TreeBuilderCustom> {
-    public TreeBuilderCustom (GameObject owner) : base(owner) {
-    }
-
-    public TreeBuilderCustom CustomDecorator (string name = "My Custom Decorator") {
-        return ParentTask<CustomDecorator>(name);
-
-        // Or you can code this manually if you need more specifics
-        // var parent = new CustomComposite { Name = name };
-        // _tree.AddNode(Pointer, parent);
-        // _pointer.Add(parent);
-        // return this;
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder CustomInverter (this BehaviorTreeBuilder builder, string name = "My Inverter") {
+        // See BehaviorTreeBuilder.AddNodeWithPointer() if you need to set custom composite data from arguments
+        return builder.ParentTask<CustomInverter>(name);
     }
 }
 ```
 
+## Development Environment
+
+If you wish to run to run the development environment you'll need to install [node.js](https://nodejs.org/en/). Then run the following from the root once.
+
+`npm install`
+
+If you wish to create a build run `npm run build` from the root and it will populate the `dist` folder.
+
+### Making Commits
+
+All commits should be made using [Commitizen](https://github.com/commitizen/cz-cli) (which is automatically installed when running `npm install`). Commits are automatically compiled to version numbers on release so this is very important. PRs that don't have Commitizen based commits will be rejected.
+
+To make a commit type the following into a terminal from the root
+
+```bash
+npm run commit
+```
+
 ## Submitting code to this project
 
-Please fill out the following details if you'd like to contribute new code to this project.
+Please do the following if you wish to contribute code to this project.
 
-1. Clone this project for the core code with tests
-2. Put your new code in a separate branch
-3. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
-4. Submit a pull request to the `develop` branch
+1. Create your feature in a `feature` branch off of `develop`
+2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
+3. Submit a pull request to the `develop` branch

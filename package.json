@@ -1,0 +1,60 @@
+{
+  "name": "com.fluid.behavior-tree",
+  "version": "2.0.0",
+  "unity": "2018.1",
+  "displayName": "Fluid Behavior Tree",
+  "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
+  "main": "create-dist.js",
+  "scripts": {
+    "build": "node create-dist.js",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz"
+  },
+  "keywords": [
+    "ai",
+    "behavior tree",
+    "builder pattern"
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashblue/fluid-behavior-tree.git"
+  },
+  "author": {
+    "name": "Ash Blue",
+    "email": "ash@blueashes.com",
+    "url": "https://twitter.com/ashbluewd"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ashblue/fluid-behavior-tree/issues"
+  },
+  "homepage": "https://github.com/ashblue/fluid-behavior-tree#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^7.6.1",
+    "@commitlint/config-conventional": "^7.6.0",
+    "@commitlint/travis-cli": "^7.6.1",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/exec": "^3.3.2",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.10",
+    "@semantic-release/npm": "^5.1.7",
+    "@semantic-release/release-notes-generator": "^7.1.4",
+    "commitizen": "^3.1.1",
+    "copy-dir": "^1.1.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "del": "^4.1.1",
+    "husky": "^2.3.0",
+    "semantic-release": "^15.13.12"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
