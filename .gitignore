@@ -34,3 +34,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 /Logs/Packages-Update.log
+
+# Node.js
+node_modules
+dist
