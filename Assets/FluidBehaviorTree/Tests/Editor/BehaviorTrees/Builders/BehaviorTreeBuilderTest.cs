@@ -14,6 +14,18 @@ namespace Adnc.FluidBT.Trees.Testing {
             _invokeCount = 0;
             _builder = new BehaviorTreeBuilder(null);
         }
+
+        public class SelectorRandomMethod : BehaviorTreeBuilderTest {
+            public void It_should_add_a_random_selector () {
+                var tree = _builder
+                    .SelectorRandom("random selector")
+                    .Build();
+    
+                var selectorRandom = tree.Root.Children[0] as SelectorRandom;
+                
+                Assert.IsNotNull(selectorRandom);
+            }
+        }
         
         public class SequenceMethod : BehaviorTreeBuilderTest {
             [Test]
