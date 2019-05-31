@@ -8,10 +8,10 @@
             }
         }
         
-        public override void Reset (bool hardReset = false) {
+        public override void Reset () {
             ChildIndex = 0;
 
-            base.Reset(hardReset);
+            base.Reset();
         }
     }
 }

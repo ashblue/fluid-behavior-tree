@@ -128,14 +128,6 @@ namespace Adnc.FluidBT.Testing {
 
                     Assert.AreEqual(1, node.InitCount);
                 }
-
-                [Test]
-                public void Triggers_on_reset_hard () {
-                    node.Reset(true);
-                    node.Update();
-
-                    Assert.AreEqual(2, node.InitCount);
-                }
             }
 
             public class ExitEvent : UpdateMethod {

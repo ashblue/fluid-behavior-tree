@@ -48,7 +48,7 @@ namespace Adnc.FluidBT.TaskParents {
             return TaskStatus.Success;
         }
 
-        public virtual void Reset (bool hardReset = false) {
+        public virtual void Reset () {
         }
 
         public virtual ITaskParent AddChild (ITask child) {

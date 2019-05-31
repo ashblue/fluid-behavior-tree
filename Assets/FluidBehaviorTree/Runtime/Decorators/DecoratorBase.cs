@@ -31,7 +31,7 @@ namespace Adnc.FluidBT.Decorators {
             Child.End();
         }
 
-        public void Reset (bool hardReset = false) {
+        public void Reset () {
         }
 
         public ITaskParent AddChild (ITask child) {

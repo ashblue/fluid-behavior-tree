@@ -42,10 +42,10 @@ namespace Adnc.FluidBT.TaskParents.Composites {
             return TaskStatus.Continue;
         }
 
-        public override void Reset (bool hardReset = false) {
+        public override void Reset () {
             _childStatus.Clear();
 
-            base.Reset(hardReset);
+            base.Reset();
         }
 
         public override void End () {
