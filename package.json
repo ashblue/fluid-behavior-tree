@@ -4,9 +4,9 @@
   "unity": "2018.1",
   "displayName": "Fluid Behavior Tree",
   "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
-  "main": "create-dist.js",
+  "main": "build.js",
   "scripts": {
-    "build": "node create-dist.js",
+    "build": "node build.js",
     "semantic-release": "semantic-release",
     "commit": "git-cz"
   },
@@ -51,6 +51,7 @@
     "del": "^4.1.1",
     "husky": "^2.3.0",
     "semantic-release": "^15.13.12",
+    "upm-package-populator": "^1.0.0",
     "zip-a-folder": "0.0.8"
   },
   "config": {
