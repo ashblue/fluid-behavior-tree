@@ -46,13 +46,10 @@
     "@semantic-release/npm": "^5.1.7",
     "@semantic-release/release-notes-generator": "^7.1.4",
     "commitizen": "^3.1.1",
-    "copy-dir": "^1.1.0",
     "cz-conventional-changelog": "^2.1.0",
-    "del": "^4.1.1",
     "husky": "^2.3.0",
     "semantic-release": "^15.13.12",
-    "upm-package-populator": "^1.0.0",
-    "zip-a-folder": "0.0.8"
+    "upm-package-populator": "^1.0.0"
   },
   "config": {
     "commitizen": {
