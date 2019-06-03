@@ -22,7 +22,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// <summary>
         /// Tree this node belongs to
         /// </summary>
-        BehaviorTree ParentTree { get; set; }
+        IBehaviorTree ParentTree { get; set; }
 
         /// <summary>
         /// Last status returned by Update
