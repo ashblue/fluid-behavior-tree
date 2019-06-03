@@ -8,7 +8,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
         public BehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         public bool Enabled { get; set; } = true;
 
         public List<ITask> Children { get; } = new List<ITask>();

@@ -3,7 +3,12 @@ using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees {
-    public class BehaviorTree {
+    public interface IBehaviorTree {
+        TaskRoot Root { get; }
+    }
+    
+    [System.Serializable]
+    public class BehaviorTree : IBehaviorTree {
         private readonly GameObject _owner;
         
         public int TickCount { get; private set; }
