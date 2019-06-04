@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.TaskParents {
     public abstract class TaskParentBase : ITaskParent {
-        public BehaviorTree ParentTree { get; set; }
+        public IBehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public virtual string Name { get; set; }

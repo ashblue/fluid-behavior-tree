@@ -1,6 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using CleverCrow.Fluid.BTs.Trees;
+using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -30,18 +31,81 @@ namespace CleverCrow.Fluid.BTs.Testing {
         }
 
         public class UpdateMethod {
-            TaskExample node;
+            TaskExample _node;
 
             [SetUp]
             public void SetUpNode () {
-                node = new TaskExample();
+                _node = new TaskExample();
+            }
+
+            public class RegisteringContinueNodes : UpdateMethod {
+                [Test]
+                public void It_should_call_BehaviorTree_AddActiveTask_on_continue () {
+                    var tree = Substitute.For<IBehaviorTree>();
+                    _node.status = TaskStatus.Continue;
+                    _node.ParentTree = tree;
+
+                    _node.Update();
+
+                    tree.Received(1).AddActiveTask(_node);
+                }
+                
+                [Test]
+                public void It_should_not_call_BehaviorTree_AddActiveTask_on_continue_twice () {
+                    var tree = Substitute.For<IBehaviorTree>();
+                    _node.status = TaskStatus.Continue;
+                    _node.ParentTree = tree;
+
+                    _node.Update();
+                    _node.Update();
+
+                    tree.Received(1).AddActiveTask(_node);
+                }
+                
+                [Test]
+                public void It_should_call_BehaviorTree_AddActiveTask_again_after_Reset () {
+                    var tree = Substitute.For<IBehaviorTree>();
+                    _node.status = TaskStatus.Continue;
+                    _node.ParentTree = tree;
+
+                    _node.Update();
+                    _node.Reset();
+                    _node.Update();
+
+                    tree.Received(2).AddActiveTask(_node);
+                }
+
+                [Test]
+                public void It_should_call_BehaviorTree_RemoveActiveTask_after_returning_continue () {
+                    var tree = Substitute.For<IBehaviorTree>();
+                    _node.status = TaskStatus.Continue;
+                    _node.ParentTree = tree;
+
+                    _node.Update();
+
+                    _node.status = TaskStatus.Success;
+                    _node.Update();
+
+                    tree.Received(1).RemoveActiveTask(_node);
+                }
+                
+                [Test]
+                public void It_should_not_call_BehaviorTree_AddActiveTask_if_continue_was_not_returned () {
+                    var tree = Substitute.For<IBehaviorTree>();
+                    _node.status = TaskStatus.Success;
+                    _node.ParentTree = tree;
+
+                    _node.Update();
+
+                    tree.Received(0).RemoveActiveTask(_node);
+                }
             }
 
             public class TreeTickCountChange : UpdateMethod {
                 private GameObject _go;
                 
                 [SetUp]
-                public void BeforEach () {
+                public void BeforeEach () {
                     _go = new GameObject();
                 }
 
@@ -53,106 +117,106 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 [Test]
                 public void Retriggers_start_if_tick_count_changes () {
                     var tree = new BehaviorTree(_go);
-                    tree.AddNode(tree.Root, node);
+                    tree.AddNode(tree.Root, _node);
                     
                     tree.Tick();
                     tree.Tick();
                     
-                    Assert.AreEqual(2, node.StartCount);
+                    Assert.AreEqual(2, _node.StartCount);
                 }
                 
                 [Test]
                 public void Does_not_retrigger_start_if_tick_count_stays_the_same () {
-                    node.status = TaskStatus.Continue;
+                    _node.status = TaskStatus.Continue;
                     
                     var tree = new BehaviorTree(_go);
-                    tree.AddNode(tree.Root, node);
+                    tree.AddNode(tree.Root, _node);
                     
                     tree.Tick();
                     tree.Tick();
                     
-                    Assert.AreEqual(1, node.StartCount);
+                    Assert.AreEqual(1, _node.StartCount);
                 }
             }
 
             public class StartEvent : UpdateMethod {
                 [Test]
                 public void Trigger_on_1st_run () {
-                    node.Update();
+                    _node.Update();
 
-                    Assert.AreEqual(1, node.StartCount);
+                    Assert.AreEqual(1, _node.StartCount);
                 }
 
                 [Test]
                 public void Do_not_trigger_on_2nd_run () {
-                    node.Update();
-                    node.Update();
+                    _node.Update();
+                    _node.Update();
 
-                    Assert.AreEqual(1, node.StartCount);
+                    Assert.AreEqual(1, _node.StartCount);
                 }
 
                 [Test]
                 public void Triggers_on_reset () {
-                    node.status = TaskStatus.Continue;
+                    _node.status = TaskStatus.Continue;
 
-                    node.Update();
-                    node.Reset();
-                    node.Update();
+                    _node.Update();
+                    _node.Reset();
+                    _node.Update();
                     
-                    Assert.AreEqual(2, node.StartCount);
+                    Assert.AreEqual(2, _node.StartCount);
                 }
             }
 
             public class InitEvent : UpdateMethod {
                 [SetUp]
                 public void TriggerUpdate () {
-                    node.Update();
+                    _node.Update();
                 }
 
                 [Test]
                 public void Triggers_on_1st_update () {
-                    Assert.AreEqual(1, node.InitCount);
+                    Assert.AreEqual(1, _node.InitCount);
                 }
                 
                 [Test]
                 public void Does_not_trigger_on_2nd_update () {
-                    node.Update();
+                    _node.Update();
 
-                    Assert.AreEqual(1, node.InitCount);
+                    Assert.AreEqual(1, _node.InitCount);
                 }
 
                 [Test]
                 public void Does_not_trigger_on_reset () {
-                    node.Reset();
-                    node.Update();
+                    _node.Reset();
+                    _node.Update();
 
-                    Assert.AreEqual(1, node.InitCount);
+                    Assert.AreEqual(1, _node.InitCount);
                 }
             }
 
             public class ExitEvent : UpdateMethod {
                 [Test]
                 public void Does_not_trigger_on_continue () {
-                    node.status = TaskStatus.Continue;
-                    node.Update();
+                    _node.status = TaskStatus.Continue;
+                    _node.Update();
 
-                    Assert.AreEqual(0, node.ExitCount);
+                    Assert.AreEqual(0, _node.ExitCount);
                 }
 
                 [Test]
                 public void Triggers_on_success () {
-                    node.status = TaskStatus.Success;
-                    node.Update();
+                    _node.status = TaskStatus.Success;
+                    _node.Update();
 
-                    Assert.AreEqual(1, node.ExitCount);
+                    Assert.AreEqual(1, _node.ExitCount);
                 }
 
                 [Test]
                 public void Triggers_on_failure () {
-                    node.status = TaskStatus.Failure;
-                    node.Update();
+                    _node.status = TaskStatus.Failure;
+                    _node.Update();
 
-                    Assert.AreEqual(1, node.ExitCount);
+                    Assert.AreEqual(1, _node.ExitCount);
                 }
             }
         }
