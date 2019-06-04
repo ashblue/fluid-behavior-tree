@@ -1,14 +1,24 @@
-﻿using CleverCrow.Fluid.BTs.TaskParents;
+﻿using System.Collections.Generic;
+using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees {
-    public class BehaviorTree {
+    public interface IBehaviorTree {
+        int TickCount { get; }
+        
+        void AddActiveTask (ITask task);
+        void RemoveActiveTask (ITask task);
+    }
+    
+    public class BehaviorTree : IBehaviorTree {
         private readonly GameObject _owner;
+        private readonly List<ITask> _tasks = new List<ITask>();
         
         public int TickCount { get; private set; }
-        
+
         public TaskRoot Root { get; } = new TaskRoot();
+        public IReadOnlyList<ITask> ActiveTasks => _tasks;
 
         public BehaviorTree (GameObject owner) {
             _owner = owner;
@@ -18,13 +28,18 @@ namespace CleverCrow.Fluid.BTs.Trees {
         public TaskStatus Tick () {
             var status = Root.Update();
             if (status != TaskStatus.Continue) {
-                TickCount++;
+                Reset();
             }
 
             return status;
         }
 
         public void Reset () {
+            foreach (var task in _tasks) {
+                task.End();
+            }
+
+            _tasks.Clear();
             TickCount++;
         }
 
@@ -53,6 +68,14 @@ namespace CleverCrow.Fluid.BTs.Trees {
                     SyncNodes(parent);
                 }
             }
+        }
+        
+        public void AddActiveTask (ITask task) {
+            _tasks.Add(task);
+        }
+
+        public void RemoveActiveTask (ITask task) {
+            _tasks.Remove(task);
         }
     }
 }

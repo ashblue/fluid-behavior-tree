@@ -7,11 +7,12 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         private bool _start;
         private bool _exit;
         private int _lastTickCount;
+        private bool _active;
 
         public string Name { get; set; }
         public bool Enabled { get; set; } = true;
         public GameObject Owner { get; set; }
-        public BehaviorTree ParentTree { get; set; }
+        public IBehaviorTree ParentTree { get; set; }
 
         public TaskStatus LastStatus { get; private set; }
 
@@ -32,9 +33,12 @@ namespace CleverCrow.Fluid.BTs.Tasks {
             var status = GetUpdate();
             LastStatus = status;
 
-            // Soft reset since the node has completed
             if (status != TaskStatus.Continue) {
+                if (_active) ParentTree?.RemoveActiveTask(this);
                 Exit();
+            } else if (!_active) {
+                ParentTree?.AddActiveTask(this);
+                _active = true;
             }
 
             return status;
@@ -56,6 +60,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// Reset the node to be re-used
         /// </summary>
         public void Reset () {
+            _active = false;
             _start = false;
             _exit = false;
         }

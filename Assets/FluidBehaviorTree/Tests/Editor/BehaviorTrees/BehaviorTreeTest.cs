@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Testing;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
@@ -121,6 +123,27 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 
                 Assert.AreEqual(1, _tree.TickCount);
             }
+            
+            [Test]
+            public void It_should_call_End_on_active_nodes () {
+                var task = A.TaskStub().Build();
+                
+                _tree.AddActiveTask(task);
+                _tree.Reset();
+                
+                task.Received(1).End();
+            }
+            
+            [Test]
+            public void It_should_not_call_End_on_active_nodes_twice_if_called_again () {
+                var task = A.TaskStub().Build();
+                
+                _tree.AddActiveTask(task);
+                _tree.Reset();
+                _tree.Reset();
+
+                task.Received(1).End();
+            }
         }
 
         public class TickMethod : BehaviorTreeTest {
@@ -216,6 +239,29 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     
                     _actionAlt.Received(0).Reset();
                 }
+            }
+        }
+
+        public class AddActiveTaskMethod : BehaviorTreeTest {
+            [Test]
+            public void It_should_add_an_active_task () {
+                var task = A.TaskStub().Build();
+                
+                _tree.AddActiveTask(task);
+
+                Assert.IsTrue(_tree.ActiveTasks.Contains(task));
+            }
+        }
+        
+        public class RemoveActiveTaskMethod : BehaviorTreeTest {
+            [Test]
+            public void It_should_add_an_active_task () {
+                var task = A.TaskStub().Build();
+                
+                _tree.AddActiveTask(task);
+                _tree.RemoveActiveTask(task);
+
+                Assert.IsFalse(_tree.ActiveTasks.Contains(task));
             }
         }
     }

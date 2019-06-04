@@ -13,7 +13,7 @@ namespace CleverCrow.Fluid.BTs.Decorators {
         public bool Enabled { get; set; } = true;
 
         public GameObject Owner { get; set; }
-        public BehaviorTree ParentTree { get; set; }
+        public IBehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public ITask Child => Children.Count > 0 ? Children[0] : null;
