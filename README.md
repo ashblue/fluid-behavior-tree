@@ -1,4 +1,4 @@
-# Fluid Behavior Tree
+# Fluid Behavior Tree [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
@@ -20,11 +20,19 @@ See upcoming features and development progress on the [Trello Board](https://tre
 
 ## Getting Started
 
-Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following two lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity.
+Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
 
 ```json
 {
-  "registry": "https://registry.npmjs.org",
+  "scopedRegistries": [
+    {
+      "name": "NPM",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "com.fluid"
+      ]
+    }
+  ],
   "dependencies": {
     "com.fluid.behavior-tree": "2.0.1"
   }
@@ -73,11 +81,38 @@ Depending on what you return for a task status different things will happen.
 * Failure: Same as success, except informs that the node failed
 * Continue: Rerun this node the next time `tree.Tick()` is called. A pointer reference is tracked by the tree and can only be cleared if `tree.Reset()` is called.
 
-### WTF is a Behavior Tree?
+### Extending Trees
 
-If you aren't super familiar with behavior trees you might want to watch this video.
+You can safely add new code to your behavior trees with several lines. Allowing you to customize BTs while supporting future version upgrades. 
 
-https://www.youtube.com/watch?v=YCMvUCxzWz8
+```c#
+using UnityEngine;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
+using CleverCrow.Fluid.BTs.Trees;
+
+public class CustomAction : ActionBase {
+    protected override TaskStatus OnUpdate () {
+        Debug.Log(Owner.name);
+        return TaskStatus.Success;
+    }
+}
+
+public static class BehaviorTreeBuilderExtensions {
+    public static BehaviorTreeBuilder CustomAction (this BehaviorTreeBuilder builder, string name = "My Action") {
+        return builder.AddNode(new CustomAction { Name = name });
+    }
+}
+
+public class ExampleUsage : MonoBehaviour {
+    public void Awake () {
+        var bt = new BehaviorTreeBuilder(gameObject)
+            .Sequence()
+                .CustomAction()
+            .End();
+    }
+}
+```
 
 ## Table of Contents
 
@@ -86,12 +121,14 @@ https://www.youtube.com/watch?v=YCMvUCxzWz8
     + [Actions](#actions)
       - [Generic](#action-generic)
       - [Wait](#wait)
+      - [Wait Time](#wait-time)
     + [Conditions](#conditions)
       - [Generic](#condition-generic)
-      - [Random Chance](#random-chance)
+      - [RandomChance](#random-chance)
     + [Composites](#composites)
       - [Sequence](#sequence)
       - [Selector](#selector)
+      - [SelectorRandom](#selector-random)
       - [Parallel](#parallel)
     + [Decorators](#decorators)
       - [Generic](#decorator-generic)
@@ -146,6 +183,17 @@ Skip a number of ticks on the behavior tree.
 .End()
 ```
 
+#### Wait Time
+
+Waits until the passed number of seconds have expired in `deltaTime`.
+
+```C#
+.Sequence()
+    .WaitTime(2.5f)
+    .Do(MyAction)
+.End()
+```
+
 ### Conditions
 
 #### Condition Generic
@@ -162,7 +210,7 @@ look into the section on writing your own custom conditions.
 .End()
 ```
 
-#### Random Chance
+#### RandomChance
 
 Randomly evaluate a node as true or false based upon the passed chance.
 
@@ -209,6 +257,18 @@ Runs each child node until *Success* is returned.
     
     // Does not run
     .Do(() => { return TaskStatus.Success; })
+.End()
+```
+
+#### SelectorRandom
+
+Randomly selects a child node with a shuffle algorithm. Looks until `Success` is returned or every node fails. Shuffles every time the tree initially start running it.
+
+```C#
+.SelectorRandom()
+    .Do(() => { return TaskStatus.Failure; })
+    .Do(() => { return TaskStatus.Success; })
+    .Do(() => { return TaskStatus.Failure; })
 .End()
 ```
 
