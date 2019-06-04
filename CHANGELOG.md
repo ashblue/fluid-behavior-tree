@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/ashblue/fluid-behavior-tree/compare/v2.0.1...v2.1.0) (2019-06-04)
+
+
+### Bug Fixes
+
+* **manifest:** moved to scoped registries ([19dd266](https://github.com/ashblue/fluid-behavior-tree/commit/19dd266))
+
+
+### Features
+
+* **behavior-tree:** calling `Reset()` now triggers End on active nodes ([0287fa8](https://github.com/ashblue/fluid-behavior-tree/commit/0287fa8))
+
 ## [2.0.1](https://github.com/ashblue/fluid-behavior-tree/compare/v2.0.0...v2.0.1) (2019-05-31)
 
 
