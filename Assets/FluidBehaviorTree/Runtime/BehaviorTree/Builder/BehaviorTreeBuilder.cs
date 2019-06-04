@@ -62,6 +62,18 @@ namespace CleverCrow.Fluid.BTs.Trees {
             return ParentTask<ReturnFailure>(name);
         }
         
+        public BehaviorTreeBuilder RepeatUntilSuccess (string name = "repeat until success") {
+            return ParentTask<RepeatUntilSuccess>(name);
+        }
+
+        public BehaviorTreeBuilder RepeatUntilFailure (string name = "repeat until failure") {
+            return ParentTask<RepeatUntilFailure>(name);
+        }
+
+        public BehaviorTreeBuilder RepeatForever (string name = "repeat forever") {
+            return ParentTask<RepeatForever>(name);
+        }
+
         public BehaviorTreeBuilder Sequence (string name = "sequence") {
             return ParentTask<Sequence>(name);
         }
