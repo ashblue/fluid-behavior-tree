@@ -1,4 +1,5 @@
-﻿using CleverCrow.Fluid.BTs.Trees;
+﻿using System.Collections.Generic;
+using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Tasks {
@@ -14,6 +15,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         public GameObject Owner { get; set; }
         public IBehaviorTree ParentTree { get; set; }
 
+        public List<ITask> Children { get; } = null;
         public TaskStatus LastStatus { get; private set; }
 
         public TaskStatus Update () {
