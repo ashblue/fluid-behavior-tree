@@ -141,6 +141,26 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 }
             }
         }
+
+        public class CenterAlignChildrenMethod : GraphContainerHorizontalTest {
+            [Test]
+            public void It_should_align_a_child_in_the_center () {
+                _childBox.Width.Returns(50);
+                
+                var children = new GraphContainerHorizontal();
+                children.AddBox(A.GraphBoxStub().WithSize(50, 50).Build());
+                children.AddBox(A.GraphBoxStub().WithSize(50, 50).Build());
+                
+                var wrapper = new GraphContainerVertical();
+                wrapper.AddBox(_childBox);
+                wrapper.AddBox(children);
+                
+                _container.AddBox(wrapper);
+                _container.CenterAlignChildren();
+                
+                _childBox.Received(1).AddGlobalPosition(25, 0);
+            }
+        }
     }
 
     public class BreakingExampleCases {

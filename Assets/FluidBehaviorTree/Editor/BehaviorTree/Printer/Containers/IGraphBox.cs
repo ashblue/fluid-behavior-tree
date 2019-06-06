@@ -14,5 +14,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         void SetLocalPosition (float x, float y);
         void AddGlobalPosition (float x, float y);
         void SetPadding (float x, float y);
+        void CenterAlignChildren ();
     }
 }

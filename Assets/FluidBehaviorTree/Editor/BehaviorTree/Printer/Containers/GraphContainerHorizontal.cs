@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class GraphContainerHorizontal : IGraphContainer {
@@ -57,6 +59,12 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public override string ToString () {
             return
                 $"Size: {Width}, {Height}; Local: {LocalPositionX}, {LocalPositionY}; Global: {GlobalPositionX}, {GlobalPositionY};";
+        }
+
+        public virtual void CenterAlignChildren () {
+            foreach (var child in _childContainers) {
+                child.CenterAlignChildren();
+            }
         }
     }
 }

@@ -1,3 +1,6 @@
+using System.Linq;
+using UnityEngine;
+
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class GraphContainerVertical : GraphContainerHorizontal {
         public override void AddBox (IGraphBox child) {
@@ -11,6 +14,16 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             Height += child.Height;
             if (child.Width > Width) Width = child.Width;
+        }
+
+        public override void CenterAlignChildren () {
+            foreach (var child in _childContainers) {
+                var gap = Width - child.Width;
+                var shift = gap / 2f;
+                
+                child.AddGlobalPosition(shift, 0);
+                child.CenterAlignChildren();
+            }
         }
     }
 }
