@@ -8,10 +8,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         
         public float Width { get; private set; }
         public float Height { get; private set; }
+        
+        public float PaddingX { get; private set; }
+        public float PaddingY { get; private set; }
 
         public void SetSize (float width, float height) {
             Width = width;
             Height = height;
+        }
+
+        public void SetPadding (float x, float y) {
+            Width += x;
+            Height += y;
+
+            PaddingX = x;
+            PaddingY = y;
         }
 
         public void SetLocalPosition (float x, float y) {

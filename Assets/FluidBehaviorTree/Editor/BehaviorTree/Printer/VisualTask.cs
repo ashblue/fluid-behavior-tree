@@ -18,6 +18,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             _box = new GraphBox();
             _box.SetSize(50, 50);
+            _box.SetPadding(10, 0);
             
             container.AddBox(_box);
 
@@ -33,7 +34,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         public void Print () {
-            var rect = new Rect(_box.GlobalPositionX, _box.GlobalPositionY, _box.Width, _box.Height);
+            var rect = new Rect(_box.GlobalPositionX + _box.PaddingX, _box.GlobalPositionY + _box.PaddingY, _box.Width - _box.PaddingX, _box.Height - _box.PaddingY);
             GUI.Box(rect, _task.Name);
             
             foreach (var child in _children) {

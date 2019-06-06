@@ -10,6 +10,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public float GlobalPositionY { get; private set; }
         public float Width { get; protected set; }
         public float Height { get; protected set; }
+        public float PaddingX { get; }
+        public float PaddingY { get; }
         public List<IGraphBox> ChildContainers => _childContainers;
 
         public void SetLocalPosition (float x, float y) {
@@ -46,6 +48,10 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             foreach (var child in ChildContainers) {
                 child.AddGlobalPosition(x, y);
             }
+        }
+
+        public void SetPadding (float x, float y) {
+            throw new System.NotImplementedException();
         }
 
         public override string ToString () {
