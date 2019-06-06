@@ -1,0 +1,27 @@
+namespace CleverCrow.Fluid.BTs.Trees.Editors {
+    public class GraphBox : IGraphBox {
+        public float LocalPositionX { get; private set; }
+        public float LocalPositionY { get; private set; }
+        
+        public float GlobalPositionX { get; private set; }
+        public float GlobalPositionY { get; private set; }
+        
+        public float Width { get; private set; }
+        public float Height { get; private set; }
+
+        public void SetSize (float width, float height) {
+            Width = width;
+            Height = height;
+        }
+
+        public void SetLocalPosition (float x, float y) {
+            LocalPositionX = x;
+            LocalPositionY = y;
+        }
+
+        public void AddGlobalPosition (float x, float y) {
+            GlobalPositionX += x;
+            GlobalPositionY += y;
+        }
+    }
+}

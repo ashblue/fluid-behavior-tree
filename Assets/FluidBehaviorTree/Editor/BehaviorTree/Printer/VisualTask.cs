@@ -8,33 +8,28 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private float _height = 50;
         
         private List<VisualTask> _children = new List<VisualTask>();
-        private ITreeBox _box;
+        private IGraphBox _box;
         private ITask _task;
 
-        public VisualTask (ITask task, ITreeContainer parentContainer) {
+        public VisualTask (ITask task, IGraphContainer parentContainer) {
             _task = task;
             
-            var container = new TreeContainerVertical();
-            var childContainer = new TreeContainerHorizontal();
+            var container = new GraphContainerVertical();
 
-            _box = new TreeBox();
+            _box = new GraphBox();
             _box.SetSize(50, 50);
             
-            parentContainer.AddBox(container);
             container.AddBox(_box);
 
             if (task.Children != null) {
+                var childContainer = new GraphContainerHorizontal();
                 foreach (var child in task.Children) {
                     _children.Add(new VisualTask(child, childContainer));
                 }
+                container.AddBox(childContainer);
             }
 
-            container.AddBox(childContainer);
-
-            Debug.Log(task.Name);
-            Debug.Log($"Parent Global Position: {parentContainer.GlobalPositionX}, {parentContainer.GlobalPositionY}");
-            Debug.Log($"Container Global Position: {container.GlobalPositionX}, {container.GlobalPositionY}");
-            Debug.Log($"Box Global Position: {_box.GlobalPositionX}, {_box.GlobalPositionY}");
+            parentContainer.AddBox(container);
         }
 
         public void Print () {

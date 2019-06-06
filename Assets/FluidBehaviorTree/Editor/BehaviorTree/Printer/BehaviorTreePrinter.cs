@@ -3,7 +3,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private readonly VisualTask _root;
         
         public BehaviorTreePrinter (IBehaviorTree tree) {
-            var container = new TreeContainerVertical();
+            var container = new GraphContainerVertical();
             // @TODO Temporary start position for debugging, replace with a proper scroll view
             container.SetGlobalPosition(300, 0);
             _root = new VisualTask(tree.Root, container);
