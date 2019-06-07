@@ -1,17 +1,40 @@
+using UnityEngine;
+
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class BehaviorTreePrinter {
+        private const float SCROLL_PADDING = 40;
+
         private readonly VisualTask _root;
-        
-        public BehaviorTreePrinter (IBehaviorTree tree) {
+        private readonly Rect _containerSize;
+
+        private Vector2 _scrollPosition;
+
+        public BehaviorTreePrinter (IBehaviorTree tree, Vector2 windowSize) {
             var container = new GraphContainerVertical();
-            // @TODO Temporary start position for debugging, replace with a proper scroll view
-            container.SetGlobalPosition(40, 40);
+            container.SetGlobalPosition(SCROLL_PADDING, SCROLL_PADDING);
             _root = new VisualTask(tree.Root, container);
             container.CenterAlignChildren();
+            
+            _containerSize = new Rect(0, 0, 
+                container.Width + SCROLL_PADDING * 2, 
+                container.Height + SCROLL_PADDING * 2);
+
+            CenterScrollView(windowSize, container);
         }
 
-        public void Print () {
+        private void CenterScrollView (Vector2 windowSize, GraphContainerVertical container) {
+            var scrollOverflow = container.Width + SCROLL_PADDING * 2 - windowSize.x;
+            var centerViewPosition = scrollOverflow / 2;
+            _scrollPosition.x = centerViewPosition;
+        }
+
+        public void Print (Vector2 windowSize) {
+            _scrollPosition = GUI.BeginScrollView(
+                new Rect(0, 0, windowSize.x, windowSize.y), 
+                _scrollPosition, 
+                _containerSize);
             _root.Print();
+            GUI.EndScrollView();
         }
     }
 }
