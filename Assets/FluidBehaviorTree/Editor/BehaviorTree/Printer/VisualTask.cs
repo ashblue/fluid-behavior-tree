@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
+using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTask {
+        private Texture2D _verticalBottom;
         private float _width = 50;
         private float _height = 50;
         
@@ -18,7 +21,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             _box = new GraphBox();
             _box.SetSize(50, 50);
-            _box.SetPadding(10, 0);
+            _box.SetPadding(10, 10);
             
             container.AddBox(_box);
 
@@ -34,12 +37,59 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         public void Print () {
-            var rect = new Rect(_box.GlobalPositionX + _box.PaddingX, _box.GlobalPositionY + _box.PaddingY, _box.Width - _box.PaddingX, _box.Height - _box.PaddingY);
-            GUI.Box(rect, _task.Name);
-            
+            if (!(_task is TaskRoot)) PaintVerticalTop();
+            PaintBody();
+            if (_children.Count > 0) PaintVerticalBottom();
+
             foreach (var child in _children) {
                 child.Print();
             }
+        }
+
+        private void PaintBody () {
+            var rect = new Rect(
+                _box.GlobalPositionX + _box.PaddingX, 
+                _box.GlobalPositionY + _box.PaddingY,
+                _box.Width - _box.PaddingX, 
+                _box.Height - _box.PaddingY);
+            
+            GUI.Box(rect, _task.Name);
+        }
+
+        private void PaintVerticalBottom () {
+            if (_verticalBottom == null) {
+                _verticalBottom = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), Color.black);
+            }
+
+            var position = new Rect(
+                _box.GlobalPositionX + _width / 2 + _box.PaddingX - 2, 
+                _box.GlobalPositionY + _height + _box.PaddingY - 1,
+                100, 
+                100);
+            
+            GUI.Label(position, _verticalBottom);
+        }
+        
+        private void PaintVerticalTop () {
+            if (_verticalBottom == null) {
+                _verticalBottom = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), Color.black);
+            }
+
+            var position = new Rect(
+                _box.GlobalPositionX + _width / 2 + _box.PaddingX - 2, 
+                _box.GlobalPositionY + _box.PaddingY / 2,
+                100, 
+                100);
+            
+            GUI.Label(position, _verticalBottom);
+        }
+        
+        private static Texture2D CreateTexture (int width, int height, Color color) {
+            var texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            texture.SetPixels(Enumerable.Repeat(color, width * height).ToArray());
+            texture.Apply();
+            
+            return texture;
         }
     }
 }
