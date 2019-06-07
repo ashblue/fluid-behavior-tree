@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public interface IGraphBox {
+        List<IGraphBox> ChildContainers { get; }
+
         float LocalPositionX { get; }
         float LocalPositionY { get; }
         float GlobalPositionX { get; }
@@ -15,5 +19,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         void AddGlobalPosition (float x, float y);
         void SetPadding (float x, float y);
         void CenterAlignChildren ();
+
+        bool SkipCentering { get; }
     }
 }

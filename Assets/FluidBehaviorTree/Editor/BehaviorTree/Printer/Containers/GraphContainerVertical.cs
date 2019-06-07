@@ -1,5 +1,4 @@
-using System.Linq;
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class GraphContainerVertical : GraphContainerHorizontal {
@@ -17,13 +16,26 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         public override void CenterAlignChildren () {
+            var positions = GetCenterAlignLocalPositions();
+            
+            for (var i = 0; i < _childContainers.Count; i++) {
+                var child = _childContainers[i];
+                if (child.SkipCentering) continue;
+                child.AddGlobalPosition(positions[i], 0);
+                child.CenterAlignChildren();
+            }
+        }
+
+        private List<float> GetCenterAlignLocalPositions () {
+            var list = new List<float>();
             foreach (var child in _childContainers) {
                 var gap = Width - child.Width;
                 var shift = gap / 2f;
-                
-                child.AddGlobalPosition(shift, 0);
-                child.CenterAlignChildren();
+
+                list.Add(shift);
             }
+
+            return list;
         }
     }
 }
