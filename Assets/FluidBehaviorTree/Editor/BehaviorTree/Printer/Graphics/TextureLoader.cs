@@ -2,10 +2,10 @@ using UnityEditor;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
-    public class ImageHandler {
+    public class TextureLoader {
         public Texture2D Texture { get; }
 
-        public ImageHandler (string spritePath) {
+        public TextureLoader (string spritePath) {
             Texture = AssetDatabase.LoadAssetAtPath<Sprite>(spritePath)?.texture;
         }
 

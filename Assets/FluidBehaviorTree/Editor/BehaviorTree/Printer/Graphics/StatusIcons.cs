@@ -5,11 +5,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class StatusIcons {
         private const string ICON_STATUS_PATH = "Assets/FluidBehaviorTree/Editor/Icons/Status";
 
-        private ImageHandler Success { get; } = new ImageHandler($"{ICON_STATUS_PATH}/Success.png");
-        private ImageHandler Failure { get; } = new ImageHandler($"{ICON_STATUS_PATH}/Failure.png");
-        private ImageHandler Continue { get; } = new ImageHandler($"{ICON_STATUS_PATH}/Continue.png");
+        private TextureLoader Success { get; } = new TextureLoader($"{ICON_STATUS_PATH}/Success.png");
+        private TextureLoader Failure { get; } = new TextureLoader($"{ICON_STATUS_PATH}/Failure.png");
+        private TextureLoader Continue { get; } = new TextureLoader($"{ICON_STATUS_PATH}/Continue.png");
 
-        public ImageHandler GetIcon (TaskStatus status) {
+        public TextureLoader GetIcon (TaskStatus status) {
             switch (status) {
                 case TaskStatus.Success:
                     return Success;

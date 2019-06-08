@@ -9,9 +9,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private Vector2 _scrollPosition;
         
-        public static StatusIcons StatusIcons { get; } = new StatusIcons();
+        public static StatusIcons StatusIcons { get; private set; }
+        public static GuiStyleCollection SharedStyles { get; private set; }
+
 
         public BehaviorTreePrinter (IBehaviorTree tree, Vector2 windowSize) {
+            StatusIcons = new StatusIcons();
+            SharedStyles = new GuiStyleCollection();
+            
             var container = new GraphContainerVertical();
             container.SetGlobalPosition(SCROLL_PADDING, SCROLL_PADDING);
             _root = new VisualTask(tree.Root, container);

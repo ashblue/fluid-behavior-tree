@@ -19,8 +19,17 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         private void OnGUI () {
+            if (!Application.isPlaying) {
+                ClearView();
+            }
+            
             GUILayout.Label($"Behavior Tree: {_name}", EditorStyles.boldLabel);
             _printer?.Print(position.size);
+        }
+
+        private void ClearView () {
+            _name = null;
+            _printer = null;
         }
 
         private void Update () {

@@ -3,7 +3,7 @@ using CleverCrow.Fluid.BTs.TaskParents;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
-    public class VisualTaskPrint {
+    public class NodePrintController {
         private readonly VisualTask _node;
         private bool _activatedOnce;
 
@@ -13,33 +13,20 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         
         private readonly IGraphBox _box;
         private readonly IGraphBox _divider;
-
-        private GUIStyle _boxStyle;
-        private GUIStyle _boxStyleInactive;
-        private readonly GUIStyle _titleStyle;
-
-        private Texture2D _boxBorder;
-        private Texture2D _boxBorderInactive;
+        
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
         
-        private readonly ImageHandler _iconMain;
+        private readonly TextureLoader _iconMain;
 
-        public VisualTaskPrint (VisualTask node) {
+        private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
+
+        public NodePrintController (VisualTask node) {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
-            _iconMain = new ImageHandler(_node.Task.IconPath);
-            
-            CreateBoxStyles();
-
-            _titleStyle = new GUIStyle(GUI.skin.label) {
-                fontSize = 9, 
-                alignment = TextAnchor.LowerCenter,
-                wordWrap = true,
-                padding = new RectOffset(3, 3, 3, 3),
-            };
+            _iconMain = new TextureLoader(_node.Task.IconPath);
         }
         
         public void Print (bool taskIsActive) {
@@ -57,31 +44,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             }
         }
 
-        private void CreateBoxStyles () {
-            _boxBorder = CreateTexture(19, 19, Color.gray);
-            _boxBorder.SetPixels(1, 1, 17, 17, 
-                Enumerable.Repeat(Color.white, 17 * 17).ToArray());
-            _boxBorder.Apply();
-            _boxStyle = new GUIStyle(GUI.skin.box) {
-                border = new RectOffset(1, 1, 1, 1),
-                normal = {
-                    background = _boxBorder,
-                },
-            };
-
-            Color inactiveColor = new Color32(208, 208, 208, 255);
-            _boxBorderInactive = CreateTexture(19, 19, new Color32(150, 150, 150, 255));
-            _boxBorderInactive.SetPixels(1, 1, 17, 17, 
-                Enumerable.Repeat(inactiveColor, 17 * 17).ToArray());
-            _boxBorderInactive.Apply();
-            _boxStyleInactive = new GUIStyle(GUI.skin.box) {
-                border = new RectOffset(1, 1, 1, 1),
-                normal = {
-                    background = _boxBorderInactive,
-                },
-            };
-        }
-
         private void PaintBody () {
             var rect = new Rect(
                 _box.GlobalPositionX + _box.PaddingX, 
@@ -94,15 +56,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             if (_activatedOnce) {
                 GUI.backgroundColor = _backgroundFader.CurrentColor;
-                _boxStyle.normal.textColor = _textFader.CurrentColor;
-                GUI.Box(rect, GUIContent.none, _boxStyle);
+                Styles.BoxActive.Style.normal.textColor = _textFader.CurrentColor;
+                GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
                 PrintLastStatus(rect);
             } else {
-                GUI.Box(rect, GUIContent.none, _boxStyleInactive);
+                GUI.Box(rect, GUIContent.none, Styles.BoxInactive.Style);
             }
             
             PrintIcon();
-            GUI.Label(rect, _node.Task.Name, _titleStyle);
+            GUI.Label(rect, _node.Task.Name, Styles.Title);
 
             GUI.backgroundColor = prevBackgroundColor;
             GUI.color = prevColor;

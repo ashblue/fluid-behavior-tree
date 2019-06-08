@@ -4,7 +4,7 @@ using CleverCrow.Fluid.BTs.Tasks;
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTask {
         private readonly List<VisualTask> _children = new List<VisualTask>();
-        private readonly VisualTaskPrint _printer;
+        private readonly NodePrintController _printer;
         private bool _taskActive;
 
         public ITask Task { get; }
@@ -37,7 +37,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             parentContainer.AddBox(container);
             
-            _printer = new VisualTaskPrint(this);
+            _printer = new NodePrintController(this);
         }
 
         private void BindTask () {
