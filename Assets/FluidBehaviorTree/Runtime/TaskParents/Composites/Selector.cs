@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using CleverCrow.Fluid.BTs.Tasks;
+﻿using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class Selector : CompositeBase {
+        public override string IconPath { get; } = $"{_iconPath}/LinearScale.png";
+
         protected override TaskStatus OnUpdate () {
             for (var i = ChildIndex; i < Children.Count; i++) {
                 var child = Children[ChildIndex];

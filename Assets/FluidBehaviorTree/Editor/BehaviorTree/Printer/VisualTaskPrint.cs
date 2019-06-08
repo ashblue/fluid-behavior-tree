@@ -1,16 +1,17 @@
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
+using UnityEditor;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTaskPrint {
         private readonly VisualTask _node;
-        private readonly ColorFader _backgroundFader = new ColorFader(Color.white, new Color(0.38f, 1f, 0.4f));
-        private readonly ColorFader _textFader = new ColorFader(Color.gray, Color.black);
+        private readonly ColorFader _backgroundFader = new ColorFader(new Color(0.65f, 0.65f, 0.65f), new Color(0.39f, 0.78f, 0.39f));
+        private readonly ColorFader _textFader = new ColorFader(Color.white, Color.black);
         private bool _activatedOnce;
         
-        private IGraphBox _box;
-        private IGraphBox _divider;
+        private readonly IGraphBox _box;
+        private readonly IGraphBox _divider;
 
         private GUIStyle _boxStyle;
         private Texture2D _boxBorder;
@@ -19,11 +20,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
+        private Texture2D _iconTexture;
 
         public VisualTaskPrint (VisualTask node) {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
+            
+            _iconTexture = AssetDatabase.LoadAssetAtPath<Sprite>(_node.Task.IconPath)?.texture;
             
             CreateBoxStyles();
         }
@@ -52,6 +56,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _boxStyle = new GUIStyle(GUI.skin.box) {
                 border = new RectOffset(1, 1, 1, 1),
                 fontSize = fontSize,
+                alignment = TextAnchor.LowerCenter,
                 normal = {
                     background = _boxBorder,
                 },
@@ -65,6 +70,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _boxStyleInactive = new GUIStyle(GUI.skin.box) {
                 border = new RectOffset(1, 1, 1, 1),
                 fontSize = 9,
+                alignment = TextAnchor.LowerCenter,
                 normal = {
                     background = _boxBorderInactive,
                     textColor = Color.gray,
@@ -89,9 +95,22 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             } else {
                 GUI.Box(rect, _node.Task.Name, _boxStyleInactive);
             }
-            
+
+            PrintIcon();
+
             GUI.backgroundColor = prevBackgroundColor;
             GUI.color = prevColor;
+        }
+
+        private void PrintIcon () {
+            const float iconWidth = 35;
+            const float iconHeight = 35;
+            var iconRect = new Rect(
+                _box.GlobalPositionX + _box.PaddingX / 2 + _box.Width / 2 - iconWidth / 2 + _node.Task.IconPadding / 2,
+                _box.GlobalPositionY + _box.PaddingX / 2 + 3 + _node.Task.IconPadding / 2,
+                iconWidth - _node.Task.IconPadding,
+                iconHeight - _node.Task.IconPadding);
+            GUI.Label(iconRect, _iconTexture);
         }
 
         private void PaintDivider () {

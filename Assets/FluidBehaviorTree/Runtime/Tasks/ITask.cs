@@ -14,6 +14,8 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// </summary>
         bool Enabled { get; set; }
         
+        string IconPath { get; }
+
         /// <summary>
         /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
         /// GameObject reference
@@ -33,6 +35,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         TaskStatus LastStatus { get; }
         
         EditorRuntimeUtilities EditorUtils { get; }
+        float IconPadding { get; }
 
         /// <summary>
         /// Triggered every tick
