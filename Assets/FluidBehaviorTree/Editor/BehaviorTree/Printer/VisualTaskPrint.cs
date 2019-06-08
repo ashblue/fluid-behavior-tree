@@ -1,48 +1,36 @@
-using System;
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
-using CleverCrow.Fluid.BTs.Tasks;
-using UnityEditor;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTaskPrint {
-        private const string ICON_STATUS_PATH = "Assets/FluidBehaviorTree/Editor/Icons/Status";
-
         private readonly VisualTask _node;
+        private bool _activatedOnce;
+
         private readonly ColorFader _backgroundFader = new ColorFader(new Color(0.65f, 0.65f, 0.65f), new Color(0.39f, 0.78f, 0.39f));
         private readonly ColorFader _textFader = new ColorFader(Color.white, Color.black);
         private readonly ColorFader _lastStatusFader = new ColorFader(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.2f));
-        private bool _activatedOnce;
         
         private readonly IGraphBox _box;
         private readonly IGraphBox _divider;
 
         private GUIStyle _boxStyle;
-        private Texture2D _boxBorder;
         private GUIStyle _boxStyleInactive;
+        private readonly GUIStyle _titleStyle;
+
+        private Texture2D _boxBorder;
         private Texture2D _boxBorderInactive;
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
-        private Texture2D _iconTexture;
-        private Texture2D _iconStatusSuccess;
-        private GUIStyle _titleStyle;
-        private Texture2D _iconStatusFailure;
-        private Texture2D _iconStatusContinue;
+        
+        private readonly ImageHandler _iconMain;
 
         public VisualTaskPrint (VisualTask node) {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
-            
-            _iconTexture = AssetDatabase.LoadAssetAtPath<Sprite>(_node.Task.IconPath)?.texture;
-            if (_iconStatusSuccess == null) _iconStatusSuccess = 
-                AssetDatabase.LoadAssetAtPath<Sprite>($"{ICON_STATUS_PATH}/Success.png").texture;
-            if (_iconStatusFailure == null) _iconStatusFailure = 
-                AssetDatabase.LoadAssetAtPath<Sprite>($"{ICON_STATUS_PATH}/Failure.png").texture;
-            if (_iconStatusContinue == null) _iconStatusContinue = 
-                AssetDatabase.LoadAssetAtPath<Sprite>($"{ICON_STATUS_PATH}/Continue.png").texture;
+            _iconMain = new ImageHandler(_node.Task.IconPath);
             
             CreateBoxStyles();
 
@@ -90,7 +78,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 border = new RectOffset(1, 1, 1, 1),
                 normal = {
                     background = _boxBorderInactive,
-                    textColor = Color.gray,
                 },
             };
         }
@@ -127,27 +114,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             GUI.color = new Color(1, 1, 1, 0.7f);
 
-            Texture2D icon = null;
-            switch (_node.Task.LastStatus) {
-                case TaskStatus.Success:
-                    icon = _iconStatusSuccess;
-                    break;
-                case TaskStatus.Failure:
-                    icon = _iconStatusFailure;
-                    break;
-                case TaskStatus.Continue:
-                    icon = _iconStatusContinue;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            GUI.Label(
-                new Rect(
-                    rect.x + rect.size.x - icon.width - sidePadding,
-                    rect.y + rect.size.y - icon.height - sidePadding,
-                    icon.width, icon.height),
-                icon);
+            var icon = BehaviorTreePrinter.StatusIcons.GetIcon(_node.Task.LastStatus);
+            icon.Paint(new Rect(
+                rect.x + rect.size.x - icon.Texture.width - sidePadding,
+                rect.y + rect.size.y - icon.Texture.height - sidePadding,
+                icon.Texture.width, icon.Texture.height));
             
             GUI.color = prevColor;
         }
@@ -155,12 +126,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private void PrintIcon () {
             const float iconWidth = 35;
             const float iconHeight = 35;
-            var iconRect = new Rect(
+            _iconMain.Paint(new Rect(
                 _box.GlobalPositionX + _box.PaddingX / 2 + _box.Width / 2 - iconWidth / 2 + _node.Task.IconPadding / 2,
                 _box.GlobalPositionY + _box.PaddingX / 2 + 3 + _node.Task.IconPadding / 2,
                 iconWidth - _node.Task.IconPadding,
-                iconHeight - _node.Task.IconPadding);
-            GUI.Label(iconRect, _iconTexture);
+                iconHeight - _node.Task.IconPadding));
         }
 
         private void PaintDivider () {

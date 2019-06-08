@@ -8,6 +8,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private readonly Rect _containerSize;
 
         private Vector2 _scrollPosition;
+        
+        public static StatusIcons StatusIcons { get; } = new StatusIcons();
 
         public BehaviorTreePrinter (IBehaviorTree tree, Vector2 windowSize) {
             var container = new GraphContainerVertical();
