@@ -5,13 +5,16 @@ using UnityEngine;
 namespace FluidBehaviorTree.Runtime {
     public class BehaviorTreeSerializationTestDeleteMe : MonoBehaviour {
         [SerializeField] 
-        private BehaviorTree _tree;
+        private BehaviorTree _treeA;
+
+        [SerializeField] 
+        private BehaviorTree _treeB;
 
         [SerializeField]
         private bool _condition;
     
         private void Awake () {
-            _tree = new BehaviorTreeBuilder(gameObject)
+            _treeA = new BehaviorTreeBuilder(gameObject)
                 .Sequence()
                     .Condition("Custom Condition", () => true)
                     .Do("Custom Action A", () => TaskStatus.Success)
@@ -30,15 +33,24 @@ namespace FluidBehaviorTree.Runtime {
                         .End()
                         .Do("Custom Action", () => TaskStatus.Success)
                         .Condition("Custom Condition", () => true)
-                .End()
+                    .End()
                     .Do("Custom Action B", () => TaskStatus.Success)
+                .End()
+                .Build();
+
+            _treeB = new BehaviorTreeBuilder(gameObject)
+                .Name("Basic")
+                .Sequence()
+                    .Condition("Custom Condition", () => _condition)
+                    .Do("Custom Action A", () => TaskStatus.Success)
                 .End()
                 .Build();
         }
 
         private void Update () {
             // Update our tree every frame
-            _tree.Tick();
+            _treeA.Tick();
+            _treeB.Tick();
         }
     }
 }

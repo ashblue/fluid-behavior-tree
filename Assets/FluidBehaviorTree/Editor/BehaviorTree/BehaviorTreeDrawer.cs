@@ -11,7 +11,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             GUI.enabled = Application.isPlaying;
             if (GUI.Button(position, "View Tree")) {
                 var tree = fieldInfo.GetValue(property.serializedObject.targetObject) as IBehaviorTree;
-                BehaviorTreeWindow.ShowTree(tree, property.displayName);
+                BehaviorTreeWindow.ShowTree(tree, tree.Name ?? property.displayName);
             }
             GUI.enabled = true;
             

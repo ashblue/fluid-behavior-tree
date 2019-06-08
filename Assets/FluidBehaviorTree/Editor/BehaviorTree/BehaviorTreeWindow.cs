@@ -7,7 +7,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private string _name;
 
         public static void ShowTree (IBehaviorTree tree, string name) {
-            var window = GetWindow(typeof(BehaviorTreeWindow)) as BehaviorTreeWindow;
+            var window = GetWindow<BehaviorTreeWindow>(false);
+            window.titleContent = new GUIContent($"Behavior Tree: {name}");
             window.SetTree(tree, name);
         }
 
