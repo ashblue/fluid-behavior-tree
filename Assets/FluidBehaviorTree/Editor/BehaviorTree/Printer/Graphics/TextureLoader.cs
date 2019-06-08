@@ -9,9 +9,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             Texture = AssetDatabase.LoadAssetAtPath<Sprite>(spritePath)?.texture;
         }
 
-        public void Paint (Rect rect) {
+        public void Paint (Rect rect, Color color) {
+            var oldColor = GUI.color;
+            GUI.color = color;
+            
             if (Texture == null) return;
             GUI.Label(rect, Texture);
+
+            GUI.color = oldColor;
         }
     }
 }

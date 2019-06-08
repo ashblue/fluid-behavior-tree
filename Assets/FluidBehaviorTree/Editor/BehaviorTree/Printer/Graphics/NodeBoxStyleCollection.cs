@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class GuiStyleCollection {
-        // Store textures in memory to prevent them from vanishing after playing
         public NodeBoxStyle BoxActive { get; } = new NodeBoxStyle(Color.gray, Color.white);
 
         public NodeBoxStyle BoxInactive { get; } = new NodeBoxStyle(

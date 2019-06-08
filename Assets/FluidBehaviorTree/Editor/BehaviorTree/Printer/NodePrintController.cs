@@ -5,20 +5,16 @@ using UnityEngine;
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class NodePrintController {
         private readonly VisualTask _node;
-        private bool _activatedOnce;
-
-        private readonly ColorFader _backgroundFader = new ColorFader(new Color(0.65f, 0.65f, 0.65f), new Color(0.39f, 0.78f, 0.39f));
-        private readonly ColorFader _textFader = new ColorFader(Color.white, Color.black);
-        private readonly ColorFader _lastStatusFader = new ColorFader(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.2f));
-        
         private readonly IGraphBox _box;
         private readonly IGraphBox _divider;
-        
+        private readonly NodeFaders _faders = new NodeFaders();
+
+        private bool _activatedOnce;
+        private readonly TextureLoader _iconMain;
+
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
-        
-        private readonly TextureLoader _iconMain;
 
         private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
 
@@ -33,9 +29,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
             if (taskIsActive) _activatedOnce = true;
             
-            _backgroundFader.Update(taskIsActive);
-            _textFader.Update(taskIsActive);
-            _lastStatusFader.Update(taskIsActive);
+            _faders.Update(taskIsActive);
+            
             PaintBody();
             
             if (_node.Children.Count > 0) {
@@ -45,54 +40,52 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         private void PaintBody () {
+            var prevBackgroundColor = GUI.backgroundColor;
+            
             var rect = new Rect(
                 _box.GlobalPositionX + _box.PaddingX, 
                 _box.GlobalPositionY + _box.PaddingY,
                 _box.Width - _box.PaddingX, 
                 _box.Height - _box.PaddingY);
 
-            var prevBackgroundColor = GUI.backgroundColor;
-            var prevColor = GUI.color;
-
             if (_activatedOnce) {
-                GUI.backgroundColor = _backgroundFader.CurrentColor;
-                Styles.BoxActive.Style.normal.textColor = _textFader.CurrentColor;
+                GUI.backgroundColor = _faders.BackgroundFader.CurrentColor;
                 GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
+                GUI.backgroundColor = prevBackgroundColor;
+                
                 PrintLastStatus(rect);
             } else {
                 GUI.Box(rect, GUIContent.none, Styles.BoxInactive.Style);
             }
             
             PrintIcon();
-            GUI.Label(rect, _node.Task.Name, Styles.Title);
 
-            GUI.backgroundColor = prevBackgroundColor;
-            GUI.color = prevColor;
+            Styles.Title.normal.textColor = _faders.TextFader.CurrentColor;
+            GUI.Label(rect, _node.Task.Name, Styles.Title);
         }
 
         private void PrintLastStatus (Rect rect) {
             const float sidePadding = 1.5f;
-            var prevColor = GUI.color;
-
-            GUI.color = new Color(1, 1, 1, 0.7f);
 
             var icon = BehaviorTreePrinter.StatusIcons.GetIcon(_node.Task.LastStatus);
-            icon.Paint(new Rect(
-                rect.x + rect.size.x - icon.Texture.width - sidePadding,
-                rect.y + rect.size.y - icon.Texture.height - sidePadding,
-                icon.Texture.width, icon.Texture.height));
-            
-            GUI.color = prevColor;
+            icon.Paint(
+                new Rect(
+                    rect.x + rect.size.x - icon.Texture.width - sidePadding,
+                    rect.y + rect.size.y - icon.Texture.height - sidePadding,
+                    icon.Texture.width, icon.Texture.height),
+                new Color(1, 1, 1, 0.7f));
         }
 
         private void PrintIcon () {
             const float iconWidth = 35;
             const float iconHeight = 35;
-            _iconMain.Paint(new Rect(
-                _box.GlobalPositionX + _box.PaddingX / 2 + _box.Width / 2 - iconWidth / 2 + _node.Task.IconPadding / 2,
-                _box.GlobalPositionY + _box.PaddingX / 2 + 3 + _node.Task.IconPadding / 2,
-                iconWidth - _node.Task.IconPadding,
-                iconHeight - _node.Task.IconPadding));
+            _iconMain.Paint(
+                new Rect(
+                    _box.GlobalPositionX + _box.PaddingX / 2 + _box.Width / 2 - iconWidth / 2 + _node.Task.IconPadding / 2,
+                    _box.GlobalPositionY + _box.PaddingX / 2 + 3 + _node.Task.IconPadding / 2,
+                    iconWidth - _node.Task.IconPadding,
+                    iconHeight - _node.Task.IconPadding),
+                _faders.MainIconFader.CurrentColor);
         }
 
         private void PaintDivider () {
