@@ -6,18 +6,20 @@ namespace FluidBehaviorTree.Runtime {
     public class BehaviorTreeSerializationTestDeleteMe : MonoBehaviour {
         [SerializeField] 
         private BehaviorTree _tree;
+
+        [SerializeField]
+        private bool _condition;
     
         private void Awake () {
             _tree = new BehaviorTreeBuilder(gameObject)
                 .Sequence()
                     .Condition("Custom Condition", () => true)
                     .Do("Custom Action A", () => TaskStatus.Success)
-                    .Sequence("Nested Sequence")
+                    .Selector()
                         .Sequence("Nested Sequence")
-                            .Condition("Custom Condition", () => true)
+                            .Condition("Custom Condition", () => _condition)
                             .Do("Custom Action", () => TaskStatus.Success)
                         .End()
-                        .Condition("Custom Condition", () => true)
                         .Sequence("Nested Sequence")
                             .Condition("Custom Condition", () => true)
                             .Do("Custom Action", () => TaskStatus.Success)
@@ -27,7 +29,8 @@ namespace FluidBehaviorTree.Runtime {
                             .End()
                         .End()
                         .Do("Custom Action", () => TaskStatus.Success)
-                    .End()
+                        .Condition("Custom Condition", () => true)
+                .End()
                     .Do("Custom Action B", () => TaskStatus.Success)
                 .End()
                 .Build();

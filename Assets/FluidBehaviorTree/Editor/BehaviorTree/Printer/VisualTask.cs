@@ -5,6 +5,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTask {
         private readonly List<VisualTask> _children = new List<VisualTask>();
         private readonly VisualTaskPrint _printer;
+        private bool _taskActive;
 
         public ITask Task { get; }
         public IReadOnlyList<VisualTask> Children => _children;
@@ -16,9 +17,9 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public IGraphBox Divider { get; private set; }
         public float DividerLeftOffset { get; private set; }
 
-
         public VisualTask (ITask task, IGraphContainer parentContainer) {
             Task = task;
+            BindTask();
             
             var container = new GraphContainerVertical();
 
@@ -37,6 +38,22 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             parentContainer.AddBox(container);
             
             _printer = new VisualTaskPrint(this);
+        }
+
+        private void BindTask () {
+            Task.EditorUtils.EventActive.AddListener(UpdateTaskActiveStatus);
+        }
+
+        public void RecursiveTaskUnbind () {
+            Task.EditorUtils.EventActive.RemoveListener(UpdateTaskActiveStatus);
+            
+            foreach (var child in _children) {
+                child.RecursiveTaskUnbind();
+            }
+        }
+
+        private void UpdateTaskActiveStatus () {
+            _taskActive = true;
         }
 
         private void AddDivider (IGraphContainer parent, IGraphContainer children) {
@@ -61,7 +78,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         public void Print () {
-            _printer.Print();
+            _printer.Print(_taskActive);
+            _taskActive = false;
 
             foreach (var child in _children) {
                 child.Print();

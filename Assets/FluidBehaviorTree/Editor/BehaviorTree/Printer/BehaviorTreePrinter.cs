@@ -36,5 +36,9 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _root.Print();
             GUI.EndScrollView();
         }
+
+        public void Unbind () {
+            _root.RecursiveTaskUnbind();
+        }
     }
 }

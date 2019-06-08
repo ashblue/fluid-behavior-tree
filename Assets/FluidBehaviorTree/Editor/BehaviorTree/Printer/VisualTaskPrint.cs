@@ -4,37 +4,80 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTaskPrint {
+        private float _activeColorFadeTime;
+        private Color _currentColor;
+        private readonly Color _activeColor = new Color(0.38f, 1f, 0.4f);
+        private readonly Color _defaultColor = Color.white;
+
         private VisualTask _node;
+        private GUIStyle _boxStyle;
         private IGraphBox _box;
         private IGraphBox _divider;
 
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
-        
+        private Texture2D _boxBorder;
+
         public VisualTaskPrint (VisualTask node) {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
+            
+            CreateBoxStyle();
         }
         
-        public void Print () {
+        public void Print (bool taskIsActive) {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
+            
+            UpdateActiveColor(taskIsActive);
             PaintBody();
+            
             if (_node.Children.Count > 0) {
                 PaintDivider();
                 PaintVerticalBottom();
             }
         }
-        
-         private void PaintBody () {
+
+        private void CreateBoxStyle () {
+            _boxBorder = CreateTexture(19, 19, Color.gray);
+            _boxBorder.SetPixels(1, 1, 17, 17, Enumerable.Repeat(Color.white, 17 * 17).ToArray());
+            _boxBorder.Apply();
+            _boxStyle = new GUIStyle(GUI.skin.box) {
+                border = new RectOffset(1, 1, 1, 1),
+                normal = {
+                    background = _boxBorder
+                }
+            };
+        }
+
+        private void UpdateActiveColor (bool taskIsActive) {
+            const float FADE_DURATION = 0.5f;
+            
+            if (taskIsActive) {
+                _activeColorFadeTime = FADE_DURATION;
+            } else {
+                _activeColorFadeTime -= Time.deltaTime;
+                _activeColorFadeTime = Mathf.Max(_activeColorFadeTime, 0);
+            }
+
+            _currentColor = Color.Lerp(
+                _defaultColor, 
+                _activeColor, 
+                _activeColorFadeTime / FADE_DURATION);
+        }
+
+        private void PaintBody () {
             var rect = new Rect(
                 _box.GlobalPositionX + _box.PaddingX, 
                 _box.GlobalPositionY + _box.PaddingY,
                 _box.Width - _box.PaddingX, 
                 _box.Height - _box.PaddingY);
-            
-            GUI.Box(rect, _node.Task.Name);
+
+            var prevBackgroundColor = GUI.backgroundColor;
+            GUI.backgroundColor = _currentColor;
+            GUI.Box(rect, _node.Task.Name, _boxStyle);
+            GUI.backgroundColor = prevBackgroundColor;
         }
 
         private void PaintDivider () {

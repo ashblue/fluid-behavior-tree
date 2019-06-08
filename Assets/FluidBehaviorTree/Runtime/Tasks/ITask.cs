@@ -31,6 +31,8 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// Last status returned by Update
         /// </summary>
         TaskStatus LastStatus { get; }
+        
+        EditorRuntimeUtilities EditorUtils { get; }
 
         /// <summary>
         /// Triggered every tick

@@ -12,6 +12,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         private void SetTree (IBehaviorTree tree, string name) {
+            _printer?.Unbind();
             _printer = new BehaviorTreePrinter(tree, position.size);
             _name = name;
         }
@@ -19,6 +20,12 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private void OnGUI () {
             GUILayout.Label($"Behavior Tree: {_name}", EditorStyles.boldLabel);
             _printer?.Print(position.size);
+        }
+
+        private void Update () {
+            if (Application.isPlaying) {
+                Repaint();
+            }
         }
     }
 }
