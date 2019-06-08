@@ -19,11 +19,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
 
         public GameObject Owner { get; set; }
 
-        public TaskStatus Update () {
-#if UNITY_EDITOR
-            EditorUtils.EventActive.Invoke();
-#endif
-            
+        public override TaskStatus Update () {
+            base.Update();
             UpdateTicks();
 
             var status = OnUpdate();

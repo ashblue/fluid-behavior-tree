@@ -18,11 +18,8 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         public List<ITask> Children { get; } = null;
         public TaskStatus LastStatus { get; private set; }
 
-        public TaskStatus Update () {
-#if UNITY_EDITOR
-            EditorUtils.EventActive.Invoke();
-#endif
-            
+        public override TaskStatus Update () {
+            base.Update();
             UpdateTicks();
 
             if (!_init) {

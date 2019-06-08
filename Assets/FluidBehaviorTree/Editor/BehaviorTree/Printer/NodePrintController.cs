@@ -9,7 +9,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private readonly IGraphBox _divider;
         private readonly NodeFaders _faders = new NodeFaders();
 
-        private bool _activatedOnce;
         private readonly TextureLoader _iconMain;
 
         private Texture2D _dividerGraphic;
@@ -27,8 +26,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         
         public void Print (bool taskIsActive) {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
-            if (taskIsActive) _activatedOnce = true;
-            
             _faders.Update(taskIsActive);
             
             PaintBody();
@@ -48,7 +45,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _box.Width - _box.PaddingX, 
                 _box.Height - _box.PaddingY);
 
-            if (_activatedOnce) {
+            if (_node.Task.HasBeenActive) {
                 GUI.backgroundColor = _faders.BackgroundFader.CurrentColor;
                 GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
                 GUI.backgroundColor = prevBackgroundColor;

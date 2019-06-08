@@ -18,11 +18,8 @@ namespace CleverCrow.Fluid.BTs.Decorators {
 
         public ITask Child => Children.Count > 0 ? Children[0] : null;
 
-        public TaskStatus Update () {
-#if UNITY_EDITOR
-            EditorUtils.EventActive.Invoke();
-#endif
-            
+        public override TaskStatus Update () {
+            base.Update();
             var status = OnUpdate();
             LastStatus = status;
 

@@ -36,6 +36,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         
         EditorRuntimeUtilities EditorUtils { get; }
         float IconPadding { get; }
+        bool HasBeenActive { get; }
 
         /// <summary>
         /// Triggered every tick
