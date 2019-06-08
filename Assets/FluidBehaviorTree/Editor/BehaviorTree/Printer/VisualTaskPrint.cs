@@ -4,16 +4,13 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTaskPrint {
-        private float _activeColorFadeTime;
-        private Color _currentColor;
-        private readonly Color _activeColor = new Color(0.38f, 1f, 0.4f);
-        private readonly Color _defaultColor = Color.white;
-
-        private VisualTask _node;
-        private GUIStyle _boxStyle;
+        private readonly VisualTask _node;
+        private ColorFader _colorFader = new ColorFader();
+        
         private IGraphBox _box;
         private IGraphBox _divider;
 
+        private GUIStyle _boxStyle;
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
@@ -23,6 +20,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
+            _colorFader = new ColorFader();
             
             CreateBoxStyle();
         }
@@ -30,7 +28,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public void Print (bool taskIsActive) {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
             
-            UpdateActiveColor(taskIsActive);
+            _colorFader.Update(taskIsActive);
             PaintBody();
             
             if (_node.Children.Count > 0) {
@@ -51,22 +49,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             };
         }
 
-        private void UpdateActiveColor (bool taskIsActive) {
-            const float FADE_DURATION = 0.5f;
-            
-            if (taskIsActive) {
-                _activeColorFadeTime = FADE_DURATION;
-            } else {
-                _activeColorFadeTime -= Time.deltaTime;
-                _activeColorFadeTime = Mathf.Max(_activeColorFadeTime, 0);
-            }
-
-            _currentColor = Color.Lerp(
-                _defaultColor, 
-                _activeColor, 
-                _activeColorFadeTime / FADE_DURATION);
-        }
-
         private void PaintBody () {
             var rect = new Rect(
                 _box.GlobalPositionX + _box.PaddingX, 
@@ -75,7 +57,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _box.Height - _box.PaddingY);
 
             var prevBackgroundColor = GUI.backgroundColor;
-            GUI.backgroundColor = _currentColor;
+            GUI.backgroundColor = _colorFader.CurrentColor;
             GUI.Box(rect, _node.Task.Name, _boxStyle);
             GUI.backgroundColor = prevBackgroundColor;
         }
