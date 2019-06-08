@@ -2,7 +2,7 @@
 
 namespace CleverCrow.Fluid.BTs.Decorators {
     public class ReturnSuccess : DecoratorBase {
-        public override string IconPath { get; } = $"{_iconPath}/Checkmark.png";
+        public override string IconPath { get; } = $"{ICON_TASK_PATH}/Checkmark.png";
 
         protected override TaskStatus OnUpdate () {
             var status = Child.Update();

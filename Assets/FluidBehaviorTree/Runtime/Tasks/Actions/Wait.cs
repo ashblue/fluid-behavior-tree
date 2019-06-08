@@ -4,7 +4,7 @@
         
         private int _ticks;
         
-        public override string IconPath { get; } = $"{_iconPath}/HourglassFill.png";
+        public override string IconPath { get; } = $"{ICON_TASK_PATH}/HourglassFill.png";
 
         protected override void OnStart () {
             _ticks = 0;

@@ -1,13 +1,18 @@
+using System;
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Tasks;
 using UnityEditor;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTaskPrint {
+        private const string ICON_STATUS_PATH = "Assets/FluidBehaviorTree/Editor/Icons/Status";
+
         private readonly VisualTask _node;
         private readonly ColorFader _backgroundFader = new ColorFader(new Color(0.65f, 0.65f, 0.65f), new Color(0.39f, 0.78f, 0.39f));
         private readonly ColorFader _textFader = new ColorFader(Color.white, Color.black);
+        private readonly ColorFader _lastStatusFader = new ColorFader(new Color(1, 1, 1, 0.5f), new Color(1, 1, 1, 0.2f));
         private bool _activatedOnce;
         
         private readonly IGraphBox _box;
@@ -21,6 +26,10 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
         private Texture2D _iconTexture;
+        private Texture2D _iconStatusSuccess;
+        private GUIStyle _titleStyle;
+        private Texture2D _iconStatusFailure;
+        private Texture2D _iconStatusContinue;
 
         public VisualTaskPrint (VisualTask node) {
             _node = node;
@@ -28,8 +37,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _divider = node.Divider;
             
             _iconTexture = AssetDatabase.LoadAssetAtPath<Sprite>(_node.Task.IconPath)?.texture;
+            if (_iconStatusSuccess == null) _iconStatusSuccess = 
+                AssetDatabase.LoadAssetAtPath<Sprite>($"{ICON_STATUS_PATH}/Success.png").texture;
+            if (_iconStatusFailure == null) _iconStatusFailure = 
+                AssetDatabase.LoadAssetAtPath<Sprite>($"{ICON_STATUS_PATH}/Failure.png").texture;
+            if (_iconStatusContinue == null) _iconStatusContinue = 
+                AssetDatabase.LoadAssetAtPath<Sprite>($"{ICON_STATUS_PATH}/Continue.png").texture;
             
             CreateBoxStyles();
+
+            _titleStyle = new GUIStyle(GUI.skin.label) {
+                fontSize = 9, 
+                alignment = TextAnchor.LowerCenter,
+                wordWrap = true,
+                padding = new RectOffset(3, 3, 3, 3),
+            };
         }
         
         public void Print (bool taskIsActive) {
@@ -38,6 +60,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             
             _backgroundFader.Update(taskIsActive);
             _textFader.Update(taskIsActive);
+            _lastStatusFader.Update(taskIsActive);
             PaintBody();
             
             if (_node.Children.Count > 0) {
@@ -47,16 +70,12 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         private void CreateBoxStyles () {
-            const int fontSize = 9;
-            
             _boxBorder = CreateTexture(19, 19, Color.gray);
             _boxBorder.SetPixels(1, 1, 17, 17, 
                 Enumerable.Repeat(Color.white, 17 * 17).ToArray());
             _boxBorder.Apply();
             _boxStyle = new GUIStyle(GUI.skin.box) {
                 border = new RectOffset(1, 1, 1, 1),
-                fontSize = fontSize,
-                alignment = TextAnchor.LowerCenter,
                 normal = {
                     background = _boxBorder,
                 },
@@ -69,8 +88,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _boxBorderInactive.Apply();
             _boxStyleInactive = new GUIStyle(GUI.skin.box) {
                 border = new RectOffset(1, 1, 1, 1),
-                fontSize = 9,
-                alignment = TextAnchor.LowerCenter,
                 normal = {
                     background = _boxBorderInactive,
                     textColor = Color.gray,
@@ -91,14 +108,47 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             if (_activatedOnce) {
                 GUI.backgroundColor = _backgroundFader.CurrentColor;
                 _boxStyle.normal.textColor = _textFader.CurrentColor;
-                GUI.Box(rect, _node.Task.Name, _boxStyle);
+                GUI.Box(rect, GUIContent.none, _boxStyle);
+                PrintLastStatus(rect);
             } else {
-                GUI.Box(rect, _node.Task.Name, _boxStyleInactive);
+                GUI.Box(rect, GUIContent.none, _boxStyleInactive);
             }
-
+            
             PrintIcon();
+            GUI.Label(rect, _node.Task.Name, _titleStyle);
 
             GUI.backgroundColor = prevBackgroundColor;
+            GUI.color = prevColor;
+        }
+
+        private void PrintLastStatus (Rect rect) {
+            const float sidePadding = 1.5f;
+            var prevColor = GUI.color;
+
+            GUI.color = new Color(1, 1, 1, 0.7f);
+
+            Texture2D icon = null;
+            switch (_node.Task.LastStatus) {
+                case TaskStatus.Success:
+                    icon = _iconStatusSuccess;
+                    break;
+                case TaskStatus.Failure:
+                    icon = _iconStatusFailure;
+                    break;
+                case TaskStatus.Continue:
+                    icon = _iconStatusContinue;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            GUI.Label(
+                new Rect(
+                    rect.x + rect.size.x - icon.width - sidePadding,
+                    rect.y + rect.size.y - icon.height - sidePadding,
+                    icon.width, icon.height),
+                icon);
+            
             GUI.color = prevColor;
         }
 

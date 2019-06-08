@@ -1,9 +1,9 @@
 namespace CleverCrow.Fluid.BTs.Tasks {
     public abstract class GenericTaskBase {
         private EditorRuntimeUtilities _editorUtils;
-        protected const string _iconPath = "Assets/FluidBehaviorTree/Editor/Icons";
+        protected const string ICON_TASK_PATH = "Assets/FluidBehaviorTree/Editor/Icons/Tasks";
 
-        public virtual string IconPath => $"{_iconPath}/Play.png";
+        public virtual string IconPath => $"{ICON_TASK_PATH}/Play.png";
         public virtual float IconPadding { get; }
 
         public EditorRuntimeUtilities EditorUtils => 

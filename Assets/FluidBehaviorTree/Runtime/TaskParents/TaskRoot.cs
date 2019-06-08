@@ -4,7 +4,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
     public class TaskRoot : TaskParentBase {
         public override string Name { get; set; } = "Root";
         protected override int MaxChildren { get; } = 1;
-        public override string IconPath { get; } = $"{_iconPath}/DownArrow.png";
+        public override string IconPath { get; } = $"{ICON_TASK_PATH}/DownArrow.png";
 
         protected override TaskStatus OnUpdate () {
             if (Children.Count == 0) {

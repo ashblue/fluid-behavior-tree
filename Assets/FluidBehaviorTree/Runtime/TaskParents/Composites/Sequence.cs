@@ -2,7 +2,7 @@
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class Sequence : CompositeBase {
-        public override string IconPath { get; } = $"{_iconPath}/RightArrow.png";
+        public override string IconPath { get; } = $"{ICON_TASK_PATH}/RightArrow.png";
 
         protected override TaskStatus OnUpdate () {            
             for (var i = ChildIndex; i < Children.Count; i++) {
