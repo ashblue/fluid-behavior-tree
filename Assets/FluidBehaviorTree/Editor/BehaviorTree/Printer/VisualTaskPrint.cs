@@ -5,7 +5,8 @@ using UnityEngine;
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class VisualTaskPrint {
         private readonly VisualTask _node;
-        private readonly ColorFader _colorFader = new ColorFader();
+        private readonly ColorFader _backgroundFader = new ColorFader(Color.white, new Color(0.38f, 1f, 0.4f));
+        private readonly ColorFader _textFader = new ColorFader(Color.gray, Color.black);
         private bool _activatedOnce;
         
         private IGraphBox _box;
@@ -23,7 +24,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
-            _colorFader = new ColorFader();
             
             CreateBoxStyles();
         }
@@ -32,7 +32,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
             if (taskIsActive) _activatedOnce = true;
             
-            _colorFader.Update(taskIsActive);
+            _backgroundFader.Update(taskIsActive);
+            _textFader.Update(taskIsActive);
             PaintBody();
             
             if (_node.Children.Count > 0) {
@@ -42,15 +43,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         }
 
         private void CreateBoxStyles () {
+            const int fontSize = 9;
+            
             _boxBorder = CreateTexture(19, 19, Color.gray);
             _boxBorder.SetPixels(1, 1, 17, 17, 
                 Enumerable.Repeat(Color.white, 17 * 17).ToArray());
             _boxBorder.Apply();
             _boxStyle = new GUIStyle(GUI.skin.box) {
                 border = new RectOffset(1, 1, 1, 1),
+                fontSize = fontSize,
                 normal = {
-                    background = _boxBorder
-                }
+                    background = _boxBorder,
+                },
             };
 
             Color inactiveColor = new Color32(208, 208, 208, 255);
@@ -60,10 +64,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _boxBorderInactive.Apply();
             _boxStyleInactive = new GUIStyle(GUI.skin.box) {
                 border = new RectOffset(1, 1, 1, 1),
+                fontSize = 9,
                 normal = {
                     background = _boxBorderInactive,
-                    textColor = Color.gray
-                }
+                    textColor = Color.gray,
+                },
             };
         }
 
@@ -75,15 +80,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _box.Height - _box.PaddingY);
 
             var prevBackgroundColor = GUI.backgroundColor;
+            var prevColor = GUI.color;
 
             if (_activatedOnce) {
-                GUI.backgroundColor = _colorFader.CurrentColor;
+                GUI.backgroundColor = _backgroundFader.CurrentColor;
+                _boxStyle.normal.textColor = _textFader.CurrentColor;
                 GUI.Box(rect, _node.Task.Name, _boxStyle);
             } else {
                 GUI.Box(rect, _node.Task.Name, _boxStyleInactive);
             }
             
             GUI.backgroundColor = prevBackgroundColor;
+            GUI.color = prevColor;
         }
 
         private void PaintDivider () {

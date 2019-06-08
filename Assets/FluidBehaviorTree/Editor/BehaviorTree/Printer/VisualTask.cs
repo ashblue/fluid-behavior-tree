@@ -10,7 +10,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public ITask Task { get; }
         public IReadOnlyList<VisualTask> Children => _children;
         
-        public float Width { get; } = 50;
+        public float Width { get; } = 70;
         public float Height { get; } = 50;
         
         public IGraphBox Box { get; private set; }
