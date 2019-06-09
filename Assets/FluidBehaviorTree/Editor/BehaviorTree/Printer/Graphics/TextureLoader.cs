@@ -6,7 +6,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public Texture2D Texture { get; }
 
         public TextureLoader (string spritePath) {
-            Texture = AssetDatabase.LoadAssetAtPath<Sprite>(spritePath)?.texture;
+            Texture = AssetDatabase.LoadAssetAtPath<Texture2D>(
+                spritePath.Replace("ROOT", AssetPath.BasePath));
         }
 
         public void Paint (Rect rect, Color color) {
