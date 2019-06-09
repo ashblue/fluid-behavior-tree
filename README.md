@@ -155,8 +155,10 @@ with units who attempt to capture the flag while grabbing power ups to try and g
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
-  * [Development Environment](#development-environment)
-  * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
+  * [Development](#development)
+    + [Making Commits](#making-commits)
+    + [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
+    + [Nightly Builds](#nightly-builds)
 
 ## Library
 
@@ -626,7 +628,7 @@ public static class BehaviorTreeBuilderExtensions {
 }
 ```
 
-## Development Environment
+## Development
 
 If you wish to run to run the development environment you'll need to install [node.js](https://nodejs.org/en/). Then run the following from the root once.
 
@@ -644,10 +646,24 @@ To make a commit type the following into a terminal from the root
 npm run commit
 ```
 
-## Submitting code to this project
+### Submitting code to this project
 
 Please do the following if you wish to contribute code to this project.
 
 1. Create your feature in a `feature` branch off of `develop`
 2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
 3. Submit a pull request to the `develop` branch
+
+### Nightly Builds
+
+To access nightly builds of `develop` that are package manager friendly you'll need to manually edit your `Packages/manifest.json` as so. 
+
+```json
+{
+    "dependencies": {
+      "com.fluid.behavior-tree": "https://github.com/ashblue/fluid-behavior-tree.git#nightly"
+    }
+}
+```
+
+Note that to get a newer nightly build you must delete this line and any related lock data in the manifest, let Unity rebuild, then add it back. As Unity locks the commit hash for Git urls as packages.
