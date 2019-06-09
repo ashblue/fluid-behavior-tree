@@ -8,6 +8,7 @@ Inspired by Fluent Behavior Tree.
 
 * Extendable, write your own custom re-usable nodes
 * Pre-built library of tasks to kickstart your AI
+* Tree visualizer to debug your trees at runtime
 * Heavily tested with TDD and unit tests
 * Tracks the last position of your behavior tree and restores it the next frame
 * Built for Unity (no integration overhead)
@@ -20,29 +21,6 @@ See upcoming features and development progress on the [Trello Board](https://tre
 
 ## Getting Started
 
-Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
-
-```json
-{
-  "scopedRegistries": [
-    {
-      "name": "NPM",
-      "url": "https://registry.npmjs.org",
-      "scopes": [
-        "com.fluid"
-      ]
-    }
-  ],
-  "dependencies": {
-    "com.fluid.behavior-tree": "2.0.1"
-  }
-}
-```
-
-Archives of specific versions and release notes are available on the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
-
-### Creating a Behavior Tree
-
 When creating trees you'll need to store them in a variable to properly cache all the necessary data.
 
 ```C#
@@ -51,6 +29,7 @@ using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 
 public class MyCustomAi : MonoBehaviour {
+    [SerializeField]
     private BehaviorTree _tree;
     
     private void Awake () {
@@ -80,6 +59,12 @@ Depending on what you return for a task status different things will happen.
 * Success: Node has finished, next `tree.Tick()` will restart the tree if no other nodes to run
 * Failure: Same as success, except informs that the node failed
 * Continue: Rerun this node the next time `tree.Tick()` is called. A pointer reference is tracked by the tree and can only be cleared if `tree.Reset()` is called.
+
+### Tree Visualizer
+
+As long as your tree storage variable is set to `public` or has a `SerializeField` attribute. You'll be able to print a visualization of your tree while the game is running in the editor. Note that you cannot view trees while the game is not running. As the tree has to be built in order to be visualized.
+
+![Visualizer](tree-visualizer.png)
 
 ### Extending Trees
 
@@ -114,9 +99,37 @@ public class ExampleUsage : MonoBehaviour {
 }
 ```
 
+### Installing
+
+Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
+
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "NPM",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "com.fluid"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.fluid.behavior-tree": "2.0.1"
+  }
+}
+```
+
+Archives of specific versions and release notes are available on the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
+
+### Example Scene
+
+You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
+for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
+with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
+
 ## Table of Contents
 
-  * [Example Scene](#example-scene)
   * [Library](#library)
     + [Actions](#actions)
       - [Generic](#action-generic)
@@ -144,12 +157,6 @@ public class ExampleUsage : MonoBehaviour {
     + [Custom Decorators](#custom-decorators)
   * [Development Environment](#development-environment)
   * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
-
-## Example Scene
-
-You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
-for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
-with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
 ## Library
 
