@@ -3,6 +3,8 @@
         public int turns = 1;
         
         private int _ticks;
+        
+        public override string IconPath { get; } = $"{PACKAGE_ROOT}/HourglassFill.png";
 
         protected override void OnStart () {
             _ticks = 0;

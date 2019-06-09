@@ -1,4 +1,5 @@
-﻿using CleverCrow.Fluid.BTs.Trees;
+﻿using System.Collections.Generic;
+using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Tasks {
@@ -13,6 +14,8 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// </summary>
         bool Enabled { get; set; }
         
+        string IconPath { get; }
+
         /// <summary>
         /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
         /// GameObject reference
@@ -23,11 +26,17 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// Tree this node belongs to
         /// </summary>
         IBehaviorTree ParentTree { get; set; }
+        
+        List<ITask> Children { get; }
 
         /// <summary>
         /// Last status returned by Update
         /// </summary>
         TaskStatus LastStatus { get; }
+        
+        EditorRuntimeUtilities EditorUtils { get; }
+        float IconPadding { get; }
+        bool HasBeenActive { get; }
 
         /// <summary>
         /// Triggered every tick

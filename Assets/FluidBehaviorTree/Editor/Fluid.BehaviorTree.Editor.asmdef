@@ -1,0 +1,12 @@
+{
+    "name": "Fluid.BehaviorTree.Editor",
+    "references": [
+        "Fluid.BehaviorTree"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

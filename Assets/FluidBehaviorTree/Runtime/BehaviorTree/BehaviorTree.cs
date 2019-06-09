@@ -5,18 +5,22 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees {
     public interface IBehaviorTree {
+        string Name { get; }
+        TaskRoot Root { get; }
         int TickCount { get; }
         
         void AddActiveTask (ITask task);
         void RemoveActiveTask (ITask task);
     }
     
+    [System.Serializable]
     public class BehaviorTree : IBehaviorTree {
         private readonly GameObject _owner;
         private readonly List<ITask> _tasks = new List<ITask>();
         
         public int TickCount { get; private set; }
 
+        public string Name { get; set; }
         public TaskRoot Root { get; } = new TaskRoot();
         public IReadOnlyList<ITask> ActiveTasks => _tasks;
 

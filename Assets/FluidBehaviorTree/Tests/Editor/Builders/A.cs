@@ -3,5 +3,9 @@
         public static TaskStubBuilder TaskStub () {
             return new TaskStubBuilder();
         }
+
+        public static GraphBoxStubBuilder GraphBoxStub () {
+            return new GraphBoxStubBuilder();
+        }
     }
 }
