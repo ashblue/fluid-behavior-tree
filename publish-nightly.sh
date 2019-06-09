@@ -13,7 +13,7 @@ commit_files() {
 
 update_nightly_branch() {
     git remote add origin-nightly https://${GH_TOKEN}@github.com/ashblue/fluid-behavior-tree.git
-    git subtree push --prefix dist origin-nightly nightly -f
+    git subtree push --prefix dist origin-nightly nightly
 }
 
 setup_git
