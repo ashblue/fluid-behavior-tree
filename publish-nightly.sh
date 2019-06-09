@@ -6,7 +6,8 @@ setup_git() {
 }
 
 commit_files() {
-    git add dist -f
+    sed -i '/dist/d' ./.gitignore
+    git add dist
     git commit -m "Update nightly files"
 }
 
