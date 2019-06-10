@@ -5,9 +5,15 @@ using NUnit.Framework;
 namespace CleverCrow.Fluid.BTs.Testing {
     public class RepeatUntilSuccessTest {
         public class UpdateMethod {
+            private RepeatUntilSuccess repeater;
+
+            [SetUp]
+            public void Setup_repeater () {
+                repeater = new RepeatUntilSuccess();
+            }
+
             [Test]
             public void Returns_continue_on_child_failure () {
-                var repeater = new RepeatUntilSuccess();
                 repeater.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build());
 
                 Assert.AreEqual(TaskStatus.Continue, repeater.Update());
@@ -15,7 +21,6 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
             [Test]
             public void Returns_success_on_child_success () {
-                var repeater = new RepeatUntilSuccess();
                 repeater.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Success).Build());
 
                 Assert.AreEqual(TaskStatus.Success, repeater.Update());
@@ -23,7 +28,6 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
             [Test]
             public void Returns_continue_on_child_continue () {
-                var repeater = new RepeatUntilSuccess();
                 repeater.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build());
 
                 Assert.AreEqual(TaskStatus.Continue, repeater.Update());
