@@ -28,13 +28,6 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                 Assert.AreEqual(TaskStatus.Continue, inverter.Update());
             }
-
-            [Test]
-            public void Does_not_crash_if_no_child () {
-                var inverter = new Inverter();
-
-                inverter.Update();
-            }
         }
     }
 }

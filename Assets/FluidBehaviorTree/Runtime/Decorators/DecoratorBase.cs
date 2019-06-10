@@ -20,6 +20,13 @@ namespace CleverCrow.Fluid.BTs.Decorators {
 
         public override TaskStatus Update () {
             base.Update();
+
+            if (Child == null) {
+                if (Application.isPlaying) Debug.LogWarning(
+                    $"Decorator {Name} has no child. Force returning failure. Please fix");
+                return TaskStatus.Failure;
+            }
+            
             var status = OnUpdate();
             LastStatus = status;
 

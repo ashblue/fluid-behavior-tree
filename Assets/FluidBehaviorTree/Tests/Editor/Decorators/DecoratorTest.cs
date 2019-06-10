@@ -5,6 +5,8 @@ using NUnit.Framework;
 
 namespace CleverCrow.Fluid.BTs.Testing {
     public class DecoratorTest {
+        private DecoratorExample _decorator;
+        
         public class DecoratorExample : DecoratorBase {
             public TaskStatus status;
 
@@ -13,46 +15,49 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
         }
 
-        public class EnabledProperty {
+        [SetUp]
+        public void BeforeEach () {
+            _decorator = new DecoratorExample();
+            _decorator.AddChild(A.TaskStub().Build());
+        }
+
+        public class EnabledProperty : DecoratorTest {
             [Test]
             public void Returns_true_if_child_is_set () {
-                var decorator = new DecoratorExample();
-                decorator.AddChild(A.TaskStub().Build());
-                
-                Assert.IsTrue(decorator.Enabled);
+                Assert.IsTrue(_decorator.Enabled);
             }
 
             [Test]
             public void Returns_false_if_child_is_set_but_set_to_false () {
-                var decorator = new DecoratorExample();
-                decorator.AddChild(A.TaskStub().Build());
-                decorator.Enabled = false;
+                _decorator.Enabled = false;
 
-                Assert.IsFalse(decorator.Enabled);
+                Assert.IsFalse(_decorator.Enabled);
             }
         }
 
-        public class UpdateMethod {
+        public class UpdateMethod : DecoratorTest {
             [Test]
             public void Sets_LastUpdate_to_returned_status_value () {
-                var decorator = new DecoratorExample();
-                decorator.status = TaskStatus.Failure;
+                _decorator.status = TaskStatus.Failure;
 
-                decorator.Update();
+                _decorator.Update();
 
-                Assert.AreEqual(TaskStatus.Failure, decorator.LastStatus);
+                Assert.AreEqual(TaskStatus.Failure, _decorator.LastStatus);
+            }
+
+            [Test]
+            public void It_should_return_failure_if_a_child_is_missing () {
+                _decorator.Children.RemoveAt(0);
+                Assert.AreEqual(TaskStatus.Failure, _decorator.Update());
             }
         }
 
-        public class EndMethod {
+        public class EndMethod : DecoratorTest {
             [Test]
             public void Calls_end_on_child () {
-                var decorator = new DecoratorExample();
-                decorator.AddChild(A.TaskStub().Build());
+                _decorator.End();
 
-                decorator.End();
-
-                decorator.Child.Received(1).End();
+                _decorator.Child.Received(1).End();
             }
         }
     }
