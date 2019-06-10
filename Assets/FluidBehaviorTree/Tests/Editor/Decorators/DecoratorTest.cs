@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.Decorators;
 using CleverCrow.Fluid.BTs.Tasks;
 using NSubstitute;
 using NUnit.Framework;
@@ -49,6 +49,13 @@ namespace CleverCrow.Fluid.BTs.Testing {
             public void It_should_return_failure_if_a_child_is_missing () {
                 _decorator.Children.RemoveAt(0);
                 Assert.AreEqual(TaskStatus.Failure, _decorator.Update());
+            }
+
+            [Test]
+            public void Does_not_crash_if_no_child () {
+                _decorator.Children.RemoveAt(0);
+
+                Assert.DoesNotThrow(() => _decorator.Update());
             }
         }
 

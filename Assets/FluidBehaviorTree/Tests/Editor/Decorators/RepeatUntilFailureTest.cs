@@ -28,13 +28,6 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                 Assert.AreEqual(TaskStatus.Continue, repeater.Update());
             }
-
-            [Test]
-            public void Does_not_crash_if_no_child () {
-                var repeater = new RepeatUntilFailure();
-
-                Assert.DoesNotThrow(() => repeater.Update());
-            }
         }
     }
 }
