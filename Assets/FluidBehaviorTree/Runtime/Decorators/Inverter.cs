@@ -2,11 +2,9 @@
 
 namespace CleverCrow.Fluid.BTs.Decorators {
     public class Inverter : DecoratorBase {
-        protected override TaskStatus OnUpdate () {
-            if (Child == null) {
-                return TaskStatus.Success;
-            }
+        public override string IconPath { get; } = $"{PACKAGE_ROOT}/Invert.png";
 
+        protected override TaskStatus OnUpdate () {
             var childStatus = Child.Update();
             var status = childStatus;
 

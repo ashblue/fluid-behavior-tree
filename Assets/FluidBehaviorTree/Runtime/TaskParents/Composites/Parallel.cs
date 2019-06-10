@@ -5,6 +5,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class Parallel : CompositeBase {
         private readonly Dictionary<ITask, TaskStatus> _childStatus = new Dictionary<ITask, TaskStatus>();
 
+        public override string IconPath { get; } = $"{PACKAGE_ROOT}/CompareArrows.png";
+
         protected override TaskStatus OnUpdate () {
             var successCount = 0;
             var failureCount = 0;

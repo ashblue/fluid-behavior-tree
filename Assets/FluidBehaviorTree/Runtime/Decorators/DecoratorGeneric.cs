@@ -6,10 +6,6 @@ namespace CleverCrow.Fluid.BTs.Decorators {
         public Func<ITask, TaskStatus> updateLogic;
 
         protected override TaskStatus OnUpdate () {
-            if (Child == null) {
-                return TaskStatus.Success;
-            }
-            
             if (updateLogic != null) {
                 return updateLogic(Child);
             }

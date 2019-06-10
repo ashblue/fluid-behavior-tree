@@ -1,7 +1,8 @@
 {
     "name": "Fluid.BehaviorTree.EditorTests",
     "references": [
-        "Fluid.BehaviorTree"
+        "Fluid.BehaviorTree",
+        "Fluid.BehaviorTree.Editor"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

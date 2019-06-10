@@ -8,6 +8,7 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions {
 
         public float time = 1;
         
+        public override string IconPath { get; } = $"{PACKAGE_ROOT}/Hourglass.png";
 
         public WaitTime (ITimeMonitor timeMonitor) {
             _timeMonitor = timeMonitor;
