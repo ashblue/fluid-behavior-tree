@@ -6,11 +6,11 @@ setup_git() {
 }
 
 update_nightly_branch() {
-    printf "Current Git details"
+    printf "Current Git details \n"
     git rev-parse HEAD
     git branch | grep \* | cut -d ' ' -f2
 
-    printf "Run nightly update"
+    printf "Run nightly update \n"
     git remote add origin-nightly https://${GH_TOKEN}@github.com/ashblue/fluid-behavior-tree.git
     git subtree push --prefix Assets/FluidBehaviorTree origin-nightly nightly
 }
