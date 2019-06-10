@@ -5,19 +5,11 @@ using CleverCrow.Fluid.BTs.Tasks;
 namespace CleverCrow.Fluid.BTs.Decorators {
     public class RepeatUntilSuccess : DecoratorBase {
         protected override TaskStatus OnUpdate () {
-            if (Child == null) {
+            if (Child.Update() == TaskStatus.Success) {
                 return TaskStatus.Success;
             }
 
-            var childStatus = Child.Update();
-            var status = childStatus;
-
-            if (status == TaskStatus.Success) {
-                return TaskStatus.Success;
-            }
-            else {
-                return TaskStatus.Continue;
-            }
+            return TaskStatus.Continue;
         }
     }
 }
