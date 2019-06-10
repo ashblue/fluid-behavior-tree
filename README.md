@@ -148,6 +148,9 @@ with units who attempt to capture the flag while grabbing power ups to try and g
       - [Inverter](#inverter)
       - [ReturnSuccess](#returnsuccess)
       - [ReturnFailure](#returnfailure)
+      - [RepeatForever](#repeatforever)
+      - [RepeatUntilFailure](#repeatuntilfailure)
+      - [RepeatUntilSuccess](#repeatuntilsuccess)
   * [Creating Reusable Behavior Trees](#creating-reusable-behavior-trees)
   * [Creating Custom Reusable Nodes](#creating-custom-reusable-nodes)
     + [Your First Custom Node and Tree](#your-first-custom-node-and-extension)
@@ -351,6 +354,43 @@ Does not change `TaskStatus.Continue`.
 ```C#
 .Sequence()
     .ReturnFailure()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+#### RepeatForever
+
+Return `TaskStatus.Continue` regardless of what status the child returns. This decorator (and all descendent
+tasks) can be interrupted by calling `BehaviorTree.Reset()`.
+
+```C#
+.Sequence()
+    .RepeatForever()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+#### RepeatUntilFailure
+
+Return `TaskStatus.Failure` if the child returns `TaskStatus.Failure`, otherwise it returns `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .RepeatUntilFailure()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+#### RepeatUntilSuccess
+
+Return `TaskStatus.Success` if the child returns `TaskStatus.Success`, otherwise it returns `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .RepeatUntilSuccess()
         .Do(() => { return TaskStatus.Success; })
     .End()
 .End()
