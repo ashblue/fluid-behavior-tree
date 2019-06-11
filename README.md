@@ -1,4 +1,6 @@
-# Fluid Behavior Tree [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
+# Fluid Behavior Tree 
+[![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
@@ -143,7 +145,9 @@ public class ExampleUsage : MonoBehaviour {
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
   * [Development Environment](#development-environment)
-  * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
+    + [Making Commits](#making-commits)
+    + [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
+  * [Contributors](#contributors)
 
 ## Example Scene
 
@@ -644,3 +648,15 @@ Please do the following if you wish to contribute code to this project.
 1. Create your feature in a `feature` branch off of `develop`
 2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
 3. Submit a pull request to the `develop` branch
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt="Jesse Talavera-Greenberg"/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
