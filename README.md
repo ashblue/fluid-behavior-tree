@@ -1,10 +1,9 @@
-# Fluid Behavior Tree 
+![Fluid Behavior Tree](fluid-behavior-tree.jpg)
+
 [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
-A pure code behavior tree micro-framework built for Unity3D projects. 
-Granting developers the power to dictate their GUI presentation.
-Inspired by Fluent Behavior Tree.
+Behavior trees for Unity3D projects. Written with a code driven approach to maximize maintainability on large projects with the builder pattern. Inspired by Fluent Behavior Tree.
 
 **Features**
 
