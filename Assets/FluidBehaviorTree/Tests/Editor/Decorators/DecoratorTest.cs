@@ -50,13 +50,6 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 _decorator.Children.RemoveAt(0);
                 Assert.AreEqual(TaskStatus.Failure, _decorator.Update());
             }
-
-            [Test]
-            public void Does_not_crash_if_no_child () {
-                _decorator.Children.RemoveAt(0);
-
-                Assert.DoesNotThrow(() => _decorator.Update());
-            }
         }
 
         public class EndMethod : DecoratorTest {
