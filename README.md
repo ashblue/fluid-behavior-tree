@@ -1,4 +1,5 @@
-# Fluid Behavior Tree [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
+# Fluid Behavior Tree 
+[![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
@@ -144,7 +145,9 @@ public class ExampleUsage : MonoBehaviour {
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
   * [Development Environment](#development-environment)
-  * [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
+    + [Making Commits](#making-commits)
+    + [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
+  * [Contributors](#contributors)
 
 ## Example Scene
 
