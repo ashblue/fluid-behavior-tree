@@ -1,4 +1,6 @@
-# Fluid Behavior Tree [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
+# Fluid Behavior Tree 
+[![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
@@ -158,10 +160,17 @@ with units who attempt to capture the flag while grabbing power ups to try and g
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
-  * [Development](#development)
+  * [Development Environment](#development-environment)
     + [Making Commits](#making-commits)
     + [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
     + [Nightly Builds](#nightly-builds)
+  * [Contributors](#contributors)
+
+## Example Scene
+
+You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
+for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
+with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
 ## Library
 
@@ -707,3 +716,15 @@ To access nightly builds of `develop` that are package manager friendly you'll n
 ```
 
 Note that to get a newer nightly build you must delete this line and any related lock data in the manifest, let Unity rebuild, then add it back. As Unity locks the commit hash for Git urls as packages.
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt="Jesse Talavera-Greenberg"/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
