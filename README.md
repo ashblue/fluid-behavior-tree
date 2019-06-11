@@ -1,6 +1,6 @@
 # Fluid Behavior Tree 
 [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 A pure code behavior tree micro-framework built for Unity3D projects. 
 Granting developers the power to dictate their GUI presentation.
@@ -655,7 +655,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table><tr><td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt="Jesse Talavera-Greenberg"/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td></tr></table>
+<table><tr><td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt="Jesse Talavera-Greenberg"/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td><td align="center"><a href="http://blueashes.com"><img src="https://avatars2.githubusercontent.com/u/643307?v=4" width="100px;" alt="Ash Blue"/><br /><sub><b>Ash Blue</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=ashblue" title="Code">💻</a></td></tr></table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
