@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Decorators;
+using CleverCrow.Fluid.BTs.Decorators;
 using CleverCrow.Fluid.BTs.Tasks;
 using NSubstitute;
 using NUnit.Framework;
