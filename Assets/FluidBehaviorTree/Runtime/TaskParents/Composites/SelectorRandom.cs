@@ -8,6 +8,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class SelectorRandom : CompositeBase {
         private bool _init;
         
+        public override string IconPath { get; } = $"{PACKAGE_ROOT}/LinearScale.png";
+
         protected override TaskStatus OnUpdate () {
             if (!_init) {
                 ShuffleChildren();

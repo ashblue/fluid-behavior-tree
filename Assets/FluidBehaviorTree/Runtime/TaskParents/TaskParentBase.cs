@@ -4,11 +4,13 @@ using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.TaskParents {
-    public abstract class TaskParentBase : ITaskParent {
+    public abstract class TaskParentBase : GenericTaskBase, ITaskParent {
+        private int _lastTickCount;
+
         public IBehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
         public bool Enabled { get; set; } = true;
 
         public List<ITask> Children { get; } = new List<ITask>();
@@ -17,9 +19,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
 
         public GameObject Owner { get; set; }
 
-        private int _lastTickCount;
-
-        public TaskStatus Update () {
+        public override TaskStatus Update () {
+            base.Update();
             UpdateTicks();
 
             var status = OnUpdate();

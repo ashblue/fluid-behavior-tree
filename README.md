@@ -1,15 +1,15 @@
-# Fluid Behavior Tree 
+![Fluid Behavior Tree](fluid-behavior-tree.jpg)
+
 [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
-A pure code behavior tree micro-framework built for Unity3D projects. 
-Granting developers the power to dictate their GUI presentation.
-Inspired by Fluent Behavior Tree.
+Behavior trees for Unity3D projects. Written with a code driven approach to maximize maintainability on large projects with the builder pattern. Inspired by Fluent Behavior Tree.
 
 **Features**
 
 * Extendable, write your own custom re-usable nodes
 * Pre-built library of tasks to kickstart your AI
+* Tree visualizer to debug your trees at runtime
 * Heavily tested with TDD and unit tests
 * Tracks the last position of your behavior tree and restores it the next frame
 * Built for Unity (no integration overhead)
@@ -22,29 +22,6 @@ See upcoming features and development progress on the [Trello Board](https://tre
 
 ## Getting Started
 
-Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
-
-```json
-{
-  "scopedRegistries": [
-    {
-      "name": "NPM",
-      "url": "https://registry.npmjs.org",
-      "scopes": [
-        "com.fluid"
-      ]
-    }
-  ],
-  "dependencies": {
-    "com.fluid.behavior-tree": "2.0.1"
-  }
-}
-```
-
-Archives of specific versions and release notes are available on the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
-
-### Creating a Behavior Tree
-
 When creating trees you'll need to store them in a variable to properly cache all the necessary data.
 
 ```C#
@@ -53,6 +30,7 @@ using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 
 public class MyCustomAi : MonoBehaviour {
+    [SerializeField]
     private BehaviorTree _tree;
     
     private void Awake () {
@@ -82,6 +60,12 @@ Depending on what you return for a task status different things will happen.
 * Success: Node has finished, next `tree.Tick()` will restart the tree if no other nodes to run
 * Failure: Same as success, except informs that the node failed
 * Continue: Rerun this node the next time `tree.Tick()` is called. A pointer reference is tracked by the tree and can only be cleared if `tree.Reset()` is called.
+
+### Tree Visualizer
+
+As long as your tree storage variable is set to `public` or has a `SerializeField` attribute. You'll be able to print a visualization of your tree while the game is running in the editor. Note that you cannot view trees while the game is not running. As the tree has to be built in order to be visualized.
+
+![Visualizer](tree-visualizer.png)
 
 ### Extending Trees
 
@@ -116,9 +100,37 @@ public class ExampleUsage : MonoBehaviour {
 }
 ```
 
+### Installing
+
+Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
+
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "NPM",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "com.fluid"
+      ]
+    }
+  ],
+  "dependencies": {
+    "com.fluid.behavior-tree": "2.0.1"
+  }
+}
+```
+
+Archives of specific versions and release notes are available on the [releases page](https://github.com/ashblue/fluid-behavior-tree/releases).
+
+### Example Scene
+
+You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
+for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
+with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
+
 ## Table of Contents
 
-  * [Example Scene](#example-scene)
   * [Library](#library)
     + [Actions](#actions)
       - [Generic](#action-generic)
@@ -137,6 +149,9 @@ public class ExampleUsage : MonoBehaviour {
       - [Inverter](#inverter)
       - [ReturnSuccess](#returnsuccess)
       - [ReturnFailure](#returnfailure)
+      - [RepeatForever](#repeatforever)
+      - [RepeatUntilFailure](#repeatuntilfailure)
+      - [RepeatUntilSuccess](#repeatuntilsuccess)
   * [Creating Reusable Behavior Trees](#creating-reusable-behavior-trees)
   * [Creating Custom Reusable Nodes](#creating-custom-reusable-nodes)
     + [Your First Custom Node and Tree](#your-first-custom-node-and-extension)
@@ -144,10 +159,11 @@ public class ExampleUsage : MonoBehaviour {
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
+  * [Nightly Builds](#nightly-builds)
   * [Development Environment](#development-environment)
-    + [Making Commits](#making-commits)
-    + [Submitting your own actions, conditions, ect](#submitting-code-to-this-project)
-  * [Contributors](#contributors)
+    + [Submitting your own actions, conditions, ect](#making-commits)
+    + [Pull Requests / Contributing](#pull-requests--contributing)
+  * [Contributor Credits](#contributor-credits)
 
 ## Example Scene
 
@@ -346,6 +362,43 @@ Does not change `TaskStatus.Continue`.
 ```C#
 .Sequence()
     .ReturnFailure()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+#### RepeatForever
+
+Return `TaskStatus.Continue` regardless of what status the child returns. This decorator (and all descendent
+tasks) can be interrupted by calling `BehaviorTree.Reset()`.
+
+```C#
+.Sequence()
+    .RepeatForever()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+#### RepeatUntilFailure
+
+Return `TaskStatus.Failure` if the child returns `TaskStatus.Failure`, otherwise it returns `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .RepeatUntilFailure()
+        .Do(() => { return TaskStatus.Success; })
+    .End()
+.End()
+```
+
+#### RepeatUntilSuccess
+
+Return `TaskStatus.Success` if the child returns `TaskStatus.Success`, otherwise it returns `TaskStatus.Continue`.
+
+```C#
+.Sequence()
+    .RepeatUntilSuccess()
         .Do(() => { return TaskStatus.Success; })
     .End()
 .End()
@@ -623,6 +676,21 @@ public static class BehaviorTreeBuilderExtensions {
 }
 ```
 
+## Nightly Builds
+
+To access nightly builds of `develop` that are package manager friendly you'll need to manually edit your `Packages/manifest.json` as so. 
+
+```json
+{
+    "dependencies": {
+      "com.fluid.behavior-tree": "https://github.com/ashblue/fluid-behavior-tree.git#nightly"
+    }
+}
+```
+
+Note that to get a newer nightly build you must delete this line and any related lock data in the manifest, let Unity rebuild, then add it back. As Unity locks the commit hash for Git urls as packages.
+
+
 ## Development Environment
 
 If you wish to run to run the development environment you'll need to install [node.js](https://nodejs.org/en/). Then run the following from the root once.
@@ -641,15 +709,11 @@ To make a commit type the following into a terminal from the root
 npm run commit
 ```
 
-## Submitting code to this project
+### Pull Requests / Contributing
 
-Please do the following if you wish to contribute code to this project.
+Please see the [Contributing Guidelines](CONTRIBUTING.md) document for more info.
 
-1. Create your feature in a `feature` branch off of `develop`
-2. Make sure your new code is reasonably tested to demonstrate it works (see `*Test.cs` files)
-3. Submit a pull request to the `develop` branch
-
-## Contributors
+## Contributor Credits
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 

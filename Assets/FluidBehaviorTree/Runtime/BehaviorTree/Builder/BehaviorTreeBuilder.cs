@@ -24,6 +24,16 @@ namespace CleverCrow.Fluid.BTs.Trees {
             _pointers.Add(_tree.Root);
         }
 
+        /// <summary>
+        /// Set a name for the tree manually. For debugging purposes and visualizer window naming
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public BehaviorTreeBuilder Name (string name) {
+            _tree.Name = name;
+            return this;
+        }
+
         public BehaviorTreeBuilder ParentTask<P> (string name) where P : ITaskParent, new() {
             var parent = new P { Name = name };
 
@@ -62,6 +72,18 @@ namespace CleverCrow.Fluid.BTs.Trees {
             return ParentTask<ReturnFailure>(name);
         }
         
+        public BehaviorTreeBuilder RepeatUntilSuccess (string name = "repeat until success") {
+            return ParentTask<RepeatUntilSuccess>(name);
+        }
+
+        public BehaviorTreeBuilder RepeatUntilFailure (string name = "repeat until failure") {
+            return ParentTask<RepeatUntilFailure>(name);
+        }
+
+        public BehaviorTreeBuilder RepeatForever (string name = "repeat forever") {
+            return ParentTask<RepeatForever>(name);
+        }
+
         public BehaviorTreeBuilder Sequence (string name = "sequence") {
             return ParentTask<Sequence>(name);
         }

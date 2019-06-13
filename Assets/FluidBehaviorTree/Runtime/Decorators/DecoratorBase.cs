@@ -5,7 +5,7 @@ using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Decorators {
-    public abstract class DecoratorBase : ITaskParent {
+    public abstract class DecoratorBase : GenericTaskBase, ITaskParent {
         public List<ITask> Children { get; } = new List<ITask>();
 
         public string Name { get; set; }
@@ -18,7 +18,15 @@ namespace CleverCrow.Fluid.BTs.Decorators {
 
         public ITask Child => Children.Count > 0 ? Children[0] : null;
 
-        public TaskStatus Update () {
+        public override TaskStatus Update () {
+            base.Update();
+
+            if (Child == null) {
+                if (Application.isPlaying) Debug.LogWarning(
+                    $"Decorator {Name} has no child. Force returning failure. Please fix");
+                return TaskStatus.Failure;
+            }
+            
             var status = OnUpdate();
             LastStatus = status;
 
