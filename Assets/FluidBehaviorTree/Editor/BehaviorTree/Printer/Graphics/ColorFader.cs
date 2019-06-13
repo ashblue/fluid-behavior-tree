@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class ColorFader {
-        const float FADE_DURATION = 0.5f;
+        const float FADE_DURATION = 0.8f;
 
         private float _fadeTime;
         private readonly Color _startColor;
@@ -24,8 +24,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             }
 
             CurrentColor = Color.Lerp(
-                _startColor, 
-                _endColor, 
+                _startColor,
+                _endColor,
                 _fadeTime / FADE_DURATION);
         }
     }
