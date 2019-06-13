@@ -1,3 +1,25 @@
+# [2.2.0](https://github.com/ashblue/fluid-behavior-tree/compare/v2.1.0...v2.2.0) (2019-06-13)
+
+
+### Bug Fixes
+
+* **travis:** nightly builds moved to a force push ([b1ae62d](https://github.com/ashblue/fluid-behavior-tree/commit/b1ae62d))
+* nightly builds set to the wrong branch ([4413d51](https://github.com/ashblue/fluid-behavior-tree/commit/4413d51))
+* **behavior-tree:** recursive global position changes don't double up ([e762e8e](https://github.com/ashblue/fluid-behavior-tree/commit/e762e8e))
+* **visualizer:** bugfix for images vanishing ([53dcf0d](https://github.com/ashblue/fluid-behavior-tree/commit/53dcf0d))
+
+
+### Features
+
+* nightly builds now available ([2cd0774](https://github.com/ashblue/fluid-behavior-tree/commit/2cd0774))
+* **behavior-tree:** runtime trees can now be visually printed ([11534c7](https://github.com/ashblue/fluid-behavior-tree/commit/11534c7))
+* **decorators:** add three new decorators ([f376ea6](https://github.com/ashblue/fluid-behavior-tree/commit/f376ea6))
+
+
+### Reverts
+
+* **nightly:** removing nightly back to what it originally was ([f697eec](https://github.com/ashblue/fluid-behavior-tree/commit/f697eec))
+
 # [2.1.0](https://github.com/ashblue/fluid-behavior-tree/compare/v2.0.1...v2.1.0) (2019-06-04)
 
 
