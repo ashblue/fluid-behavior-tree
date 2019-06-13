@@ -116,7 +116,7 @@ Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity
     }
   ],
   "dependencies": {
-    "com.fluid.behavior-tree": "2.0.1"
+    "com.fluid.behavior-tree": "2.2.0"
   }
 }
 ```
@@ -138,11 +138,11 @@ with units who attempt to capture the flag while grabbing power ups to try and g
       - [Wait Time](#wait-time)
     + [Conditions](#conditions)
       - [Generic](#condition-generic)
-      - [RandomChance](#random-chance)
+      - [RandomChance](#randomchance)
     + [Composites](#composites)
       - [Sequence](#sequence)
       - [Selector](#selector)
-      - [SelectorRandom](#selector-random)
+      - [SelectorRandom](#selectorrandom)
       - [Parallel](#parallel)
     + [Decorators](#decorators)
       - [Generic](#decorator-generic)
