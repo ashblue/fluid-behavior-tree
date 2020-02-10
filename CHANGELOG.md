@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/ashblue/fluid-behavior-tree/compare/v2.2.0...v2.2.1) (2020-02-10)
+
+
+### Bug Fixes
+
+* **parallel:** prevents crashes when used with Splice() ([010d4ef](https://github.com/ashblue/fluid-behavior-tree/commit/010d4ef))
+
 # [2.2.0](https://github.com/ashblue/fluid-behavior-tree/compare/v2.1.0...v2.2.0) (2019-06-13)
 
 
