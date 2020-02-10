@@ -8,7 +8,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
     public class BehaviorTreeBuilderTest {
         private int _invokeCount;
         private BehaviorTreeBuilder _builder;
-            
+
         [SetUp]
         public void BeforeEach () {
             _invokeCount = 0;
@@ -21,13 +21,13 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 var tree = _builder
                     .SelectorRandom("random selector")
                     .Build();
-    
+
                 var selectorRandom = tree.Root.Children[0] as SelectorRandom;
-                
+
                 Assert.IsNotNull(selectorRandom);
             }
         }
-        
+
         public class SequenceMethod : BehaviorTreeBuilderTest {
             [Test]
             public void Create_a_sequence () {
@@ -38,15 +38,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                             return TaskStatus.Success;
                         })
                     .Build();
-    
+
                 var sequence = tree.Root.Children[0] as Sequence;
-                
+
                 Assert.AreEqual(tree.Root.Children.Count, 1);
                 Assert.AreEqual(sequence.Children.Count, 1);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
             }
-            
+
             [Test]
             public void Create_a_nested_sequence () {
                 var tree = _builder
@@ -61,16 +61,16 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                                 return TaskStatus.Success;
                             })
                     .Build();
-    
+
                 var sequence = tree.Root.Children[0] as Sequence;
                 Assert.AreEqual(2, sequence.Children.Count);
-                
+
                 var nested = sequence.Children[1] as Sequence;
                 Assert.AreEqual(nested.Children.Count, 1);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(2, _invokeCount);
             }
-            
+
             [Test]
             public void Create_a_nested_sequence_then_add_an_action_to_the_parent () {
                 var tree = _builder
@@ -90,16 +90,16 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                             return TaskStatus.Success;
                         })
                     .Build();
-    
+
                 var sequence = tree.Root.Children[0] as Sequence;
                 Assert.AreEqual(3, sequence.Children.Count);
-                
+
                 var nested = sequence.Children[1] as Sequence;
                 Assert.AreEqual(nested.Children.Count, 1);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(3, _invokeCount);
             }
-    
+
             [Test]
             public void Create_two_nested_sequences_with_actions () {
                 var tree = _builder
@@ -116,16 +116,16 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                                 return TaskStatus.Success;
                             })
                     .Build();
-    
+
                 var sequence = tree.Root.Children[0] as Sequence;
                 Assert.AreEqual(2, sequence.Children.Count);
-                
+
                 var nested = sequence.Children[0] as Sequence;
                 Assert.AreEqual(nested.Children.Count, 1);
-                
+
                 var nestedAlt = sequence.Children[1] as Sequence;
                 Assert.AreEqual(nestedAlt.Children.Count, 1);
-                
+
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(2, _invokeCount);
             }
@@ -145,9 +145,9 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                             return TaskStatus.Success;
                         })
                     .Build();
-    
+
                 var selector = tree.Root.Children[0] as Selector;
-                
+
                 Assert.AreEqual(tree.Root.Children.Count, 1);
                 Assert.AreEqual(selector.Children.Count, 2);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
@@ -169,9 +169,9 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                             return TaskStatus.Success;
                         })
                     .Build();
-    
+
                 var parallel = tree.Root.Children[0] as Parallel;
-                
+
                 Assert.AreEqual(tree.Root.Children.Count, 1);
                 Assert.AreEqual(parallel.Children.Count, 2);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
@@ -193,7 +193,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                             return TaskStatus.Success;
                         })
                     .Build();
-    
+
                 var sequence = tree.Root.Children[0] as Sequence;
                 var condition = sequence.Children[0] as ConditionGeneric;
 
@@ -202,7 +202,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(2, _invokeCount);
             }
-            
+
             [Test]
             public void It_should_add_a_condition_without_a_name () {
                 var tree = _builder
@@ -211,7 +211,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                         return true;
                     })
                     .Build();
-    
+
                 var condition = tree.Root.Children[0] as ConditionGeneric;
 
                 Assert.IsNotNull(condition);
@@ -219,7 +219,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 Assert.AreEqual(1, _invokeCount);
             }
         }
-        
+
         public class DoMethod : BehaviorTreeBuilderTest {
             [Test]
             public void It_should_add_an_action () {
@@ -229,14 +229,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                         return TaskStatus.Success;
                     })
                     .Build();
-    
+
                 var action = tree.Root.Children[0] as ActionGeneric;
 
                 Assert.IsNotNull(action);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
             }
-            
+
             [Test]
             public void It_should_add_an_action_without_a_name () {
                 var tree = _builder
@@ -245,7 +245,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                         return TaskStatus.Success;
                     })
                     .Build();
-    
+
                 var action = tree.Root.Children[0] as ActionGeneric;
 
                 Assert.IsNotNull(action);
@@ -270,7 +270,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     .Build();
 
                 var decorator = tree.Root.Children[0] as DecoratorGeneric;
-                
+
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Failure, tree.Tick());
                 Assert.AreEqual(2, _invokeCount);
@@ -291,7 +291,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     .Build();
 
                 var decorator = tree.Root.Children[0] as DecoratorGeneric;
-                
+
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Failure, tree.Tick());
                 Assert.AreEqual(2, _invokeCount);
@@ -319,7 +319,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
 
                 var sequence = tree.Root.Children[0] as Sequence;
                 var decorator = sequence.Children[0] as DecoratorGeneric;
-                
+
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(3, _invokeCount);
@@ -338,13 +338,13 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     .Build();
 
                 var decorator = tree.Root.Children[0] as Inverter;
-                
+
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Failure, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
             }
         }
-        
+
         public class ReturnSuccessMethod : BehaviorTreeBuilderTest {
             [Test]
             public void It_should_create_a_ReturnSuccess () {
@@ -357,13 +357,13 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     .Build();
 
                 var decorator = tree.Root.Children[0] as ReturnSuccess;
-                
+
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Success, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
             }
         }
-        
+
         public class ReturnFailureMethod : BehaviorTreeBuilderTest {
             [Test]
             public void It_should_create_a_ReturnFailure () {
@@ -376,7 +376,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     .Build();
 
                 var decorator = tree.Root.Children[0] as ReturnFailure;
-                
+
                 Assert.IsNotNull(decorator);
                 Assert.AreEqual(TaskStatus.Failure, tree.Tick());
                 Assert.AreEqual(1, _invokeCount);
@@ -394,7 +394,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                             return TaskStatus.Success;
                         })
                     .Build();
-    
+
                 var sequence = tree.Root.Children[0] as Sequence;
                 var condition = sequence.Children[0] as RandomChance;
 
@@ -435,21 +435,41 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 var tree = _builder
                     .WaitTime("Custom")
                     .Build();
-    
+
                 var waitTime = tree.Root.Children[0] as WaitTime;
-                
+
                 Assert.IsNotNull(waitTime);
             }
-            
+
             [Test]
             public void It_should_set_WaitTime_duration () {
                 var tree = _builder
                     .WaitTime(2f)
                     .Build();
-    
+
                 var waitTime = tree.Root.Children[0] as WaitTime;
-                
+
                 Assert.AreEqual(2f, waitTime.time);
+            }
+        }
+
+        public class SpliceMethod : BehaviorTreeBuilderTest {
+            [Test]
+            public void It_should_not_fail_when_aborting_a_built_condition () {
+                var treeAlt = new BehaviorTreeBuilder(null)
+                    .Sequence()
+                        .Condition(() => false)
+                    .End()
+                .Build();
+
+                var tree = _builder
+                    .Parallel()
+                        .Splice(treeAlt)
+                    .Build();
+
+                Assert.DoesNotThrow(() => {
+                    tree.Tick();
+                });
             }
         }
     }
