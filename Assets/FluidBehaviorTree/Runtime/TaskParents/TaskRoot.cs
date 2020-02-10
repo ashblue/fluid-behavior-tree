@@ -14,5 +14,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             var child = Children[0];
             return child.Update();
         }
+
+        public override void End () {
+        }
     }
 }
