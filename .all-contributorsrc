@@ -22,11 +22,21 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "PureSaltProductions",
+      "name": "PureSaltProductions",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/52610924?v=4",
+      "profile": "https://github.com/PureSaltProductions",
+      "contributions": [
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "fluid-behavior-tree",
   "projectOwner": "ashblue",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
