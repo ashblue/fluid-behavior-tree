@@ -722,8 +722,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt=""/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td>
     <td align="center"><a href="http://blueashes.com"><img src="https://avatars2.githubusercontent.com/u/643307?v=4" width="100px;" alt=""/><br /><sub><b>Ash Blue</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=ashblue" title="Code">💻</a></td>
+    <td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt=""/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/PureSaltProductions"><img src="https://avatars1.githubusercontent.com/u/52610924?v=4" width="100px;" alt=""/><br /><sub><b>PureSaltProductions</b></sub></a><br /><a href="#userTesting-PureSaltProductions" title="User Testing">📓</a></td>
   </tr>
 </table>
