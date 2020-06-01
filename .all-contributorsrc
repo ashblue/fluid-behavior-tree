@@ -22,11 +22,21 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "call-stack",
+      "name": "call-stack",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/38575304?v=4",
+      "profile": "https://github.com/call-stack",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "fluid-behavior-tree",
   "projectOwner": "ashblue",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
