@@ -22,11 +22,21 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "call",
+      "name": "Brian Call",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6537446?v=4",
+      "profile": "http://call.computer",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "fluid-behavior-tree",
   "projectOwner": "ashblue",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
