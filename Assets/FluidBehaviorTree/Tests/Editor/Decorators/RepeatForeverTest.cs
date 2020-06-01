@@ -5,32 +5,47 @@ using NUnit.Framework;
 namespace CleverCrow.Fluid.BTs.Testing {
     public class RepeatForeverTest {
         public class UpdateMethod {
-            private RepeatForever repeater;
+            private RepeatForever Setup (ITask child) {
+                var repeat = new RepeatForever();
+                repeat.AddChild(child);
 
-            [SetUp]
-            public void Setup_repeater () {
-                repeater = new RepeatForever();
+                return repeat;
             }
 
-            [Test]
-            public void Returns_continue_on_child_failure () {
-                repeater.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build());
+            public class WhenChildReturnsFailure : UpdateMethod {
+                [Test]
+                public void It_should_return_continue () {
+                    var stub = A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build();
 
-                Assert.AreEqual(TaskStatus.Continue, repeater.Update());
+                    var repeater = Setup(stub);
+                    var status = repeater.Update();
+
+                    Assert.AreEqual(TaskStatus.Continue, status);
+                }
             }
 
-            [Test]
-            public void Returns_continue_on_child_success () {
-                repeater.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Success).Build());
+            public class WhenChildReturnsSuccess : UpdateMethod {
+                [Test]
+                public void It_should_return_continue () {
+                    var stub = A.TaskStub().WithUpdateStatus(TaskStatus.Success).Build();
 
-                Assert.AreEqual(TaskStatus.Continue, repeater.Update());
+                    var repeater = Setup(stub);
+                    var status = repeater.Update();
+
+                    Assert.AreEqual(TaskStatus.Continue, status);
+                }
             }
 
-            [Test]
-            public void Returns_continue_on_child_continue () {
-                repeater.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build());
+            public class WhenChildReturnsContinue : UpdateMethod {
+                [Test]
+                public void It_should_return_continue () {
+                    var stub = A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build();
 
-                Assert.AreEqual(TaskStatus.Continue, repeater.Update());
+                    var repeater = Setup(stub);
+                    var status = repeater.Update();
+
+                    Assert.AreEqual(TaskStatus.Continue, status);
+                }
             }
         }
     }

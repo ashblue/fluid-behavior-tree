@@ -1,8 +1,6 @@
 ﻿using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
-using CleverCrow.Fluid.BTs.TaskParents;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 
 namespace CleverCrow.Fluid.BTs.Testing {
@@ -32,14 +30,6 @@ namespace CleverCrow.Fluid.BTs.Testing {
             public class UpdateMethodMisc : UpdateMethod {
                 [Test]
                 public void It_should_run_update_on_all_success_child_tasks () {
-                    _sequence.Update();
-
-                    _sequence.Children.ForEach((c) => c.Received(1).Update());
-                }
-
-                [Test]
-                public void It_should_not_run_update_on_any_child_tasks_after_success () {
-                    _sequence.Update();
                     _sequence.Update();
 
                     _sequence.Children.ForEach((c) => c.Received(1).Update());
