@@ -49,7 +49,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                     tree.Received(1).AddActiveTask(_node);
                 }
-                
+
                 [Test]
                 public void It_should_not_call_BehaviorTree_AddActiveTask_on_continue_twice () {
                     var tree = Substitute.For<IBehaviorTree>();
@@ -61,7 +61,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                     tree.Received(1).AddActiveTask(_node);
                 }
-                
+
                 [Test]
                 public void It_should_call_BehaviorTree_AddActiveTask_again_after_Reset () {
                     var tree = Substitute.For<IBehaviorTree>();
@@ -88,7 +88,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                     tree.Received(1).RemoveActiveTask(_node);
                 }
-                
+
                 [Test]
                 public void It_should_not_call_BehaviorTree_AddActiveTask_if_continue_was_not_returned () {
                     var tree = Substitute.For<IBehaviorTree>();
@@ -103,7 +103,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
             public class TreeTickCountChange : UpdateMethod {
                 private GameObject _go;
-                
+
                 [SetUp]
                 public void BeforeEach () {
                     _go = new GameObject();
@@ -113,28 +113,28 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 public void AfterEach () {
                     Object.DestroyImmediate(_go);
                 }
-                
+
                 [Test]
                 public void Retriggers_start_if_tick_count_changes () {
                     var tree = new BehaviorTree(_go);
                     tree.AddNode(tree.Root, _node);
-                    
+
                     tree.Tick();
                     tree.Tick();
-                    
+
                     Assert.AreEqual(2, _node.StartCount);
                 }
-                
+
                 [Test]
                 public void Does_not_retrigger_start_if_tick_count_stays_the_same () {
                     _node.status = TaskStatus.Continue;
-                    
+
                     var tree = new BehaviorTree(_go);
                     tree.AddNode(tree.Root, _node);
-                    
+
                     tree.Tick();
                     tree.Tick();
-                    
+
                     Assert.AreEqual(1, _node.StartCount);
                 }
             }
@@ -148,21 +148,13 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 }
 
                 [Test]
-                public void Do_not_trigger_on_2nd_run () {
-                    _node.Update();
-                    _node.Update();
-
-                    Assert.AreEqual(1, _node.StartCount);
-                }
-
-                [Test]
                 public void Triggers_on_reset () {
                     _node.status = TaskStatus.Continue;
 
                     _node.Update();
                     _node.Reset();
                     _node.Update();
-                    
+
                     Assert.AreEqual(2, _node.StartCount);
                 }
             }
@@ -177,7 +169,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 public void Triggers_on_1st_update () {
                     Assert.AreEqual(1, _node.InitCount);
                 }
-                
+
                 [Test]
                 public void Does_not_trigger_on_2nd_update () {
                     _node.Update();

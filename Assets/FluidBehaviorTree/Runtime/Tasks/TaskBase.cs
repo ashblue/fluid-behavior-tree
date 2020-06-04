@@ -26,7 +26,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
                 Init();
                 _init = true;
             }
-            
+
             if (!_start) {
                 Start();
                 _start = true;
@@ -51,7 +51,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
             if (ParentTree == null) {
                 return;
             }
-            
+
             if (_lastTickCount != ParentTree.TickCount) {
                 Reset();
             }
@@ -85,7 +85,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// </summary>
         protected virtual void OnInit () {
         }
-        
+
         private void Start () {
             OnStart();
         }
@@ -101,7 +101,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
                 OnExit();
             }
 
-            _exit = false;
+            Reset();
         }
 
         /// <summary>
