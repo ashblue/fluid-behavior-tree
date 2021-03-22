@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NUnit.Framework;
 
@@ -36,6 +36,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
             public void It_should_execute_a_init_hook () {
                 var test = 0;
                 var task = new ActionGeneric {
+                    updateLogic = () => TaskStatus.Continue,
                     initLogic = () => { test++; }
                 };
 

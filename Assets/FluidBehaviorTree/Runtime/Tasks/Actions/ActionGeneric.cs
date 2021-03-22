@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace CleverCrow.Fluid.BTs.Tasks.Actions {
     public class ActionGeneric : ActionBase {
@@ -20,11 +20,11 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions {
         }
 
         protected override void OnExit () {
-            initLogic?.Invoke();
+            exitLogic?.Invoke();
         }
 
         protected override void OnInit () {
-            exitLogic?.Invoke();
+            initLogic?.Invoke();
         }
     }
 }
