@@ -4,6 +4,14 @@
 ### Bug Fixes
 
 * **actions:** generic action had exit and init reversed ([ff7dbc2](https://github.com/ashblue/fluid-behavior-tree/commit/ff7dbc2)), closes [#35](https://github.com/ashblue/fluid-behavior-tree/issues/35)
+* **builds:** node version now pulls from .nvmrc ([bf5c108](https://github.com/ashblue/fluid-behavior-tree/commit/bf5c108))
+
+## [2.2.3](https://github.com/ashblue/fluid-behavior-tree/compare/v2.2.2...v2.2.3) (2021-03-24)
+
+
+### Bug Fixes
+
+* **actions:** generic action had exit and init reversed ([ff7dbc2](https://github.com/ashblue/fluid-behavior-tree/commit/ff7dbc2)), closes [#35](https://github.com/ashblue/fluid-behavior-tree/issues/35)
 
 ## [2.2.2](https://github.com/ashblue/fluid-behavior-tree/compare/v2.2.1...v2.2.2) (2020-06-04)
 
