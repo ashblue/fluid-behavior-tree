@@ -1,3 +1,11 @@
+## [2.2.2](https://github.com/ashblue/fluid-behavior-tree/compare/v2.2.1...v2.2.2) (2020-06-04)
+
+
+### Bug Fixes
+
+* **dependencies:** nsubstitute no longer required ([a171e85](https://github.com/ashblue/fluid-behavior-tree/commit/a171e85)), closes [#18](https://github.com/ashblue/fluid-behavior-tree/issues/18)
+* **repeaters:** now handle composites and task hooks as expected ([3d8bcf6](https://github.com/ashblue/fluid-behavior-tree/commit/3d8bcf6))
+
 ## [2.2.1](https://github.com/ashblue/fluid-behavior-tree/compare/v2.2.0...v2.2.1) (2020-02-10)
 
 
