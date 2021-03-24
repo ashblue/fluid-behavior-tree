@@ -1,7 +1,6 @@
 ![Fluid Behavior Tree](fluid-behavior-tree.jpg)
 
 [![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
 Behavior trees for Unity3D projects. Written with a code driven approach to maximize maintainability on large projects with the builder pattern. Inspired by Fluent Behavior Tree.
 
@@ -722,15 +721,30 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://blueashes.com"><img src="https://avatars2.githubusercontent.com/u/643307?v=4" width="100px;" alt=""/><br /><sub><b>Ash Blue</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=ashblue" title="Code">💻</a></td>
-    <td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4" width="100px;" alt=""/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/PureSaltProductions"><img src="https://avatars1.githubusercontent.com/u/52610924?v=4" width="100px;" alt=""/><br /><sub><b>PureSaltProductions</b></sub></a><br /><a href="#userTesting-PureSaltProductions" title="User Testing">📓</a></td>
-    <td align="center"><a href="https://github.com/mduvergey"><img src="https://avatars2.githubusercontent.com/u/18513379?v=4" width="100px;" alt=""/><br /><sub><b>Martin Duvergey</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Amduvergey" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/call-stack"><img src="https://avatars1.githubusercontent.com/u/38575304?v=4" width="100px;" alt=""/><br /><sub><b>call-stack</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Acall-stack" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="http://blueashes.com"><img src="https://avatars2.githubusercontent.com/u/643307?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ash Blue</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=ashblue" title="Code">💻</a></td>
+    <td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/PureSaltProductions"><img src="https://avatars1.githubusercontent.com/u/52610924?v=4?s=100" width="100px;" alt=""/><br /><sub><b>PureSaltProductions</b></sub></a><br /><a href="#userTesting-PureSaltProductions" title="User Testing">📓</a></td>
+    <td align="center"><a href="https://github.com/mduvergey"><img src="https://avatars2.githubusercontent.com/u/18513379?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin Duvergey</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Amduvergey" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/call-stack"><img src="https://avatars1.githubusercontent.com/u/38575304?v=4?s=100" width="100px;" alt=""/><br /><sub><b>call-stack</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Acall-stack" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/piotr-j"><img src="https://avatars.githubusercontent.com/u/2499728?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Piotr Jastrzebski</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=piotr-j" title="Code">💻</a></td>
   </tr>
 </table>
 
-<!-- markdownlint-enable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
