@@ -44,6 +44,20 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 Assert.AreEqual(1, test);
             }
 
+            
+            [Test]
+            public void It_should_execute_init_hook_before_update () {
+                var test = 0;
+                var task = new ConditionGeneric {
+                    initLogic = () => { test++; },
+                    updateLogic = () => { return test == 1; }
+                };
+
+                task.Update();
+
+                Assert.AreEqual(task.LastStatus, TaskStatus.Success);
+            }
+
             [Test]
             public void It_should_execute_a_exit_hook () {
                 var test = 0;
