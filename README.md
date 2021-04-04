@@ -727,6 +727,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/mduvergey"><img src="https://avatars2.githubusercontent.com/u/18513379?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin Duvergey</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Amduvergey" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/call-stack"><img src="https://avatars1.githubusercontent.com/u/38575304?v=4?s=100" width="100px;" alt=""/><br /><sub><b>call-stack</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Acall-stack" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/piotr-j"><img src="https://avatars.githubusercontent.com/u/2499728?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Piotr Jastrzebski</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=piotr-j" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/hookSSi"><img src="https://avatars.githubusercontent.com/u/12372136?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sounghoo</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=hookSSi" title="Code">💻</a></td>
   </tr>
 </table>
 
