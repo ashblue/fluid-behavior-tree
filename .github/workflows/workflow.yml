@@ -1,0 +1,17 @@
+name: CI
+on: push
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '14'
+            - run: npm install
+            - run: npm run build
+            - name: Release
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: npm run semantic-release

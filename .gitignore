@@ -34,6 +34,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 /Logs/Packages-Update.log
+Logs/
+CodeCoverage/
 
 # Node.js
 node_modules
