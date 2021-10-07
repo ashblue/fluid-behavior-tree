@@ -16,6 +16,9 @@ namespace CleverCrow.Fluid.BTs.Testing {
         public class TaskParentExample : TaskParentBase {
             public int childCount = -1;
             public int resetCount = 0;
+            public int initCount = 0;
+            public int startCount = 0;
+            public int exitCount = 0;
             public TaskStatus status = TaskStatus.Success;
 
             protected override int MaxChildren => childCount;
@@ -25,7 +28,20 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             public override void Reset () {
+                base.Reset();
                 resetCount += 1;
+            }
+
+            protected override void OnInit() {
+                initCount += 1;
+            }
+
+            protected override void OnStart() {
+                startCount += 1;
+            }
+            
+            protected override void OnExit() {
+                exitCount += 1;
             }
         }
 
@@ -35,6 +51,82 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
         }
 
+        public class TriggeringOnInit : TaskParentTest {
+            [Test]
+            public void Triggers_on_1st_update () {
+                taskParent.status = TaskStatus.Success;
+
+                taskParent.Update();
+
+                Assert.AreEqual(1, taskParent.initCount);
+            }
+
+            [Test]
+            public void Does_not_trigger_on_2nd_update () {
+                taskParent.status = TaskStatus.Success;
+
+                taskParent.Update();
+                taskParent.Update();
+
+                Assert.AreEqual(1, taskParent.initCount);
+            }
+
+            [Test]
+            public void Does_not_trigger_on_reset () {
+                taskParent.status = TaskStatus.Success;
+
+                taskParent.Reset();
+                taskParent.Update();
+
+                Assert.AreEqual(1, taskParent.initCount);
+            }
+        }
+        
+        public class TriggeringOnExit : TaskParentTest {
+            [Test]
+            public void Does_not_trigger_on_continue () {
+                taskParent.status = TaskStatus.Continue;
+                taskParent.Update();
+
+                Assert.AreEqual(0, taskParent.exitCount);
+            }
+
+            [Test]
+            public void Triggers_on_success () {
+                taskParent.status = TaskStatus.Success;
+                taskParent.Update();
+
+                Assert.AreEqual(1, taskParent.exitCount);
+            }
+
+            [Test]
+            public void Triggers_on_failure () {
+                taskParent.status = TaskStatus.Failure;
+                taskParent.Update();
+
+                Assert.AreEqual(1, taskParent.exitCount);
+            }
+        }
+
+        public class TriggeringOnStart : TaskParentTest {
+            [Test]
+            public void Trigger_on_1st_run () {
+                taskParent.Update();
+
+                Assert.AreEqual(1, taskParent.startCount);
+            }
+
+            [Test]
+            public void Triggers_on_reset () {
+                taskParent.status = TaskStatus.Continue;
+
+                taskParent.Update();
+                taskParent.Reset();
+                taskParent.Update();
+
+                Assert.AreEqual(2, taskParent.startCount);
+            }
+        }
         public class TriggeringReset : TaskParentTest {
             [Test]
             public void It_should_trigger_Reset_on_success () {

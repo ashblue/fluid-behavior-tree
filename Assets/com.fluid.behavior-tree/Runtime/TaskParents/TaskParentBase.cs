@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.TaskParents {
     public abstract class TaskParentBase : GenericTaskBase, ITaskParent {
+        private bool _init;
+        private bool _start;
+        private bool _exit;
+
         private int _lastTickCount;
 
         public IBehaviorTree ParentTree { get; set; }
@@ -23,10 +27,21 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             base.Update();
             UpdateTicks();
 
+            if (!_init) {
+                Init();
+                _init = true;
+            }
+
+            if (!_start) {
+                Start();
+                _start = true;
+                _exit = true;
+            }
+
             var status = OnUpdate();
             LastStatus = status;
             if (status != TaskStatus.Continue) {
-                Reset();
+                Exit();
             }
 
             return status;
@@ -44,6 +59,39 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             _lastTickCount = ParentTree.TickCount;
         }
 
+        private void Init () {
+            OnInit();
+        }
+
+        /// <summary>
+        /// Triggers the first time this node is run or after a hard reset
+        /// </summary>
+        protected virtual void OnInit () {
+        }
+
+        private void Start () {
+            OnStart();
+        }
+
+        /// <summary>
+        /// Run every time this node begins
+        /// </summary>
+        protected virtual void OnStart () {
+        }
+
+        private void Exit () {
+            if (_exit) {
+                OnExit();
+            }
+            Reset();
+        }
+
+        /// <summary>
+        /// Triggered when this node is complete.
+        /// </summary>
+        protected virtual void OnExit () {
+        }
+
         public virtual void End () {
             throw new System.NotImplementedException();
         }
@@ -53,6 +101,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
         }
 
         public virtual void Reset () {
+            _start = false;
+            _exit = false;
         }
 
         public virtual ITaskParent AddChild (ITask child) {
