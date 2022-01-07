@@ -12,8 +12,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
                 End();
                 return TaskStatus.Failure;
             }
-            else if(TaskStatus.Continue == (status & TaskStatus.Continue))
-            {
+            else if(TaskStatus.Continue == (status & TaskStatus.Continue)) {
                 return TaskStatus.Continue;
             }
             End();
