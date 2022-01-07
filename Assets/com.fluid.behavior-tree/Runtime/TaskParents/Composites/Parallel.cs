@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class Parallel : CompositeBase {
@@ -8,10 +8,15 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
             TaskStatus status = TaskStatus.Success;
             foreach(var child in Children)
                 status |= child.Update();
-            if(TaskStatus.Failure == (status&TaskStatus.Failure))
+            if (TaskStatus.Failure == (status & TaskStatus.Failure)) {
+                End();
                 return TaskStatus.Failure;
-            else if(TaskStatus.Continue == (status&TaskStatus.Continue))
+            }
+            else if(TaskStatus.Continue == (status & TaskStatus.Continue))
+            {
                 return TaskStatus.Continue;
+            }
+            End();
             return TaskStatus.Success;
         }
 
