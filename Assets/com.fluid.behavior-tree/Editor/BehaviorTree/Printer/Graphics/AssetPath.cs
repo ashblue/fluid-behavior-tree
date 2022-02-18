@@ -8,6 +8,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public static class AssetPath {
         private const string PATH_PROJECT = "Assets/FluidBehaviorTree";
         private const string PATH_PACKAGE = "Packages/com.fluid.behavior-tree";
+        private const string PATH_PACKAGE2 = "Assets/com.fluid.behavior-tree";
 
         private static string _basePath;
 
@@ -17,6 +18,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
                 if (AssetDatabase.IsValidFolder(PATH_PACKAGE)) {
                     _basePath = PATH_PACKAGE;
+                    return _basePath;
+                }
+                
+                if (AssetDatabase.IsValidFolder(PATH_PACKAGE2)) {
+                    _basePath = PATH_PACKAGE2;
                     return _basePath;
                 }
 
