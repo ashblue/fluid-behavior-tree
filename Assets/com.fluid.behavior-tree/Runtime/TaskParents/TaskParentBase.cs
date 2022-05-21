@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
+#if UNITY_2021_3_OR_NEWER
 using UnityEngine;
+#endif
 
 namespace CleverCrow.Fluid.BTs.TaskParents
 {
@@ -18,7 +20,9 @@ namespace CleverCrow.Fluid.BTs.TaskParents
 
         public List<ITask> Children { get; } = new();
 
+#if UNITY_2021_3_OR_NEWER
         public GameObject Owner { get; set; }
+#endif
 
         private int _lastTickCount;
 

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if UNITY_2021_3_OR_NEWER
+using UnityEngine;
+#endif
 
 namespace CleverCrow.Fluid.BTs.Tasks
 {

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Trees;
+#if UNITY_2021_3_OR_NEWER
 using UnityEngine;
+#endif
 
 namespace CleverCrow.Fluid.BTs.Tasks
 {
@@ -8,7 +10,10 @@ namespace CleverCrow.Fluid.BTs.Tasks
     {
         public string Name { get; set; }
         public bool IsEnabled { get; set; } = true;
+
+#if UNITY_2021_3_OR_NEWER
         public GameObject Owner { get; set; }
+#endif
         public IBehaviorTree ParentTree { get; set; }
 
         public List<ITask> Children => null;

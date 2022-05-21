@@ -7,7 +7,6 @@ namespace CleverCrow.Fluid.BTs.Tasks
     {
         // TODO: Fix path
         protected const string PackageRoot = PathUtils.RootPlaceholder + "/Editor/Icons/Tasks";
-        private EditorRuntimeUtilities _editorUtils;
 
         /// <summary>
         /// For custom project icons provide a path from assets to a Texture2D asset. Example `Assets/MyIcon.png`.
@@ -19,7 +18,10 @@ namespace CleverCrow.Fluid.BTs.Tasks
         public virtual float IconPadding => MathFExtensions.Zero;
         public bool HasBeenActive { get; private set; }
 
+#if UNITY_EDITOR
+        private EditorRuntimeUtilities _editorUtils;
         public EditorRuntimeUtilities EditorUtils => _editorUtils ??= new EditorRuntimeUtilities();
+#endif
 
         public virtual TaskStatus Update()
         {

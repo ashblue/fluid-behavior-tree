@@ -1,9 +1,16 @@
 {
     "name": "Fluid.BehaviorTree",
+    "rootNamespace": "",
     "references": [
         "Fluid.BehaviorTree.Utils"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
-    "excludePlatforms": []
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

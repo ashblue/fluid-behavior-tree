@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine.Events;
 
 namespace CleverCrow.Fluid.BTs.Tasks
@@ -11,3 +13,5 @@ namespace CleverCrow.Fluid.BTs.Tasks
         public readonly UnityEvent EventActive = new();
     }
 }
+
+#endif
