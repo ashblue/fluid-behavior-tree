@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.AssetDatabase;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
@@ -9,8 +10,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 
         public TextureLoader(string spritePath)
         {
-            Texture = AssetDatabase.LoadAssetAtPath<Texture2D>(
-                spritePath.Replace("ROOT", AssetPath.BasePath));
+            // TODO: Convert replace value into const
+            Texture = LoadAssetAtPath<Texture2D>(spritePath.Replace("ROOT", AssetPath.BasePath));
         }
 
         public void Paint(Rect rect, Color color)
@@ -18,7 +19,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             var oldColor = GUI.color;
             GUI.color = color;
 
-            if (Texture == null) return;
+            if (!Texture)
+            {
+                return;
+            }
+
             GUI.Label(rect, Texture);
 
             GUI.color = oldColor;

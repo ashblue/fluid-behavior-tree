@@ -15,13 +15,12 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
         float Height { get; }
         float PaddingX { get; }
         float PaddingY { get; }
+        bool SkipCentering { get; }
 
         void SetSize(float width, float height);
         void SetLocalPosition(float x, float y);
         void AddGlobalPosition(float x, float y);
         void SetPadding(float x, float y);
         void CenterAlignChildren();
-
-        bool SkipCentering { get; }
     }
 }

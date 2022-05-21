@@ -1,18 +1,13 @@
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees.Utils;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class GraphNode
     {
-        private IGraphNodePrinter _printer;
-
-        public float ContainerHeight => Size.y
-                                        + VerticalConnectorBottomHeight
-                                        + HorizontalConnectorHeight
-                                        + VerticalConnectorTopHeight;
-
+        public float ContainerHeight => GetContainerHeight();
         public Vector2 Position { get; private set; }
         public List<GraphNode> Children { get; } = new();
         public Vector2 Size { get; }
@@ -20,6 +15,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
         public int VerticalConnectorBottomHeight { get; }
         public int VerticalConnectorTopHeight { get; }
         public int HorizontalConnectorHeight { get; }
+
+        private readonly IGraphNodePrinter _printer;
 
         public GraphNode(ITask task, IGraphNodePrinter printer, GraphNodeOptions options)
         {
@@ -31,8 +28,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             VerticalConnectorTopHeight = options.VerticalConnectorTopHeight;
             HorizontalConnectorHeight = options.HorizontalConnectorHeight;
 
-            if (task.Children == null) return;
-            foreach (var child in task.Children) Children.Add(new GraphNode(child, printer, options));
+            if (task.Children == null)
+            {
+                return;
+            }
+
+            foreach (var child in task.Children)
+            {
+                Children.Add(new GraphNode(child, printer, options));
+            }
         }
 
         public void SetPosition(Vector2 position)
@@ -45,10 +49,10 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
                 var childPos = new Vector2(position.x, position.y + ContainerHeight);
 
                 // Center the child, then align it to the expected position
-                childPos.x += Size.x / 2 + Size.x * i;
+                childPos.x += Size.x.Half() + Size.x * i;
 
                 // Shift the child as if it were in a container so it lines up properly
-                childPos.x -= Size.x * (Children.Count / 2f);
+                childPos.x -= Size.x * (Children.Count.Half());
 
                 child.SetPosition(childPos);
             }
@@ -58,7 +62,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
         {
             _printer.Print(this);
 
-            foreach (var child in Children) child.Print();
+            foreach (var child in Children)
+            {
+                child.Print();
+            }
+        }
+
+        private float GetContainerHeight()
+        {
+            return Size.y + VerticalConnectorBottomHeight + HorizontalConnectorHeight + VerticalConnectorTopHeight;
         }
     }
 }

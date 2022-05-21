@@ -5,40 +5,55 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class BehaviorTreeWindow : EditorWindow
     {
+        private const string TitleFormat = "Behavior Tree: {0}";
+
         private BehaviorTreePrinter _printer;
         private string _name;
+        private string _titleText;
 
-        public static void ShowTree(IBehaviorTree tree, string name)
+        public static void ShowTree(IBehaviorTree tree, string treeName)
         {
             var window = GetWindow<BehaviorTreeWindow>(false);
-            window.titleContent = new GUIContent($"Behavior Tree: {name}");
-            window.SetTree(tree, name);
+
+            var titleText = CreateTitleText(treeName);
+
+            window.titleContent = new GUIContent(titleText);
+            window.SetTree(tree, treeName, titleText);
         }
 
-        private void SetTree(IBehaviorTree tree, string name)
+        private static string CreateTitleText(string treeName) => string.Format(TitleFormat, treeName);
+
+        private void SetTree(IBehaviorTree tree, string treeName, string windowTitleText)
         {
             _printer?.Unbind();
             _printer = new BehaviorTreePrinter(tree, position.size);
-            _name = name;
+            _name = treeName;
+            _titleText = windowTitleText;
         }
 
         private void OnGUI()
         {
-            if (!Application.isPlaying) ClearView();
+            if (!Application.isPlaying)
+            {
+                ClearView();
+            }
 
-            GUILayout.Label($"Behavior Tree: {_name}", EditorStyles.boldLabel);
+            GUILayout.Label(_titleText, EditorStyles.boldLabel);
             _printer?.Print(position.size);
+        }
+
+        private void Update()
+        {
+            if (Application.isPlaying)
+            {
+                Repaint();
+            }
         }
 
         private void ClearView()
         {
             _name = null;
             _printer = null;
-        }
-
-        private void Update()
-        {
-            if (Application.isPlaying) Repaint();
         }
     }
 }

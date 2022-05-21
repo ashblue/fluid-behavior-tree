@@ -8,33 +8,36 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
     /// </summary>
     public static class AssetPath
     {
-        private const string PATH_PROJECT = "Assets/FluidBehaviorTree";
-        private const string PATH_PACKAGE = "Packages/com.fluid.behavior-tree";
+        // TODO: Fix asset paths to support all platforms
+        private const string PathProject = "Assets/FluidBehaviorTree";
+        private const string PathPackage = "Packages/com.fluid.behavior-tree";
 
         private static string _basePath;
 
-        public static string BasePath
+        public static string BasePath => GetBasePath();
+
+        private static string GetBasePath()
         {
-            get
+            if (_basePath != null)
             {
-                if (_basePath != null) return _basePath;
-
-                if (AssetDatabase.IsValidFolder(PATH_PACKAGE))
-                {
-                    _basePath = PATH_PACKAGE;
-                    return _basePath;
-                }
-
-                if (AssetDatabase.IsValidFolder(PATH_PROJECT))
-                {
-                    _basePath = PATH_PROJECT;
-                    return _basePath;
-                }
-
-                Debug.LogError("Asset root could not be found");
-
-                return null;
+                return _basePath;
             }
+
+            if (AssetDatabase.IsValidFolder(PathPackage))
+            {
+                _basePath = PathPackage;
+                return _basePath;
+            }
+
+            if (AssetDatabase.IsValidFolder(PathProject))
+            {
+                _basePath = PathProject;
+                return _basePath;
+            }
+
+            Debug.LogError("Asset root could not be found");
+
+            return null;
         }
     }
 }

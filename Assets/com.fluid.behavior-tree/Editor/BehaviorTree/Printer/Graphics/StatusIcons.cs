@@ -5,25 +5,22 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class StatusIcons
     {
-        private const string ICON_STATUS_PATH = "ROOT/Editor/Icons/Status";
+        // TODO: Change the way path is used to support any platform
+        private const string IconStatusPath = "ROOT/Editor/Icons/Status";
 
-        private TextureLoader Success { get; } = new($"{ICON_STATUS_PATH}/Success.png");
-        private TextureLoader Failure { get; } = new($"{ICON_STATUS_PATH}/Failure.png");
-        private TextureLoader Continue { get; } = new($"{ICON_STATUS_PATH}/Continue.png");
+        private TextureLoader Success { get; } = new($"{IconStatusPath}/Success.png");
+        private TextureLoader Failure { get; } = new($"{IconStatusPath}/Failure.png");
+        private TextureLoader Continue { get; } = new($"{IconStatusPath}/Continue.png");
 
         public TextureLoader GetIcon(TaskStatus status)
         {
-            switch (status)
+            return status switch
             {
-                case TaskStatus.Success:
-                    return Success;
-                case TaskStatus.Failure:
-                    return Failure;
-                case TaskStatus.Continue:
-                    return Continue;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(status), status, null);
-            }
+                TaskStatus.Success => Success,
+                TaskStatus.Failure => Failure,
+                TaskStatus.Continue => Continue,
+                _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+            };
         }
     }
 }

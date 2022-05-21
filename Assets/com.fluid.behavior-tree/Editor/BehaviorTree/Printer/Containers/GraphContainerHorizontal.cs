@@ -1,20 +1,22 @@
 using System.Collections.Generic;
+using static CleverCrow.Fluid.BTs.Trees.Utils.MathFExtensions;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class GraphContainerHorizontal : IGraphContainer
     {
-        protected readonly List<IGraphBox> _childContainers = new();
-
         public float LocalPositionX { get; private set; }
         public float LocalPositionY { get; private set; }
         public float GlobalPositionX { get; private set; }
         public float GlobalPositionY { get; private set; }
         public float Width { get; protected set; }
         public float Height { get; protected set; }
-        public float PaddingX { get; }
-        public float PaddingY { get; }
+        public float PaddingX => Zero;
+        public float PaddingY => Zero;
         public List<IGraphBox> ChildContainers => _childContainers;
+        public bool SkipCentering => false;
+
+        protected readonly List<IGraphBox> _childContainers = new();
 
         public void SetLocalPosition(float x, float y)
         {
@@ -34,11 +36,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             child.AddGlobalPosition(GlobalPositionX + child.LocalPositionX, GlobalPositionY + child.LocalPositionY);
 
             Width += child.Width;
-            if (child.Height > Height) Height = child.Height;
+            if (child.Height > Height)
+            {
+                Height = child.Height;
+            }
         }
 
         public void SetSize(float width, float height)
         {
+            //TODO: implement
             throw new System.NotImplementedException();
         }
 
@@ -53,25 +59,26 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             GlobalPositionX += x;
             GlobalPositionY += y;
 
-            foreach (var child in ChildContainers) child.AddGlobalPosition(x, y);
+            foreach (var child in ChildContainers)
+            {
+                child.AddGlobalPosition(x, y);
+            }
         }
 
         public void SetPadding(float x, float y)
         {
+            //TODO: implement
             throw new System.NotImplementedException();
-        }
-
-        public override string ToString()
-        {
-            return
-                $"Size: {Width}, {Height}; Local: {LocalPositionX}, {LocalPositionY}; Global: {GlobalPositionX}, {GlobalPositionY};";
         }
 
         public virtual void CenterAlignChildren()
         {
-            foreach (var child in _childContainers) child.CenterAlignChildren();
+            foreach (var child in _childContainers)
+            {
+                child.CenterAlignChildren();
+            }
         }
 
-        public bool SkipCentering { get; }
+        public override string ToString() => $"Size: {Width}, {Height}; Local: {LocalPositionX}, {LocalPositionY}; Global: {GlobalPositionX}, {GlobalPositionY};";
     }
 }

@@ -5,18 +5,24 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class NodeBoxStyle
     {
+        private const int NodeSize = 19;
+        private const int InternalNodeSize = 17;
+
         public GUIStyle Style { get; }
 
         public NodeBoxStyle(Color32 border, Color background)
         {
-            var texture = CreateTexture(19, 19, border);
-            texture.SetPixels(1, 1, 17, 17,
-                Enumerable.Repeat(background, 17 * 17).ToArray());
+            var texture = CreateTexture(NodeSize, NodeSize, border);
+            var colors = Enumerable.Repeat(background, InternalNodeSize * InternalNodeSize).ToArray();
+
+            texture.SetPixels(1, 1, InternalNodeSize, InternalNodeSize, colors);
             texture.Apply();
+
+            const int offsetValue = 1;
 
             Style = new GUIStyle(GUI.skin.box)
             {
-                border = new RectOffset(1, 1, 1, 1),
+                border = new RectOffset(offsetValue, offsetValue, offsetValue, offsetValue),
                 normal =
                 {
                     background = texture

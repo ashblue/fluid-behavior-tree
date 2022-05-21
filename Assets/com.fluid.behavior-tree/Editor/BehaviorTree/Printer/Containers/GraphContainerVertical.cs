@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using static CleverCrow.Fluid.BTs.Trees.Utils.MathFExtensions;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
@@ -12,11 +13,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 
         private void CalculateChild(IGraphBox child)
         {
-            child.SetLocalPosition(0, Height);
+            child.SetLocalPosition(Zero, Height);
             child.AddGlobalPosition(GlobalPositionX + child.LocalPositionX, GlobalPositionY + child.LocalPositionY);
 
             Height += child.Height;
-            if (child.Width > Width) Width = child.Width;
+            if (child.Width > Width)
+            {
+                Width = child.Width;
+            }
         }
 
         public override void CenterAlignChildren()
@@ -27,7 +31,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             {
                 var child = _childContainers[i];
                 if (child.SkipCentering) continue;
-                child.AddGlobalPosition(positions[i], 0);
+                child.AddGlobalPosition(positions[i], Zero);
                 child.CenterAlignChildren();
             }
         }
@@ -35,10 +39,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
         private List<float> GetCenterAlignLocalPositions()
         {
             var list = new List<float>();
+
             foreach (var child in _childContainers)
             {
                 var gap = Width - child.Width;
-                var shift = gap / 2f;
+                var shift = gap.Half();
 
                 list.Add(shift);
             }

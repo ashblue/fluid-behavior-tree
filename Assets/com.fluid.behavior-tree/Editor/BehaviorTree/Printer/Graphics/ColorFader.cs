@@ -4,25 +4,25 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class ColorFader
     {
-        private const float FADE_DURATION = 0.8f;
+        private const float FadeDuration = 0.8f;
+
+        public Color CurrentColor { get; private set; }
 
         private float _fadeTime;
         private readonly Color _startColor;
         private readonly Color _endColor;
 
-        public Color CurrentColor { get; private set; }
-
-        public ColorFader(Color start, Color endColor)
+        public ColorFader(Color startColor, Color endColor)
         {
-            _startColor = start;
+            _startColor = startColor;
             _endColor = endColor;
         }
 
-        public void Update(bool reset)
+        public void Update(bool isReset)
         {
-            if (reset)
+            if (isReset)
             {
-                _fadeTime = FADE_DURATION;
+                _fadeTime = FadeDuration;
             }
             else
             {
@@ -33,7 +33,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             CurrentColor = Color.Lerp(
                 _startColor,
                 _endColor,
-                _fadeTime / FADE_DURATION);
+                _fadeTime / FadeDuration
+            );
         }
     }
 }

@@ -1,11 +1,16 @@
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Trees.Utils;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors
 {
     public class NodePrintController
     {
+        private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
+
+        private static readonly Color LastStatusIconColor = new Color(1, 1, 1, 0.7f);
+
         private readonly VisualTask _node;
         private readonly IGraphBox _box;
         private readonly IGraphBox _divider;
@@ -17,8 +22,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
 
-        private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
-
         public NodePrintController(VisualTask node)
         {
             _node = node;
@@ -29,16 +32,22 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 
         public void Print(bool taskIsActive)
         {
-            if (!(_node.Task is TaskRoot)) PaintVerticalTop();
+            if (_node.Task is not TaskRoot)
+            {
+                PaintVerticalTop();
+            }
+
             _faders.Update(taskIsActive);
 
             PaintBody();
 
-            if (_node.Children.Count > 0)
+            if (_node.Children.Count <= 0)
             {
-                PaintDivider();
-                PaintVerticalBottom();
+                return;
             }
+
+            PaintDivider();
+            PaintVerticalBottom();
         }
 
         private void PaintBody()
@@ -49,7 +58,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
                 _box.GlobalPositionX + _box.PaddingX,
                 _box.GlobalPositionY + _box.PaddingY,
                 _box.Width - _box.PaddingX,
-                _box.Height - _box.PaddingY);
+                _box.Height - _box.PaddingY
+            );
 
             if (_node.Task.HasBeenActive)
             {
@@ -70,75 +80,109 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             GUI.Label(rect, _node.Task.Name, Styles.Title);
         }
 
+
         private void PrintLastStatus(Rect rect)
         {
             const float sidePadding = 1.5f;
 
             var icon = BehaviorTreePrinter.StatusIcons.GetIcon(_node.Task.LastStatus);
-            icon.Paint(
-                new Rect(
-                    rect.x + rect.size.x - icon.Texture.width - sidePadding,
-                    rect.y + rect.size.y - icon.Texture.height - sidePadding,
-                    icon.Texture.width, icon.Texture.height),
-                new Color(1, 1, 1, 0.7f));
+
+            var iconRect = new Rect(
+                rect.x + rect.size.x - icon.Texture.width - sidePadding,
+                rect.y + rect.size.y - icon.Texture.height - sidePadding,
+                icon.Texture.width,
+                icon.Texture.height
+            );
+
+            icon.Paint(iconRect, LastStatusIconColor);
         }
 
         private void PrintIcon()
         {
-            const float iconWidth = 35;
-            const float iconHeight = 35;
+            const float iconWidth = 35f;
+            const float iconHeight = 35f;
+            const float paddingY = 3f;
+
+            var x = _box.GlobalPositionX + _box.PaddingX.Half() + _box.Width.Half() - iconWidth.Half() +
+                    _node.Task.IconPadding.Half();
+            var y = _box.GlobalPositionY + _box.PaddingX.Half() + paddingY + _node.Task.IconPadding.Half();
+            var width = iconWidth - _node.Task.IconPadding;
+            var height = iconHeight - _node.Task.IconPadding;
+
             _iconMain.Paint(
-                new Rect(
-                    _box.GlobalPositionX + _box.PaddingX / 2 + _box.Width / 2 - iconWidth / 2 +
-                    _node.Task.IconPadding / 2,
-                    _box.GlobalPositionY + _box.PaddingX / 2 + 3 + _node.Task.IconPadding / 2,
-                    iconWidth - _node.Task.IconPadding,
-                    iconHeight - _node.Task.IconPadding),
-                _faders.MainIconFader.CurrentColor);
+                new Rect(x, y, width, height),
+                _faders.MainIconFader.CurrentColor
+            );
         }
 
         private void PaintDivider()
         {
             const int graphicSizeIncrease = 5;
+            const float dividerOffsetX = 2f;
+            const float height = 10f;
 
-            if (_dividerGraphic == null)
+            if (!_dividerGraphic)
+            {
                 _dividerGraphic = CreateTexture(
                     (int)_divider.Width + graphicSizeIncrease,
                     1,
-                    Color.black);
+                    Color.black
+                );
+            }
 
             var position = new Rect(
-                _divider.GlobalPositionX + _box.PaddingY / 2 + _node.DividerLeftOffset - 2,
+                _divider.GlobalPositionX + _box.PaddingY.Half() + _node.DividerLeftOffset - dividerOffsetX,
                 // @TODO Should not need to offset this
-                _divider.GlobalPositionY + _box.PaddingY / 2,
+                _divider.GlobalPositionY + _box.PaddingY.Half(),
                 _divider.Width + graphicSizeIncrease,
-                10);
+                height
+            );
 
             GUI.Label(position, _dividerGraphic);
         }
 
         private void PaintVerticalBottom()
         {
-            if (_verticalBottom == null) _verticalBottom = CreateTexture(1, (int)_box.PaddingY, Color.black);
+            const int defaultWidth = 1;
+
+            if (!_verticalBottom)
+            {
+                _verticalBottom = CreateTexture(defaultWidth, (int)_box.PaddingY, Color.black);
+            }
+
+            const float width = 100f;
+            const float paddingX = 2f;
+            const float paddingY = 1f;
 
             var position = new Rect(
-                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
-                _box.GlobalPositionY + _node.Height + _box.PaddingY - 1,
-                100,
-                _box.PaddingY - 1);
+                _box.GlobalPositionX + _node.Width.Half() + _box.PaddingX - paddingX,
+                _box.GlobalPositionY + _node.Height + _box.PaddingY - paddingY,
+                width,
+                _box.PaddingY - paddingY
+            );
 
             GUI.Label(position, _verticalBottom);
         }
 
         private void PaintVerticalTop()
         {
-            if (_verticalTop == null) _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), Color.black);
+            const int defaultWidth = 1;
+
+            if (!_verticalTop)
+            {
+                _verticalTop = CreateTexture(defaultWidth, Mathf.RoundToInt(_box.PaddingY.Half()), Color.black);
+            }
+
+            const float paddingX = 2f;
+            const float width = 100f;
+            const float height = 10f;
 
             var position = new Rect(
-                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
-                _box.GlobalPositionY + _box.PaddingY / 2,
-                100,
-                10);
+                _box.GlobalPositionX + _node.Width.Half() + _box.PaddingX - paddingX,
+                _box.GlobalPositionY + _box.PaddingY.Half(),
+                width,
+                height
+            );
 
             GUI.Label(position, _verticalTop);
         }
