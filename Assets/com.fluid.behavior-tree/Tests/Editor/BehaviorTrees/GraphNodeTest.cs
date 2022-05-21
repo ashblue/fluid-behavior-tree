@@ -5,26 +5,33 @@ using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
-    public class GraphNodeTest {
-        public class SetPositionMethod {
+namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing
+{
+    public class GraphNodeTest
+    {
+        public class SetPositionMethod
+        {
             private IGraphNodePrinter _printer;
-            private Vector2 _size = new Vector2(50, 100);
+            private Vector2 _size = new(50, 100);
 
-            private GraphNode CreateNode (ITask task, GraphNodeOptions options = null) {
+            private GraphNode CreateNode(ITask task, GraphNodeOptions options = null)
+            {
                 if (options == null) options = new GraphNodeOptions();
                 options.Size = _size;
                 return new GraphNode(task, _printer, options);
             }
 
             [SetUp]
-            public void BeforeEach () {
+            public void BeforeEach()
+            {
                 _printer = Substitute.For<IGraphNodePrinter>();
             }
 
-            public class DefaultTests : SetPositionMethod {
+            public class DefaultTests : SetPositionMethod
+            {
                 [Test]
-                public void It_should_set_the_position () {
+                public void It_should_set_the_position()
+                {
                     var task = A.TaskStub().Build();
                     var graphNode = CreateNode(task);
 
@@ -35,11 +42,13 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
 
 
                 [Test]
-                public void It_should_offset_two_children_by_half_the_width () {
+                public void It_should_offset_two_children_by_half_the_width()
+                {
                     var task = A.TaskStub()
-                        .SetChildren(new List<ITask> {
+                        .SetChildren(new List<ITask>
+                        {
                             A.TaskStub().Build(),
-                            A.TaskStub().Build(),
+                            A.TaskStub().Build()
                         })
                         .Build();
                     var graphNode = CreateNode(task);
@@ -54,12 +63,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
                 }
 
                 [Test]
-                public void It_should_offset_three_children_to_line_up_in_the_middle () {
+                public void It_should_offset_three_children_to_line_up_in_the_middle()
+                {
                     var task = A.TaskStub()
-                        .SetChildren(new List<ITask> {
+                        .SetChildren(new List<ITask>
+                        {
                             A.TaskStub().Build(),
                             A.TaskStub().Build(),
-                            A.TaskStub().Build(),
+                            A.TaskStub().Build()
                         })
                         .Build();
                     var graphNode = CreateNode(task);
@@ -76,13 +87,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
                 }
 
                 [Test]
-                public void It_should_offset_four_children_to_line_up_in_the_middle () {
+                public void It_should_offset_four_children_to_line_up_in_the_middle()
+                {
                     var task = A.TaskStub()
-                        .SetChildren(new List<ITask> {
+                        .SetChildren(new List<ITask>
+                        {
                             A.TaskStub().Build(),
                             A.TaskStub().Build(),
                             A.TaskStub().Build(),
-                            A.TaskStub().Build(),
+                            A.TaskStub().Build()
                         })
                         .Build();
                     var graphNode = CreateNode(task);
@@ -105,32 +118,37 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
                 }
             }
 
-            public class SingleChildTests : SetPositionMethod {
+            public class SingleChildTests : SetPositionMethod
+            {
                 private ITask _task;
-                
+
                 [SetUp]
-                public void BeforeEachTest () {
+                public void BeforeEachTest()
+                {
                     _task = A.TaskStub()
-                        .SetChildren(new List<ITask> {A.TaskStub().Build()})
+                        .SetChildren(new List<ITask> { A.TaskStub().Build() })
                         .Build();
                 }
-                
+
                 [Test]
-                public void It_should_set_the_child_position_directly_below_the_parent () {
+                public void It_should_set_the_child_position_directly_below_the_parent()
+                {
                     var graphNode = CreateNode(_task);
-                    var child = graphNode.Children[0]; 
-                    
+                    var child = graphNode.Children[0];
+
                     graphNode.SetPosition(Vector2.zero);
 
                     Assert.AreEqual(new Vector2(0, graphNode.Size.y), child.Position);
                 }
 
                 [Test]
-                public void It_should_set_the_child_position_below_a_vertical_connector_bottom () {
-                    var graphNode = CreateNode(_task, new GraphNodeOptions {
-                        VerticalConnectorBottomHeight = 10,
+                public void It_should_set_the_child_position_below_a_vertical_connector_bottom()
+                {
+                    var graphNode = CreateNode(_task, new GraphNodeOptions
+                    {
+                        VerticalConnectorBottomHeight = 10
                     });
-                    var child = graphNode.Children[0]; 
+                    var child = graphNode.Children[0];
 
                     graphNode.SetPosition(Vector2.zero);
 
@@ -140,13 +158,15 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
                 }
 
                 [Test]
-                public void It_should_set_the_child_position_below_a_vertical_bottom_divider_plus_horizontal_line () {
-                    var graphNode = CreateNode(_task, new GraphNodeOptions {
+                public void It_should_set_the_child_position_below_a_vertical_bottom_divider_plus_horizontal_line()
+                {
+                    var graphNode = CreateNode(_task, new GraphNodeOptions
+                    {
                         VerticalConnectorBottomHeight = 10,
-                        HorizontalConnectorHeight = 1,
+                        HorizontalConnectorHeight = 1
                     });
-                    var child = graphNode.Children[0]; 
-                    
+                    var child = graphNode.Children[0];
+
                     graphNode.SetPosition(Vector2.zero);
 
                     var expectedY = graphNode.Size.y
@@ -155,16 +175,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
 
                     Assert.AreEqual(new Vector2(0, expectedY), child.Position);
                 }
-                
+
                 [Test]
-                public void It_should_set_the_child_position_below_a_vertical_connector_top () {
-                    var graphNode = CreateNode(_task, new GraphNodeOptions {
+                public void It_should_set_the_child_position_below_a_vertical_connector_top()
+                {
+                    var graphNode = CreateNode(_task, new GraphNodeOptions
+                    {
                         VerticalConnectorBottomHeight = 10,
                         HorizontalConnectorHeight = 1,
-                        VerticalConnectorTopHeight = 3,
+                        VerticalConnectorTopHeight = 3
                     });
-                    var child = graphNode.Children[0]; 
-                    
+                    var child = graphNode.Children[0];
+
                     graphNode.SetPosition(Vector2.zero);
 
                     var expectedY = graphNode.Size.y
@@ -174,15 +196,17 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors.Testing {
 
                     Assert.AreEqual(new Vector2(0, expectedY), child.Position);
                 }
-                
+
                 [Test]
-                public void It_should_make_the_child_inherit_the_container_size () {
-                    var graphNode = CreateNode(_task, new GraphNodeOptions {
+                public void It_should_make_the_child_inherit_the_container_size()
+                {
+                    var graphNode = CreateNode(_task, new GraphNodeOptions
+                    {
                         VerticalConnectorBottomHeight = 10,
                         HorizontalConnectorHeight = 1,
-                        VerticalConnectorTopHeight = 3,
+                        VerticalConnectorTopHeight = 3
                     });
-                    var child = graphNode.Children[0]; 
+                    var child = graphNode.Children[0];
 
                     Assert.AreEqual(graphNode.ContainerHeight, child.ContainerHeight);
                 }

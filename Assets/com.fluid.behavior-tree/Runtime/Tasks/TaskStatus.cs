@@ -1,5 +1,7 @@
-﻿namespace CleverCrow.Fluid.BTs.Tasks {
-    public enum TaskStatus {
+﻿namespace CleverCrow.Fluid.BTs.Tasks
+{
+    public enum TaskStatus
+    {
         Success,
         Failure,
         Continue

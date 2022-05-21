@@ -1,8 +1,10 @@
 using UnityEngine;
 
-namespace CleverCrow.Fluid.BTs.Trees.Editors {
-    public class ColorFader {
-        const float FADE_DURATION = 0.8f;
+namespace CleverCrow.Fluid.BTs.Trees.Editors
+{
+    public class ColorFader
+    {
+        private const float FADE_DURATION = 0.8f;
 
         private float _fadeTime;
         private readonly Color _startColor;
@@ -10,15 +12,20 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         public Color CurrentColor { get; private set; }
 
-        public ColorFader (Color start, Color endColor) {
+        public ColorFader(Color start, Color endColor)
+        {
             _startColor = start;
             _endColor = endColor;
         }
 
-        public void Update (bool reset) {
-            if (reset) {
+        public void Update(bool reset)
+        {
+            if (reset)
+            {
                 _fadeTime = FADE_DURATION;
-            } else {
+            }
+            else
+            {
                 _fadeTime -= Time.deltaTime;
                 _fadeTime = Mathf.Max(_fadeTime, 0);
             }

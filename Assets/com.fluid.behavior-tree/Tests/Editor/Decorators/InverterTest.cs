@@ -2,11 +2,15 @@
 using CleverCrow.Fluid.BTs.Tasks;
 using NUnit.Framework;
 
-namespace CleverCrow.Fluid.BTs.Testing {
-    public class InverterTest {
-        public class UpdateMethod {
+namespace CleverCrow.Fluid.BTs.Testing
+{
+    public class InverterTest
+    {
+        public class UpdateMethod
+        {
             [Test]
-            public void Returns_failure_when_child_returns_success () {
+            public void Returns_failure_when_child_returns_success()
+            {
                 var inverter = new Inverter();
                 inverter.AddChild(A.TaskStub().Build());
 
@@ -14,7 +18,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void Returns_true_when_child_returns_false () {
+            public void Returns_true_when_child_returns_false()
+            {
                 var inverter = new Inverter();
                 inverter.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Failure).Build());
 
@@ -22,7 +27,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void Returns_continue_when_child_returns_continue () {
+            public void Returns_continue_when_child_returns_continue()
+            {
                 var inverter = new Inverter();
                 inverter.AddChild(A.TaskStub().WithUpdateStatus(TaskStatus.Continue).Build());
 

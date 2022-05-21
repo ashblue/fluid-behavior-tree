@@ -4,40 +4,50 @@ using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CleverCrow.Fluid.BTs.Testing {
-    public class TaskParentTest {
+namespace CleverCrow.Fluid.BTs.Testing
+{
+    public class TaskParentTest
+    {
         private TaskParentExample taskParent;
 
         [SetUp]
-        public void SetTaskParent () {
+        public void SetTaskParent()
+        {
             taskParent = new TaskParentExample();
         }
 
-        public class TaskParentExample : TaskParentBase {
+        public class TaskParentExample : TaskParentBase
+        {
             public int childCount = -1;
             public int resetCount = 0;
             public TaskStatus status = TaskStatus.Success;
 
             protected override int MaxChildren => childCount;
 
-            protected override TaskStatus OnUpdate () {
+            protected override TaskStatus OnUpdate()
+            {
                 return status;
             }
 
-            public override void Reset () {
+            public override void Reset()
+            {
                 resetCount += 1;
             }
         }
 
-        public class TaskExample : ActionBase {
-            protected override TaskStatus OnUpdate () {
+        public class TaskExample : ActionBase
+        {
+            protected override TaskStatus OnUpdate()
+            {
                 return TaskStatus.Success;
             }
         }
 
-        public class TriggeringReset : TaskParentTest {
+        public class TriggeringReset : TaskParentTest
+        {
             [Test]
-            public void It_should_trigger_Reset_on_success () {
+            public void It_should_trigger_Reset_on_success()
+            {
                 taskParent.status = TaskStatus.Success;
 
                 taskParent.Update();
@@ -46,7 +56,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void It_should_trigger_Reset_on_failure () {
+            public void It_should_trigger_Reset_on_failure()
+            {
                 taskParent.status = TaskStatus.Failure;
 
                 taskParent.Update();
@@ -55,7 +66,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void It_should_not_trigger_Reset_on_continue () {
+            public void It_should_not_trigger_Reset_on_continue()
+            {
                 taskParent.status = TaskStatus.Continue;
 
                 taskParent.Update();
@@ -64,16 +76,19 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
         }
 
-        public class EnabledProperty : TaskParentTest {
+        public class EnabledProperty : TaskParentTest
+        {
             [Test]
-            public void Returns_enabled_if_child () {
+            public void Returns_enabled_if_child()
+            {
                 taskParent.AddChild(A.TaskStub().Build());
 
                 Assert.IsTrue(taskParent.Enabled);
             }
 
             [Test]
-            public void Returns_disabled_if_child_and_set_to_disabled () {
+            public void Returns_disabled_if_child_and_set_to_disabled()
+            {
                 taskParent.AddChild(A.TaskStub().Build());
                 taskParent.Enabled = false;
 
@@ -81,16 +96,19 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
         }
 
-        public class AddChildMethod : TaskParentTest {
+        public class AddChildMethod : TaskParentTest
+        {
             [Test]
-            public void Adds_a_child () {
+            public void Adds_a_child()
+            {
                 taskParent.AddChild(new TaskExample());
 
                 Assert.AreEqual(1, taskParent.Children.Count);
             }
 
             [Test]
-            public void Adds_two_children () {
+            public void Adds_two_children()
+            {
                 taskParent.AddChild(new TaskExample());
                 taskParent.AddChild(new TaskExample());
 
@@ -98,7 +116,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void Ignores_overflowing_children () {
+            public void Ignores_overflowing_children()
+            {
                 taskParent.childCount = 1;
 
                 taskParent.AddChild(new TaskExample());
@@ -108,7 +127,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void Does_not_add_disabled_children () {
+            public void Does_not_add_disabled_children()
+            {
                 var child = A.TaskStub()
                     .WithEnabled(false)
                     .Build();

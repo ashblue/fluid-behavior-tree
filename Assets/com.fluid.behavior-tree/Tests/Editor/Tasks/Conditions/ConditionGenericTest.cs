@@ -1,12 +1,17 @@
 ﻿using CleverCrow.Fluid.BTs.Tasks;
 using NUnit.Framework;
 
-namespace CleverCrow.Fluid.BTs.Testing {
-    public class ConditionGenericTest {
-        public class UpdateMethod {
+namespace CleverCrow.Fluid.BTs.Testing
+{
+    public class ConditionGenericTest
+    {
+        public class UpdateMethod
+        {
             [Test]
-            public void It_should_execute_a_generic_function () {
-                var task = new ConditionGeneric {
+            public void It_should_execute_a_generic_function()
+            {
+                var task = new ConditionGeneric
+                {
                     updateLogic = () => false
                 };
 
@@ -14,16 +19,19 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void It_should_return_success_without_a_lambda () {
+            public void It_should_return_success_without_a_lambda()
+            {
                 var task = new ConditionGeneric();
 
                 Assert.AreEqual(TaskStatus.Success, task.Update());
             }
 
             [Test]
-            public void It_should_execute_a_start_hook () {
+            public void It_should_execute_a_start_hook()
+            {
                 var test = 0;
-                var task = new ConditionGeneric {
+                var task = new ConditionGeneric
+                {
                     startLogic = () => { test++; }
                 };
 
@@ -33,9 +41,11 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void It_should_execute_a_init_hook () {
+            public void It_should_execute_a_init_hook()
+            {
                 var test = 0;
-                var task = new ConditionGeneric {
+                var task = new ConditionGeneric
+                {
                     initLogic = () => { test++; }
                 };
 
@@ -44,11 +54,13 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 Assert.AreEqual(1, test);
             }
 
-            
+
             [Test]
-            public void It_should_execute_init_hook_before_update () {
+            public void It_should_execute_init_hook_before_update()
+            {
                 var test = 0;
-                var task = new ConditionGeneric {
+                var task = new ConditionGeneric
+                {
                     initLogic = () => { test++; },
                     updateLogic = () => { return test == 1; }
                 };
@@ -59,9 +71,11 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
 
             [Test]
-            public void It_should_execute_a_exit_hook () {
+            public void It_should_execute_a_exit_hook()
+            {
                 var test = 0;
-                var task = new ConditionGeneric {
+                var task = new ConditionGeneric
+                {
                     exitLogic = () => { test++; }
                 };
 

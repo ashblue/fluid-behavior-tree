@@ -4,20 +4,25 @@ using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NUnit.Framework;
 
-namespace CleverCrow.Fluid.BTs.Trees.Testing {
-    public class BehaviorTreeBuilderTest {
+namespace CleverCrow.Fluid.BTs.Trees.Testing
+{
+    public class BehaviorTreeBuilderTest
+    {
         private int _invokeCount;
         private BehaviorTreeBuilder _builder;
 
         [SetUp]
-        public void BeforeEach () {
+        public void BeforeEach()
+        {
             _invokeCount = 0;
             _builder = new BehaviorTreeBuilder(null);
         }
 
-        public class SelectorRandomMethod : BehaviorTreeBuilderTest {
+        public class SelectorRandomMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_a_random_selector () {
+            public void It_should_add_a_random_selector()
+            {
                 var tree = _builder
                     .SelectorRandom("random selector")
                     .Build();
@@ -28,15 +33,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class SequenceMethod : BehaviorTreeBuilderTest {
+        public class SequenceMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void Create_a_sequence () {
+            public void Create_a_sequence()
+            {
                 var tree = _builder
                     .Sequence()
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -48,18 +56,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void Create_a_nested_sequence () {
+            public void Create_a_nested_sequence()
+            {
                 var tree = _builder
                     .Sequence("sequence")
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
-                        .Sequence("nested")
-                            .Do("actionNested", () => {
-                                _invokeCount++;
-                                return TaskStatus.Success;
-                            })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
+                    .Sequence("nested")
+                    .Do("actionNested", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -72,23 +83,27 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void Create_a_nested_sequence_then_add_an_action_to_the_parent () {
+            public void Create_a_nested_sequence_then_add_an_action_to_the_parent()
+            {
                 var tree = _builder
                     .Sequence("sequence")
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
-                        .Sequence("nested")
-                            .Do("actionNested", () => {
-                                _invokeCount++;
-                                return TaskStatus.Success;
-                            })
-                        .End()
-                        .Do("lastAction", () => {
+                    .Do("action", () =>
+                    {
                         _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                        return TaskStatus.Success;
+                    })
+                    .Sequence("nested")
+                    .Do("actionNested", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
+                    .End()
+                    .Do("lastAction", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -101,20 +116,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void Create_two_nested_sequences_with_actions () {
+            public void Create_two_nested_sequences_with_actions()
+            {
                 var tree = _builder
                     .Sequence("sequence")
-                        .Sequence("nested")
-                            .Do("actionNested", () => {
-                                _invokeCount++;
-                                return TaskStatus.Success;
-                            })
-                        .End()
-                        .Sequence("nested")
-                            .Do("actionNested", () => {
-                                _invokeCount++;
-                                return TaskStatus.Success;
-                            })
+                    .Sequence("nested")
+                    .Do("actionNested", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
+                    .End()
+                    .Sequence("nested")
+                    .Do("actionNested", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -131,19 +149,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class SelectorMethod : BehaviorTreeBuilderTest {
+        public class SelectorMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void Create_a_selector () {
+            public void Create_a_selector()
+            {
                 var tree = _builder
                     .Selector("selector")
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Failure;
-                        })
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Failure;
+                    })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var selector = tree.Root.Children[0] as Selector;
@@ -155,19 +177,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class ParallelMethod : BehaviorTreeBuilderTest {
+        public class ParallelMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void Create_a_selector () {
+            public void Create_a_selector()
+            {
                 var tree = _builder
                     .Parallel()
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var parallel = tree.Root.Children[0] as Parallel;
@@ -179,19 +205,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class ConditionMethod : BehaviorTreeBuilderTest {
+        public class ConditionMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_a_condition () {
+            public void It_should_add_a_condition()
+            {
                 var tree = _builder
                     .Sequence()
-                        .Condition("condition", () => {
-                            _invokeCount++;
-                            return true;
-                        })
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Condition("condition", () =>
+                    {
+                        _invokeCount++;
+                        return true;
+                    })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -204,9 +234,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void It_should_add_a_condition_without_a_name () {
+            public void It_should_add_a_condition_without_a_name()
+            {
                 var tree = _builder
-                    .Condition(() => {
+                    .Condition(() =>
+                    {
                         _invokeCount++;
                         return true;
                     })
@@ -220,11 +252,14 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class DoMethod : BehaviorTreeBuilderTest {
+        public class DoMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_an_action () {
+            public void It_should_add_an_action()
+            {
                 var tree = _builder
-                    .Do("action", () => {
+                    .Do("action", () =>
+                    {
                         _invokeCount++;
                         return TaskStatus.Success;
                     })
@@ -238,9 +273,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void It_should_add_an_action_without_a_name () {
+            public void It_should_add_an_action_without_a_name()
+            {
                 var tree = _builder
-                    .Do(() => {
+                    .Do(() =>
+                    {
                         _invokeCount++;
                         return TaskStatus.Success;
                     })
@@ -254,19 +291,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class DecoratorMethod : BehaviorTreeBuilderTest {
+        public class DecoratorMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_a_decorator () {
+            public void It_should_add_a_decorator()
+            {
                 var tree = _builder
-                    .Decorator("decorator", child => {
+                    .Decorator("decorator", child =>
+                    {
                         _invokeCount++;
                         child.Update();
                         return TaskStatus.Failure;
                     })
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var decorator = tree.Root.Children[0] as DecoratorGeneric;
@@ -277,17 +318,20 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void It_should_add_a_decorator_without_a_name () {
+            public void It_should_add_a_decorator_without_a_name()
+            {
                 var tree = _builder
-                    .Decorator(child => {
+                    .Decorator(child =>
+                    {
                         _invokeCount++;
                         child.Update();
                         return TaskStatus.Failure;
                     })
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var decorator = tree.Root.Children[0] as DecoratorGeneric;
@@ -298,23 +342,27 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void It_should_move_to_the_next_node_on_End () {
+            public void It_should_move_to_the_next_node_on_End()
+            {
                 var tree = _builder
                     .Sequence()
-                        .Decorator(child => {
-                            _invokeCount++;
-                            child.Update();
-                            return TaskStatus.Success;
-                        })
-                            .Do("action", () => {
-                                _invokeCount++;
-                                return TaskStatus.Success;
-                            })
-                        .End()
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Decorator(child =>
+                    {
+                        _invokeCount++;
+                        child.Update();
+                        return TaskStatus.Success;
+                    })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
+                    .End()
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -326,15 +374,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class InverterMethod : BehaviorTreeBuilderTest {
+        public class InverterMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_create_an_inverter () {
+            public void It_should_create_an_inverter()
+            {
                 var tree = _builder
                     .Inverter("inverter")
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var decorator = tree.Root.Children[0] as Inverter;
@@ -345,15 +396,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class ReturnSuccessMethod : BehaviorTreeBuilderTest {
+        public class ReturnSuccessMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_create_a_ReturnSuccess () {
+            public void It_should_create_a_ReturnSuccess()
+            {
                 var tree = _builder
                     .ReturnSuccess("return success")
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Failure;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Failure;
+                    })
                     .Build();
 
                 var decorator = tree.Root.Children[0] as ReturnSuccess;
@@ -364,15 +418,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class ReturnFailureMethod : BehaviorTreeBuilderTest {
+        public class ReturnFailureMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_create_a_ReturnFailure () {
+            public void It_should_create_a_ReturnFailure()
+            {
                 var tree = _builder
                     .ReturnFailure("return failure")
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var decorator = tree.Root.Children[0] as ReturnFailure;
@@ -383,16 +440,19 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class RandomChanceMethod : BehaviorTreeBuilderTest {
+        public class RandomChanceMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_a_random_chance () {
+            public void It_should_add_a_random_chance()
+            {
                 var tree = _builder
                     .Sequence()
-                        .RandomChance("random", 1, 1)
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .RandomChance("random", 1, 1)
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -405,16 +465,19 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class WaitMethod : BehaviorTreeBuilderTest {
+        public class WaitMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_a_wait_node () {
+            public void It_should_add_a_wait_node()
+            {
                 var tree = _builder
                     .Sequence()
-                        .Wait("wait", 2)
-                        .Do("action", () => {
-                            _invokeCount++;
-                            return TaskStatus.Success;
-                        })
+                    .Wait("wait", 2)
+                    .Do("action", () =>
+                    {
+                        _invokeCount++;
+                        return TaskStatus.Success;
+                    })
                     .Build();
 
                 var sequence = tree.Root.Children[0] as Sequence;
@@ -429,9 +492,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class WaitTimeMethod : BehaviorTreeBuilderTest {
+        public class WaitTimeMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_add_a_WaitTime_action () {
+            public void It_should_add_a_WaitTime_action()
+            {
                 var tree = _builder
                     .WaitTime("Custom")
                     .Build();
@@ -442,7 +507,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
 
             [Test]
-            public void It_should_set_WaitTime_duration () {
+            public void It_should_set_WaitTime_duration()
+            {
                 var tree = _builder
                     .WaitTime(2f)
                     .Build();
@@ -453,23 +519,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             }
         }
 
-        public class SpliceMethod : BehaviorTreeBuilderTest {
+        public class SpliceMethod : BehaviorTreeBuilderTest
+        {
             [Test]
-            public void It_should_not_fail_when_aborting_a_built_condition () {
+            public void It_should_not_fail_when_aborting_a_built_condition()
+            {
                 var treeAlt = new BehaviorTreeBuilder(null)
                     .Sequence()
-                        .Condition(() => false)
+                    .Condition(() => false)
                     .End()
-                .Build();
+                    .Build();
 
                 var tree = _builder
                     .Parallel()
-                        .Splice(treeAlt)
+                    .Splice(treeAlt)
                     .Build();
 
-                Assert.DoesNotThrow(() => {
-                    tree.Tick();
-                });
+                Assert.DoesNotThrow(() => { tree.Tick(); });
             }
         }
     }

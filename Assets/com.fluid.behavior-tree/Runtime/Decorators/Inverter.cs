@@ -1,14 +1,18 @@
 ﻿using CleverCrow.Fluid.BTs.Tasks;
 
-namespace CleverCrow.Fluid.BTs.Decorators {
-    public class Inverter : DecoratorBase {
+namespace CleverCrow.Fluid.BTs.Decorators
+{
+    public class Inverter : DecoratorBase
+    {
         public override string IconPath { get; } = $"{PACKAGE_ROOT}/Invert.png";
 
-        protected override TaskStatus OnUpdate () {
+        protected override TaskStatus OnUpdate()
+        {
             var childStatus = Child.Update();
             var status = childStatus;
 
-            switch (childStatus) {
+            switch (childStatus)
+            {
                 case TaskStatus.Success:
                     status = TaskStatus.Failure;
                     break;
