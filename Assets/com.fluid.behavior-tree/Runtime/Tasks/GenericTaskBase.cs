@@ -6,7 +6,7 @@ namespace CleverCrow.Fluid.BTs.Tasks
     public abstract class GenericTaskBase
     {
         // TODO: Fix path
-        protected const string PackageRoot = "ROOT/Editor/Icons/Tasks";
+        protected const string PackageRoot = PathUtils.RootPlaceholder + "/Editor/Icons/Tasks";
         private EditorRuntimeUtilities _editorUtils;
 
         /// <summary>

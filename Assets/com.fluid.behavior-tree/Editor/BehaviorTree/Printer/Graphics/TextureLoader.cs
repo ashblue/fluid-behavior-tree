@@ -1,3 +1,4 @@
+using CleverCrow.Fluid.BTs.Trees.Utils;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.AssetDatabase;
@@ -11,7 +12,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
         public TextureLoader(string spritePath)
         {
             // TODO: Convert replace value into const
-            Texture = LoadAssetAtPath<Texture2D>(spritePath.Replace("ROOT", AssetPath.BasePath));
+            Texture = LoadAssetAtPath<Texture2D>(spritePath.Replace(PathUtils.RootPlaceholder, AssetPath.BasePath));
         }
 
         public void Paint(Rect rect, Color color)
