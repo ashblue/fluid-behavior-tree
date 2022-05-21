@@ -6,36 +6,36 @@ namespace CleverCrow.Fluid.BTs.Tasks
 {
     public abstract class TaskBase : GenericTaskBase, ITask
     {
-        private bool _active;
-        private bool _exit;
-        private bool _init;
-        private int _lastTickCount;
-        private bool _start;
-
         public string Name { get; set; }
-        public bool Enabled { get; set; } = true;
+        public bool IsEnabled { get; set; } = true;
         public GameObject Owner { get; set; }
         public IBehaviorTree ParentTree { get; set; }
 
-        public List<ITask> Children { get; } = null;
+        public List<ITask> Children => null;
         public TaskStatus LastStatus { get; private set; }
+
+        private bool _isActive;
+        private bool _isExit;
+        private bool _isInitiated;
+        private int _lastTickCount;
+        private bool _isStart;
 
         public override TaskStatus Update()
         {
             base.Update();
             UpdateTicks();
 
-            if (!_init)
+            if (!_isInitiated)
             {
                 Init();
-                _init = true;
+                _isInitiated = true;
             }
 
-            if (!_start)
+            if (!_isStart)
             {
                 Start();
-                _start = true;
-                _exit = true;
+                _isStart = true;
+                _isExit = true;
             }
 
             var status = GetUpdate();
@@ -43,13 +43,17 @@ namespace CleverCrow.Fluid.BTs.Tasks
 
             if (status != TaskStatus.Continue)
             {
-                if (_active) ParentTree?.RemoveActiveTask(this);
+                if (_isActive)
+                {
+                    ParentTree?.RemoveActiveTask(this);
+                }
+
                 Exit();
             }
-            else if (!_active)
+            else if (!_isActive)
             {
                 ParentTree?.AddActiveTask(this);
-                _active = true;
+                _isActive = true;
             }
 
             return status;
@@ -60,9 +64,9 @@ namespace CleverCrow.Fluid.BTs.Tasks
         /// </summary>
         public void Reset()
         {
-            _active = false;
-            _start = false;
-            _exit = false;
+            _isActive = false;
+            _isStart = false;
+            _isExit = false;
         }
 
         public void End()
@@ -72,37 +76,34 @@ namespace CleverCrow.Fluid.BTs.Tasks
 
         private void UpdateTicks()
         {
-            if (ParentTree == null) return;
+            if (ParentTree == null)
+            {
+                return;
+            }
 
-            if (_lastTickCount != ParentTree.TickCount) Reset();
+            if (_lastTickCount != ParentTree.TickCount)
+            {
+                Reset();
+            }
 
             _lastTickCount = ParentTree.TickCount;
         }
 
-        protected virtual TaskStatus GetUpdate()
-        {
-            return TaskStatus.Failure;
-        }
+        protected virtual TaskStatus GetUpdate() => TaskStatus.Failure;
 
-        private void Init()
-        {
-            OnInit();
-        }
+        private void Init() => OnInit();
 
         /// <summary>
-        ///     Triggers the first time this node is run or after a hard reset
+        /// Triggers the first time this node is run or after a hard reset
         /// </summary>
         protected virtual void OnInit()
         {
         }
 
-        private void Start()
-        {
-            OnStart();
-        }
+        private void Start() => OnStart();
 
         /// <summary>
-        ///     Run every time this node begins
+        /// Run every time this node begins
         /// </summary>
         protected virtual void OnStart()
         {
@@ -110,13 +111,16 @@ namespace CleverCrow.Fluid.BTs.Tasks
 
         private void Exit()
         {
-            if (_exit) OnExit();
+            if (_isExit)
+            {
+                OnExit();
+            }
 
             Reset();
         }
 
         /// <summary>
-        ///     Triggered when this node is complete
+        /// Triggered when this node is complete
         /// </summary>
         protected virtual void OnExit()
         {

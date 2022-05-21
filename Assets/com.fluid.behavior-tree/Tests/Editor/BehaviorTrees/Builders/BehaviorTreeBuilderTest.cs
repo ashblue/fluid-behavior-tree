@@ -515,7 +515,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
 
                 var waitTime = tree.Root.Children[0] as WaitTime;
 
-                Assert.AreEqual(2f, waitTime.time);
+                Assert.AreEqual(2f, waitTime.Time);
             }
         }
 

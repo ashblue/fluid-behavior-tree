@@ -1,3 +1,6 @@
+using System.IO;
+using CleverCrow.Fluid.BTs.Trees.Utils;
+
 namespace CleverCrow.Fluid.BTs.Tasks.Actions
 {
     /// <summary>
@@ -5,30 +8,30 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions
     /// </summary>
     public class WaitTime : ActionBase
     {
+        private const float DefaultTime = 1;
+
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}Hourglass.png";
+
+        public float Time = DefaultTime;
+
         private readonly ITimeMonitor _timeMonitor;
         private float _timePassed;
-
-        public float time = 1;
 
         public WaitTime(ITimeMonitor timeMonitor)
         {
             _timeMonitor = timeMonitor;
         }
 
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/Hourglass.png";
-
         protected override void OnStart()
         {
-            _timePassed = 0;
+            _timePassed = MathFExtensions.Zero;
         }
 
         protected override TaskStatus OnUpdate()
         {
             _timePassed += _timeMonitor.DeltaTime;
 
-            if (_timePassed < time) return TaskStatus.Continue;
-
-            return TaskStatus.Success;
+            return _timePassed < Time ? TaskStatus.Continue : TaskStatus.Success;
         }
     }
 }

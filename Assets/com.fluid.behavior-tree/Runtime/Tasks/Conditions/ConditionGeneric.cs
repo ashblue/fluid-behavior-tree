@@ -4,31 +4,18 @@ namespace CleverCrow.Fluid.BTs.Tasks
 {
     public class ConditionGeneric : ConditionBase
     {
-        public Action exitLogic;
-        public Action initLogic;
-        public Action startLogic;
-        public Func<bool> updateLogic;
+        // TODO: Convert into properties
+        public Action ExitLogic;
+        public Action InitLogic;
+        public Action StartLogic;
+        public Func<bool> UpdateLogic;
 
-        protected override bool OnUpdate()
-        {
-            if (updateLogic != null) return updateLogic();
+        protected override bool OnUpdate() => UpdateLogic == null || UpdateLogic();
 
-            return true;
-        }
+        protected override void OnStart() => StartLogic?.Invoke();
 
-        protected override void OnStart()
-        {
-            startLogic?.Invoke();
-        }
+        protected override void OnExit() => ExitLogic?.Invoke();
 
-        protected override void OnExit()
-        {
-            exitLogic?.Invoke();
-        }
-
-        protected override void OnInit()
-        {
-            initLogic?.Invoke();
-        }
+        protected override void OnInit() => InitLogic?.Invoke();
     }
 }

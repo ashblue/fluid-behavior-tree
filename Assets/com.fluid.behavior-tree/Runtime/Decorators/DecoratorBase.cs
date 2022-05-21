@@ -9,11 +9,11 @@ namespace CleverCrow.Fluid.BTs.Decorators
     public abstract class DecoratorBase : GenericTaskBase, ITaskParent
     {
         public ITask Child => Children.Count > 0 ? Children[0] : null;
-        public List<ITask> Children { get; } = new();
+        public List<ITask> Children { get; } = new(); // TODO: Consider adding default size
 
         public string Name { get; set; }
 
-        public bool Enabled { get; set; } = true;
+        public bool IsEnabled { get; set; } = true;
 
         public GameObject Owner { get; set; }
         public IBehaviorTree ParentTree { get; set; }
@@ -26,8 +26,9 @@ namespace CleverCrow.Fluid.BTs.Decorators
             if (Child == null)
             {
                 if (Application.isPlaying)
-                    Debug.LogWarning(
-                        $"Decorator {Name} has no child. Force returning failure. Please fix");
+                {
+                    Debug.LogWarning($"Decorator {Name} has no child. Force returning failure. Please fix");
+                }
                 return TaskStatus.Failure;
             }
 
@@ -44,11 +45,15 @@ namespace CleverCrow.Fluid.BTs.Decorators
 
         public void Reset()
         {
+            // TODO: implement
         }
 
         public ITaskParent AddChild(ITask child)
         {
-            if (Child == null) Children.Add(child);
+            if (Child == null)
+            {
+                Children.Add(child);
+            }
 
             return this;
         }

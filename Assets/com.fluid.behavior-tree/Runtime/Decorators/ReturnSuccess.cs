@@ -1,17 +1,16 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+﻿using System.IO;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.Decorators
 {
     public class ReturnSuccess : DecoratorBase
     {
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/Checkmark.png";
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}Checkmark.png";
 
         protected override TaskStatus OnUpdate()
         {
             var status = Child.Update();
-            if (status == TaskStatus.Continue) return status;
-
-            return TaskStatus.Success;
+            return status == TaskStatus.Continue ? status : TaskStatus.Success;
         }
     }
 }

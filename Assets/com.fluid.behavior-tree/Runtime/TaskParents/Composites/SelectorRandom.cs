@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites
@@ -8,9 +9,9 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
     /// </summary>
     public class SelectorRandom : CompositeBase
     {
-        private bool _init;
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}LinearScale.png";
 
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/LinearScale.png";
+        private bool _init;
 
         protected override TaskStatus OnUpdate()
         {
@@ -47,15 +48,14 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 
         private void ShuffleChildren()
         {
+            // TODO: Use global random to achieve determinism
             var rng = new Random();
-            var n = Children.Count;
-            while (n > 1)
+            var childrenCount = Children.Count;
+            while (childrenCount > 1)
             {
-                n--;
-                var k = rng.Next(n + 1);
-                var value = Children[k];
-                Children[k] = Children[n];
-                Children[n] = value;
+                childrenCount--;
+                var random = rng.Next(childrenCount + 1);
+                (Children[random], Children[childrenCount]) = (Children[childrenCount], Children[random]);
             }
         }
     }

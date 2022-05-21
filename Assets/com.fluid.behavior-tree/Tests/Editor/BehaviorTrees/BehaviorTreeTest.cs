@@ -66,7 +66,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             public void It_should_update_all_child_Owner_variables()
             {
                 var task = Substitute.For<ITask>();
-                task.Enabled.Returns(true);
+                task.IsEnabled.Returns(true);
 
                 _treeAlt.AddNode(_treeAlt.Root, task);
                 var nodes = new List<ITask> { _treeAlt.Root, task };
@@ -80,7 +80,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             public void It_should_update_all_child_Owner_variables_with_nested_parents()
             {
                 var task = Substitute.For<ITask>();
-                task.Enabled.Returns(true);
+                task.IsEnabled.Returns(true);
                 var sequence = new Sequence();
 
                 _treeAlt.AddNode(_treeAlt.Root, sequence);
@@ -96,7 +96,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             public void It_should_update_all_child_ParentTree_variables()
             {
                 var task = Substitute.For<ITask>();
-                task.Enabled.Returns(true);
+                task.IsEnabled.Returns(true);
 
                 _treeAlt.AddNode(_treeAlt.Root, task);
                 var nodes = new List<ITask> { _treeAlt.Root, task };
@@ -113,7 +113,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             public void Parent_adds_the_child_reference()
             {
                 var action = Substitute.For<ITask>();
-                action.Enabled.Returns(true);
+                action.IsEnabled.Returns(true);
 
                 _tree.AddNode(_tree.Root, action);
 
@@ -124,7 +124,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             public void Set_the_child_nodes_GameObject_reference()
             {
                 var action = Substitute.For<ITask>();
-                action.Enabled.Returns(true);
+                action.IsEnabled.Returns(true);
 
                 _tree.AddNode(_tree.Root, action);
 
@@ -174,7 +174,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             public void ConfigureAction()
             {
                 _action = Substitute.For<ITask>();
-                _action.Enabled.Returns(true);
+                _action.IsEnabled.Returns(true);
             }
 
             public class RootWithSingleNode : TickMethod
@@ -238,7 +238,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
                     _sequence = new Sequence();
 
                     _actionAlt = Substitute.For<ITask>();
-                    _actionAlt.Enabled.Returns(true);
+                    _actionAlt.IsEnabled.Returns(true);
 
                     _tree.AddNode(_tree.Root, _sequence);
                     _tree.AddNode(_sequence, _action);

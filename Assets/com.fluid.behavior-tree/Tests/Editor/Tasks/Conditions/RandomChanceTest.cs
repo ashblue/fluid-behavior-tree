@@ -10,8 +10,8 @@ namespace CleverCrow.Fluid.BTs.Testing
         {
             var randomChance = new RandomChance
             {
-                chance = 1,
-                outOf = 2
+                Chance = 1,
+                OutOf = 2
             };
 
             Assert.IsNotNull(randomChance.Update());

@@ -49,7 +49,7 @@ namespace CleverCrow.Fluid.BTs.Testing
             public void SetUpTask()
             {
                 task = Substitute.For<ITask>();
-                task.Enabled.Returns(true);
+                task.IsEnabled.Returns(true);
 
                 root.AddChild(task);
             }

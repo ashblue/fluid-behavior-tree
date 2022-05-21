@@ -1,17 +1,16 @@
-﻿namespace CleverCrow.Fluid.BTs.Tasks
+﻿using System.IO;
+
+namespace CleverCrow.Fluid.BTs.Tasks
 {
     public abstract class ConditionBase : TaskBase
     {
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/Question.png";
-        public override float IconPadding => 10;
+        private const float DefaultIconPadding = 10f;
 
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}Question.png";
+        public override float IconPadding => DefaultIconPadding;
+
+        protected override TaskStatus GetUpdate() => OnUpdate() ? TaskStatus.Success : TaskStatus.Failure;
         protected abstract bool OnUpdate();
 
-        protected override TaskStatus GetUpdate()
-        {
-            if (OnUpdate()) return TaskStatus.Success;
-
-            return TaskStatus.Failure;
-        }
     }
 }

@@ -13,7 +13,7 @@ namespace CleverCrow.Fluid.BTs.Testing
             {
                 var task = new ActionGeneric
                 {
-                    updateLogic = () => TaskStatus.Failure
+                    UpdateLogic = () => TaskStatus.Failure
                 };
 
                 Assert.AreEqual(TaskStatus.Failure, task.Update());
@@ -32,7 +32,7 @@ namespace CleverCrow.Fluid.BTs.Testing
                 var test = 0;
                 var task = new ActionGeneric
                 {
-                    startLogic = () => { test++; }
+                    StartLogic = () => { test++; }
                 };
 
                 task.Update();
@@ -46,7 +46,7 @@ namespace CleverCrow.Fluid.BTs.Testing
                 var test = 0;
                 var task = new ActionGeneric
                 {
-                    initLogic = () => { test++; }
+                    InitLogic = () => { test++; }
                 };
 
                 task.Update();
@@ -60,8 +60,8 @@ namespace CleverCrow.Fluid.BTs.Testing
                 var test = 0;
                 var task = new ActionGeneric
                 {
-                    initLogic = () => { test++; },
-                    updateLogic = () => TaskStatus.Continue
+                    InitLogic = () => { test++; },
+                    UpdateLogic = () => TaskStatus.Continue
                 };
 
                 task.Update();
@@ -75,7 +75,7 @@ namespace CleverCrow.Fluid.BTs.Testing
                 var test = 0;
                 var task = new ActionGeneric
                 {
-                    exitLogic = () => { test++; }
+                    ExitLogic = () => { test++; }
                 };
 
                 task.Update();

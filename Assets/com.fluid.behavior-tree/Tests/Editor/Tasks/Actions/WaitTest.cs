@@ -27,7 +27,7 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions.Testing
         {
             var wait = new Wait
             {
-                turns = 2
+                Turns = 2
             };
 
             Assert.AreEqual(TaskStatus.Continue, wait.Update());

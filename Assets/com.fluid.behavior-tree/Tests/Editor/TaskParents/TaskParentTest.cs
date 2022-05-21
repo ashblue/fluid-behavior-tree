@@ -83,16 +83,16 @@ namespace CleverCrow.Fluid.BTs.Testing
             {
                 taskParent.AddChild(A.TaskStub().Build());
 
-                Assert.IsTrue(taskParent.Enabled);
+                Assert.IsTrue(taskParent.IsEnabled);
             }
 
             [Test]
             public void Returns_disabled_if_child_and_set_to_disabled()
             {
                 taskParent.AddChild(A.TaskStub().Build());
-                taskParent.Enabled = false;
+                taskParent.IsEnabled = false;
 
-                Assert.IsFalse(taskParent.Enabled);
+                Assert.IsFalse(taskParent.IsEnabled);
             }
         }
 

@@ -31,15 +31,15 @@ namespace CleverCrow.Fluid.BTs.Testing
             [Test]
             public void Returns_true_if_child_is_set()
             {
-                Assert.IsTrue(_decorator.Enabled);
+                Assert.IsTrue(_decorator.IsEnabled);
             }
 
             [Test]
             public void Returns_false_if_child_is_set_but_set_to_false()
             {
-                _decorator.Enabled = false;
+                _decorator.IsEnabled = false;
 
-                Assert.IsFalse(_decorator.Enabled);
+                Assert.IsFalse(_decorator.IsEnabled);
             }
         }
 

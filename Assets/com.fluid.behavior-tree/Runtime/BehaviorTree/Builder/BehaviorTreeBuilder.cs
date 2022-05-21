@@ -9,9 +9,33 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees
 {
+    // TODO: Create proper factory pattern with interface guiding
     public class BehaviorTreeBuilder
     {
-        private readonly List<ITaskParent> _pointers = new();
+        private const string DecoratorName = "decorator";
+        private const string InverterName = "inverter";
+        private const string ReturnSuccessName = "return success";
+        private const string ReturnFailureName = "return failure";
+        private const string RepeatUntilSuccessName = "repeat until success";
+        private const string RepeatUntilFailureName = "repeat until failure";
+        private const string RepeatForeverName = "repeat forever";
+        private const string SequenceName = "sequence";
+        private const string SelectorName = "selector";
+        private const string SelectorRandomName = "selector random";
+        private const string ParallelName = "parallel";
+        private const string ActionName = "action";
+        private const string WaitTimeName = "Wait Time";
+        private const string ConditionName = "condition";
+        private const string RandomChanceName = "random chance";
+        private const string WaitName = "wait";
+
+        private const float DefaultWaitTime = 1f;
+        private const int DefaultRandomSeed = 0;
+        private const int DefaultWaitTurns = 1;
+
+        private ITaskParent PointerCurrent => _pointers.Count == 0 ? null : _pointers[^1];
+
+        private readonly List<ITaskParent> _pointers = new(); //TODO: Starting size can reduce allocations
         private readonly BehaviorTree _tree;
 
         public BehaviorTreeBuilder(GameObject owner)
@@ -20,29 +44,18 @@ namespace CleverCrow.Fluid.BTs.Trees
             _pointers.Add(_tree.Root);
         }
 
-        private ITaskParent PointerCurrent
-        {
-            get
-            {
-                if (_pointers.Count == 0) return null;
-                return _pointers[_pointers.Count - 1];
-            }
-        }
-
         /// <summary>
-        ///     Set a name for the tree manually. For debugging purposes and visualizer window naming
+        /// Set a name for the tree manually. For debugging purposes and visualizer window naming
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
         public BehaviorTreeBuilder Name(string name)
         {
             _tree.Name = name;
             return this;
         }
 
-        public BehaviorTreeBuilder ParentTask<P>(string name) where P : ITaskParent, new()
+        public BehaviorTreeBuilder ParentTask<TTaskParent>(string name) where TTaskParent : ITaskParent, new()
         {
-            var parent = new P { Name = name };
+            var parent = new TTaskParent { Name = name };
 
             return AddNodeWithPointer(parent);
         }
@@ -51,7 +64,7 @@ namespace CleverCrow.Fluid.BTs.Trees
         {
             var decorator = new DecoratorGeneric
             {
-                updateLogic = logic,
+                UpdateLogic = logic,
                 Name = name
             };
 
@@ -68,60 +81,58 @@ namespace CleverCrow.Fluid.BTs.Trees
 
         public BehaviorTreeBuilder Decorator(Func<ITask, TaskStatus> logic)
         {
-            return Decorator("decorator", logic);
+            return Decorator(DecoratorName, logic);
         }
 
-        public BehaviorTreeBuilder Inverter(string name = "inverter")
+        public BehaviorTreeBuilder Inverter(string name = InverterName)
         {
             return ParentTask<Inverter>(name);
         }
 
-        public BehaviorTreeBuilder ReturnSuccess(string name = "return success")
+        public BehaviorTreeBuilder ReturnSuccess(string name = ReturnSuccessName)
         {
             return ParentTask<ReturnSuccess>(name);
         }
 
-        public BehaviorTreeBuilder ReturnFailure(string name = "return failure")
+        public BehaviorTreeBuilder ReturnFailure(string name = ReturnFailureName)
         {
             return ParentTask<ReturnFailure>(name);
         }
 
-        public BehaviorTreeBuilder RepeatUntilSuccess(string name = "repeat until success")
+        public BehaviorTreeBuilder RepeatUntilSuccess(string name = RepeatUntilSuccessName)
         {
             return ParentTask<RepeatUntilSuccess>(name);
         }
 
-        public BehaviorTreeBuilder RepeatUntilFailure(string name = "repeat until failure")
+        public BehaviorTreeBuilder RepeatUntilFailure(string name = RepeatUntilFailureName)
         {
             return ParentTask<RepeatUntilFailure>(name);
         }
 
-        public BehaviorTreeBuilder RepeatForever(string name = "repeat forever")
+        public BehaviorTreeBuilder RepeatForever(string name = RepeatForeverName)
         {
             return ParentTask<RepeatForever>(name);
         }
 
-        public BehaviorTreeBuilder Sequence(string name = "sequence")
+        public BehaviorTreeBuilder Sequence(string name = SequenceName)
         {
             return ParentTask<Sequence>(name);
         }
 
-        public BehaviorTreeBuilder Selector(string name = "selector")
+        public BehaviorTreeBuilder Selector(string name = SelectorName)
         {
             return ParentTask<Selector>(name);
         }
 
         /// <summary>
-        ///     Selects the first node to return success
+        /// Selects the first node to return success
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public BehaviorTreeBuilder SelectorRandom(string name = "selector random")
+        public BehaviorTreeBuilder SelectorRandom(string name = SelectorRandomName)
         {
             return ParentTask<SelectorRandom>(name);
         }
 
-        public BehaviorTreeBuilder Parallel(string name = "parallel")
+        public BehaviorTreeBuilder Parallel(string name = ParallelName)
         {
             return ParentTask<Parallel>(name);
         }
@@ -131,38 +142,33 @@ namespace CleverCrow.Fluid.BTs.Trees
             return AddNode(new ActionGeneric
             {
                 Name = name,
-                updateLogic = action
+                UpdateLogic = action
             });
         }
 
         public BehaviorTreeBuilder Do(Func<TaskStatus> action)
         {
-            return Do("action", action);
+            return Do(ActionName, action);
         }
 
         /// <summary>
-        ///     Return continue until time has passed
+        /// Return continue until time has passed
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="time"></param>
-        /// <returns></returns>
         public BehaviorTreeBuilder WaitTime(string name, float time = 1f)
         {
             return AddNode(new WaitTime(new TimeMonitor())
             {
                 Name = name,
-                time = time
+                Time = time
             });
         }
 
         /// <summary>
-        ///     Return continue until time has passed
+        /// Return continue until time has passed
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public BehaviorTreeBuilder WaitTime(float time = 1f)
+        public BehaviorTreeBuilder WaitTime(float time = DefaultWaitTime)
         {
-            return WaitTime("Wait Time", time);
+            return WaitTime(WaitTimeName, time);
         }
 
         public BehaviorTreeBuilder Condition(string name, Func<bool> action)
@@ -170,29 +176,29 @@ namespace CleverCrow.Fluid.BTs.Trees
             return AddNode(new ConditionGeneric
             {
                 Name = name,
-                updateLogic = action
+                UpdateLogic = action
             });
         }
 
         public BehaviorTreeBuilder Condition(Func<bool> action)
         {
-            return Condition("condition", action);
+            return Condition(ConditionName, action);
         }
 
-        public BehaviorTreeBuilder RandomChance(string name, int chance, int outOf, int seed = 0)
+        public BehaviorTreeBuilder RandomChance(string name, int chance, int outOf, int seed = DefaultRandomSeed)
         {
             return AddNode(new RandomChance
             {
                 Name = name,
-                chance = chance,
-                outOf = outOf,
-                seed = seed
+                Chance = chance,
+                OutOf = outOf,
+                Seed = seed
             });
         }
 
         public BehaviorTreeBuilder RandomChance(int chance, int outOf, int seed = 0)
         {
-            return RandomChance("random chance", chance, outOf, seed);
+            return RandomChance(RandomChanceName, chance, outOf, seed);
         }
 
         public BehaviorTreeBuilder Wait(string name, int turns = 1)
@@ -200,13 +206,13 @@ namespace CleverCrow.Fluid.BTs.Trees
             return AddNode(new Wait
             {
                 Name = name,
-                turns = turns
+                Turns = turns
             });
         }
 
-        public BehaviorTreeBuilder Wait(int turns = 1)
+        public BehaviorTreeBuilder Wait(int turns = DefaultWaitTurns)
         {
-            return Wait("wait", turns);
+            return Wait(WaitName, turns);
         }
 
         public BehaviorTreeBuilder AddNode(ITask node)

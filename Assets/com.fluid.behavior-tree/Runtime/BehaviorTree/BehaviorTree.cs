@@ -6,27 +6,9 @@ using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees
 {
-    public interface IBehaviorTree
-    {
-        string Name { get; }
-        TaskRoot Root { get; }
-        int TickCount { get; }
-
-        void AddActiveTask(ITask task);
-        void RemoveActiveTask(ITask task);
-    }
-
     [Serializable]
     public class BehaviorTree : IBehaviorTree
     {
-        private readonly GameObject _owner;
-        private readonly List<ITask> _tasks = new();
-
-        public BehaviorTree(GameObject owner)
-        {
-            _owner = owner;
-            SyncNodes(Root);
-        }
 
         public IReadOnlyList<ITask> ActiveTasks => _tasks;
 
@@ -34,6 +16,15 @@ namespace CleverCrow.Fluid.BTs.Trees
 
         public string Name { get; set; }
         public TaskRoot Root { get; } = new();
+
+        private readonly GameObject _owner;
+        private readonly List<ITask> _tasks = new(); //TODO: Starting size can reduce allocations
+
+        public BehaviorTree(GameObject owner)
+        {
+            _owner = owner;
+            SyncNodes(Root);
+        }
 
         public void AddActiveTask(ITask task)
         {
@@ -48,14 +39,21 @@ namespace CleverCrow.Fluid.BTs.Trees
         public TaskStatus Tick()
         {
             var status = Root.Update();
-            if (status != TaskStatus.Continue) Reset();
+
+            if (status != TaskStatus.Continue)
+            {
+                Reset();
+            }
 
             return status;
         }
 
         public void Reset()
         {
-            foreach (var task in _tasks) task.End();
+            foreach (var task in _tasks)
+            {
+                task.End();
+            }
 
             _tasks.Clear();
             TickCount++;
@@ -85,8 +83,10 @@ namespace CleverCrow.Fluid.BTs.Trees
                 child.Owner = _owner;
                 child.ParentTree = this;
 
-                var parent = child as ITaskParent;
-                if (parent != null) SyncNodes(parent);
+                if (child is ITaskParent parent)
+                {
+                    SyncNodes(parent);
+                }
             }
         }
     }

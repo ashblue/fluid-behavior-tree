@@ -6,7 +6,10 @@
 
         public override void End()
         {
-            if (ChildIndex < Children.Count) Children[ChildIndex].End();
+            if (ChildIndex < Children.Count && ChildIndex >= 0)
+            {
+                Children[ChildIndex].End();
+            }
         }
 
         public override void Reset()

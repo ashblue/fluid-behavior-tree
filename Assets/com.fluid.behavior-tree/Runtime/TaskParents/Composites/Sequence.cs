@@ -1,10 +1,11 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+﻿using System.IO;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 {
     public class Sequence : CompositeBase
     {
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/RightArrow.png";
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}RightArrow.png";
 
         protected override TaskStatus OnUpdate()
         {
@@ -13,7 +14,10 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
                 var child = Children[ChildIndex];
 
                 var status = child.Update();
-                if (status != TaskStatus.Success) return status;
+                if (status != TaskStatus.Success)
+                {
+                    return status;
+                }
 
                 ChildIndex++;
             }

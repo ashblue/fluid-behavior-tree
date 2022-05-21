@@ -1,22 +1,25 @@
+using System.IO;
+using CleverCrow.Fluid.BTs.Trees.Utils;
+
 namespace CleverCrow.Fluid.BTs.Tasks
 {
     public abstract class GenericTaskBase
     {
-        protected const string PACKAGE_ROOT = "ROOT/Editor/Icons/Tasks";
+        // TODO: Fix path
+        protected const string PackageRoot = "ROOT/Editor/Icons/Tasks";
         private EditorRuntimeUtilities _editorUtils;
 
         /// <summary>
-        ///     For custom project icons provide a path from assets to a Texture2D asset. Example `Assets/MyIcon.png`.
-        ///     Be sure to NOT include the keyword `ROOT` in your path name. This will be replaced with a path
-        ///     to the package root for Fluid Behavior Tree.
+        /// For custom project icons provide a path from assets to a Texture2D asset. Example `Assets/MyIcon.png`.
+        /// Be sure to NOT include the keyword `ROOT` in your path name. This will be replaced with a path
+        /// to the package root for Fluid Behavior Tree.
         /// </summary>
-        public virtual string IconPath => $"{PACKAGE_ROOT}/Play.png";
+        public virtual string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}Play.png";
 
-        public virtual float IconPadding { get; }
+        public virtual float IconPadding => MathFExtensions.Zero;
         public bool HasBeenActive { get; private set; }
 
-        public EditorRuntimeUtilities EditorUtils =>
-            _editorUtils ?? (_editorUtils = new EditorRuntimeUtilities());
+        public EditorRuntimeUtilities EditorUtils => _editorUtils ??= new EditorRuntimeUtilities();
 
         public virtual TaskStatus Update()
         {

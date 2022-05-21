@@ -1,10 +1,11 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+﻿using System.IO;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 {
     public class Selector : CompositeBase
     {
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/LinearScale.png";
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}LinearScale.png";
 
         protected override TaskStatus OnUpdate()
         {

@@ -4,20 +4,28 @@ namespace CleverCrow.Fluid.BTs.Tasks
 {
     public class RandomChance : ConditionBase
     {
-        public float chance = 1;
-        public float outOf = 1;
-        public int seed;
+        // TODO: Convert into properties
+        public float Chance = 1;
+        public float OutOf = 1;
+        public int Seed;
 
+        // TODO: use global seed
         protected override bool OnUpdate()
         {
             var oldState = Random.state;
 
-            if (seed != 0) Random.InitState(seed);
+            if (Seed != 0)
+            {
+                Random.InitState(Seed);
+            }
 
-            var percentage = chance / outOf;
+            var percentage = Chance / OutOf;
             var rng = Random.value;
 
-            if (seed != 0) Random.state = oldState;
+            if (Seed != 0)
+            {
+                Random.state = oldState;
+            }
 
             return rng <= percentage;
         }

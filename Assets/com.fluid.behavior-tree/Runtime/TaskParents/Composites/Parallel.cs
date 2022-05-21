@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 {
     public class Parallel : CompositeBase
     {
-        private readonly Dictionary<ITask, TaskStatus> _childStatus = new();
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}CompareArrows.png";
 
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/CompareArrows.png";
+        private readonly Dictionary<ITask, TaskStatus> _childStatus = new();
 
         protected override TaskStatus OnUpdate()
         {
@@ -16,8 +17,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 
             foreach (var child in Children)
             {
-                TaskStatus prevStatus;
-                if (_childStatus.TryGetValue(child, out prevStatus) && prevStatus == TaskStatus.Success)
+                var hasChildStatus = _childStatus.TryGetValue(child, out var prevStatus);
+                if (hasChildStatus && prevStatus == TaskStatus.Success)
                 {
                     successCount++;
                     continue;
@@ -26,14 +27,13 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
                 var status = child.Update();
                 _childStatus[child] = status;
 
-                switch (status)
+                if (status == TaskStatus.Failure)
                 {
-                    case TaskStatus.Failure:
-                        failureCount++;
-                        break;
-                    case TaskStatus.Success:
-                        successCount++;
-                        break;
+                    failureCount++;
+                }
+                else if(status == TaskStatus.Success)
+                {
+                    successCount++;
                 }
             }
 
@@ -61,7 +61,10 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 
         public override void End()
         {
-            foreach (var child in Children) child.End();
+            foreach (var child in Children)
+            {
+                child.End();
+            }
         }
     }
 }

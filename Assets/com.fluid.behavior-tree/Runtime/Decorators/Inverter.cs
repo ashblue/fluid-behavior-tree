@@ -1,27 +1,22 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+﻿using System.IO;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.Decorators
 {
     public class Inverter : DecoratorBase
     {
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/Invert.png";
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}Invert.png";
 
         protected override TaskStatus OnUpdate()
         {
             var childStatus = Child.Update();
-            var status = childStatus;
 
-            switch (childStatus)
+            return childStatus switch
             {
-                case TaskStatus.Success:
-                    status = TaskStatus.Failure;
-                    break;
-                case TaskStatus.Failure:
-                    status = TaskStatus.Success;
-                    break;
-            }
-
-            return status;
+                TaskStatus.Success => TaskStatus.Failure,
+                TaskStatus.Failure => TaskStatus.Success,
+                _ => childStatus
+            };
         }
     }
 }

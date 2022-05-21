@@ -8,19 +8,19 @@ namespace CleverCrow.Fluid.BTs.TaskParents
 {
     public abstract class TaskParentBase : GenericTaskBase, ITaskParent
     {
-        private int _lastTickCount;
-
         protected virtual int MaxChildren { get; } = -1;
 
         public IBehaviorTree ParentTree { get; set; }
         public TaskStatus LastStatus { get; private set; }
 
         public virtual string Name { get; set; }
-        public bool Enabled { get; set; } = true;
+        public bool IsEnabled { get; set; } = true;
 
         public List<ITask> Children { get; } = new();
 
         public GameObject Owner { get; set; }
+
+        private int _lastTickCount;
 
         public override TaskStatus Update()
         {
@@ -29,7 +29,11 @@ namespace CleverCrow.Fluid.BTs.TaskParents
 
             var status = OnUpdate();
             LastStatus = status;
-            if (status != TaskStatus.Continue) Reset();
+
+            if (status != TaskStatus.Continue)
+            {
+                Reset();
+            }
 
             return status;
         }
@@ -45,18 +49,30 @@ namespace CleverCrow.Fluid.BTs.TaskParents
 
         public virtual ITaskParent AddChild(ITask child)
         {
-            if (!child.Enabled) return this;
+            if (!child.IsEnabled)
+            {
+                return this;
+            }
 
-            if (Children.Count < MaxChildren || MaxChildren < 0) Children.Add(child);
+            if (Children.Count < MaxChildren || MaxChildren < 0)
+            {
+                Children.Add(child);
+            }
 
             return this;
         }
 
         private void UpdateTicks()
         {
-            if (ParentTree == null) return;
+            if (ParentTree == null)
+            {
+                return;
+            }
 
-            if (_lastTickCount != ParentTree.TickCount) Reset();
+            if (_lastTickCount != ParentTree.TickCount)
+            {
+                Reset();
+            }
 
             _lastTickCount = ParentTree.TickCount;
         }

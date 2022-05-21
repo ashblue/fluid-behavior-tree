@@ -1,11 +1,16 @@
-﻿namespace CleverCrow.Fluid.BTs.Tasks.Actions
+﻿using System.IO;
+
+namespace CleverCrow.Fluid.BTs.Tasks.Actions
 {
     public class Wait : ActionBase
     {
-        private int _ticks;
-        public int turns = 1;
 
-        public override string IconPath { get; } = $"{PACKAGE_ROOT}/HourglassFill.png";
+        public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}HourglassFill.png";
+
+        // TODO: Convert into property
+        public int Turns = 1;
+
+        private int _ticks;
 
         protected override void OnStart()
         {
@@ -14,13 +19,14 @@
 
         protected override TaskStatus OnUpdate()
         {
-            if (_ticks < turns)
+            if (_ticks >= Turns)
             {
-                _ticks++;
-                return TaskStatus.Continue;
+                return TaskStatus.Success;
             }
 
-            return TaskStatus.Success;
+            _ticks++;
+            return TaskStatus.Continue;
+
         }
     }
 }

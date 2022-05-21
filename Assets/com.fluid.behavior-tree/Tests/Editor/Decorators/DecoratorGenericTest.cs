@@ -13,7 +13,7 @@ namespace CleverCrow.Fluid.BTs.Testing
             {
                 var task = new DecoratorGeneric
                 {
-                    updateLogic = (child) =>
+                    UpdateLogic = (child) =>
                     {
                         if (child.Update() == TaskStatus.Success) return TaskStatus.Failure;
 

@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,9 +9,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
     /// </summary>
     public static class AssetPath
     {
-        // TODO: Fix asset paths to support all platforms
-        private const string PathProject = "Assets/FluidBehaviorTree";
-        private const string PathPackage = "Packages/com.fluid.behavior-tree";
+        private static readonly string PathProject = $"Assets{Path.DirectorySeparatorChar}FluidBehaviorTree";
+        private static readonly  string PathPackage = $"Packages{Path.DirectorySeparatorChar}com.fluid.behavior-tree";
 
         private static string _basePath;
 

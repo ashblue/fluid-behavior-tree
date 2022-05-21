@@ -33,7 +33,7 @@ namespace CleverCrow.Fluid.BTs.Testing
         public ITask Build()
         {
             var task = Substitute.For<ITask>();
-            task.Enabled.Returns(_enabled);
+            task.IsEnabled.Returns(_enabled);
             task.Update().ReturnsForAnyArgs(_status);
             task.Children.Returns(_children);
 
