@@ -9,8 +9,9 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
     /// </summary>
     public static class AssetPath
     {
-        private static readonly string PathProject = $"Assets{Path.DirectorySeparatorChar}FluidBehaviorTree";
-        private static readonly  string PathPackage = $"Packages{Path.DirectorySeparatorChar}com.fluid.behavior-tree";
+        private static readonly string InProjectLocation = $"Assets{Path.DirectorySeparatorChar}FluidBehaviorTree";
+        private static readonly string PackageLocation = $"Packages{Path.DirectorySeparatorChar}com.fluid.behavior-tree";
+        private static readonly string WorkspaceLocation = $"Assets{Path.DirectorySeparatorChar}com.fluid.behavior-tree";
 
         private static string _basePath;
 
@@ -23,15 +24,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
                 return _basePath;
             }
 
-            if (AssetDatabase.IsValidFolder(PathPackage))
+            if (AssetDatabase.IsValidFolder(PackageLocation))
             {
-                _basePath = PathPackage;
+                _basePath = PackageLocation;
                 return _basePath;
             }
 
-            if (AssetDatabase.IsValidFolder(PathProject))
+            if (AssetDatabase.IsValidFolder(InProjectLocation))
             {
-                _basePath = PathProject;
+                _basePath = InProjectLocation;
+                return _basePath;
+            }
+
+            if (AssetDatabase.IsValidFolder(WorkspaceLocation))
+            {
+                _basePath = WorkspaceLocation;
                 return _basePath;
             }
 
