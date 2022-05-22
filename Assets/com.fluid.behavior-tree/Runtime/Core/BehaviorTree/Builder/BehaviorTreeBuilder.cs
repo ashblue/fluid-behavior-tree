@@ -32,7 +32,6 @@ namespace CleverCrow.Fluid.BTs.Trees
         private const string WaitName = "wait";
 
         private const float DefaultWaitTime = 1f;
-        private const int DefaultRandomSeed = 0;
         private const int DefaultWaitTurns = 1;
 
         private ITaskParent PointerCurrent => _pointers.Count == 0 ? null : _pointers[^1];
@@ -196,20 +195,19 @@ namespace CleverCrow.Fluid.BTs.Trees
             return Condition(ConditionName, action);
         }
 
-        public BehaviorTreeBuilder RandomChance(string name, int chance, int outOf, int seed = DefaultRandomSeed)
+        public BehaviorTreeBuilder RandomChance(string name, int chance, int outOf)
         {
             return AddNode(new RandomChance
             {
                 Name = name,
                 Chance = chance,
-                OutOf = outOf,
-                Seed = seed
+                OutOf = outOf
             });
         }
 
-        public BehaviorTreeBuilder RandomChance(int chance, int outOf, int seed = 0)
+        public BehaviorTreeBuilder RandomChance(int chance, int outOf)
         {
-            return RandomChance(RandomChanceName, chance, outOf, seed);
+            return RandomChance(RandomChanceName, chance, outOf);
         }
 
         public BehaviorTreeBuilder Wait(string name, int turns = 1)

@@ -1,3 +1,5 @@
+using System;
+
 namespace CleverCrow.Fluid.BTs.Trees.Utils
 {
     public static class MathFExtensions
@@ -18,5 +20,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Utils
         public static float Twice(this float original) => original * TwiceValue;
         public static float Twice(this double original) => (float)(original * TwiceValue);
         public static float Twice(this decimal original) => (float)original * TwiceValue;
+
+        public static float NextFloat(this Random random, float minValue = float.MinValue, float maxValue = float.MaxValue)
+        {
+            var result = (random.NextDouble() * (maxValue - (double)minValue)) + minValue;
+            return (float)result;
+        }
     }
 }

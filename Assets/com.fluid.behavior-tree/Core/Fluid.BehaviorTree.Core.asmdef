@@ -1,6 +1,6 @@
 {
     "name": "Fluid.BehaviorTree.Core",
-    "references": [],
+    "references": ["GUID:3c8976cf1bf240b696f138c9c8dc5201"],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

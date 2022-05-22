@@ -1,6 +1,7 @@
-using System;
 using System.IO;
+using CleverCrow.Fluid.BTs.com.fluid.behavior_tree.Runtime.Core;
 using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 {
@@ -10,6 +11,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
     public class SelectorRandom : CompositeBase
     {
         public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}LinearScale.png";
+
+        protected IRandomHandler RandomHandler { get; } = BehaviorTreeConfiguration.DependencyResolver.Resolve<IRandomHandler>();
 
         private bool _init;
 
@@ -48,13 +51,11 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
 
         private void ShuffleChildren()
         {
-            // TODO: Use global random to achieve determinism
-            var rng = new Random();
             var childrenCount = Children.Count;
             while (childrenCount > 1)
             {
                 childrenCount--;
-                var random = rng.Next(childrenCount + 1);
+                var random = RandomHandler.NextInt(childrenCount + 1);
                 (Children[random], Children[childrenCount]) = (Children[childrenCount], Children[random]);
             }
         }
