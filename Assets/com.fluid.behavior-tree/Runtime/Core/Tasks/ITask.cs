@@ -35,10 +35,7 @@ namespace CleverCrow.Fluid.BTs.Tasks
         /// Last status returned by Update
         /// </summary>
         TaskStatus LastStatus { get; }
-
-#if UNITY_EDITOR
-        EditorRuntimeUtilities EditorUtils { get; }
-#endif
+        IDebugHandler DebugHandler { get; }
         float IconPadding { get; }
         bool HasBeenActive { get; }
 

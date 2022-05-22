@@ -54,12 +54,12 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
 
         private void BindTask()
         {
-            Task.EditorUtils.EventActive.AddListener(UpdateTaskActiveStatus);
+            Task.DebugHandler.SubscribeToEventActive(UpdateTaskActiveStatus);
         }
 
         public void RecursiveTaskUnbind()
         {
-            Task.EditorUtils.EventActive.RemoveListener(UpdateTaskActiveStatus);
+            Task.DebugHandler.UnsubscribeFromEventActive(UpdateTaskActiveStatus);
 
             foreach (var child in _children)
             {

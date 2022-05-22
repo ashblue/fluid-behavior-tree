@@ -2,7 +2,8 @@
     "name": "Fluid.BehaviorTree.Editor",
     "references": [
         "Fluid.BehaviorTree.Runtime.Core",
-        "Fluid.BehaviorTree.Utils"
+        "Fluid.BehaviorTree.Utils",
+        "Fluid.BehaviorTree.Core"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

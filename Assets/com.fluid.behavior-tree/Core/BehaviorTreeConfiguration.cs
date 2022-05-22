@@ -1,7 +1,7 @@
 using CleverCrow.Fluid.BTs.Trees.Core.Implementations;
 using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 
-namespace CleverCrow.Fluid.BTs.com.fluid.behavior_tree.Runtime.Core
+namespace CleverCrow.Fluid.BTs.Core
 {
     public static class BehaviorTreeConfiguration
     {

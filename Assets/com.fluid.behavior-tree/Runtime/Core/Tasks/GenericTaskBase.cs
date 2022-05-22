@@ -1,5 +1,6 @@
 using System.IO;
-using CleverCrow.Fluid.BTs.com.fluid.behavior_tree.Runtime.Core;
+using CleverCrow.Fluid.BTs.Core;
+using CleverCrow.Fluid.BTs.Trees.Core.Implementations;
 using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 using CleverCrow.Fluid.BTs.Trees.Utils;
 
@@ -19,18 +20,13 @@ namespace CleverCrow.Fluid.BTs.Tasks
         public virtual float IconPadding => MathFExtensions.Zero;
         public bool HasBeenActive { get; private set; }
 
-#if UNITY_EDITOR
-        private EditorRuntimeUtilities _editorUtils;
-        public EditorRuntimeUtilities EditorUtils => _editorUtils ??= new EditorRuntimeUtilities();
-#endif
+        public IDebugHandler DebugHandler { get; } = new DebugHandler();
 
         protected ILogWriter LogWriter { get; } = BehaviorTreeConfiguration.DependencyResolver.Resolve<ILogWriter>();
 
         public virtual TaskStatus Update()
         {
-#if UNITY_EDITOR
-            EditorUtils.EventActive.Invoke();
-#endif
+            DebugHandler.OnEventActive();
 
             HasBeenActive = true;
 
