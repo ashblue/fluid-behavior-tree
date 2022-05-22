@@ -12,7 +12,7 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions
 
         public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}Hourglass.png";
 
-        public float Time = DefaultTime;
+        public float Time { get; set; } = DefaultTime;
 
         private readonly ITimeMonitor _timeMonitor;
         private float _timePassed;
@@ -25,12 +25,13 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions
         protected override void OnStart()
         {
             _timePassed = MathFExtensions.Zero;
+            _timeMonitor.Reset();
         }
 
         protected override TaskStatus OnUpdate()
         {
+            _timeMonitor.OnTick();
             _timePassed += _timeMonitor.DeltaTime;
-
             return _timePassed < Time ? TaskStatus.Continue : TaskStatus.Success;
         }
     }
