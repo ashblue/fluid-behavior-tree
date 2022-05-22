@@ -3,6 +3,8 @@ using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Testing;
+using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
+using CleverCrow.Fluid.BTs.Trees.Runtime.Unity.Implementations;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
@@ -11,20 +13,20 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
 {
     public class BehaviorTreeTest
     {
-        private GameObject _gameObject;
+        private GameObjectOwner _owner;
         private BehaviorTree _tree;
 
         [SetUp]
         public void BeforeEach()
         {
-            _gameObject = new GameObject("BT");
-            _tree = new BehaviorTree(_gameObject);
+            _owner = new GameObjectOwner("BT");
+            _tree = new BehaviorTree(_owner);
         }
 
         [TearDown]
         public void AfterEach()
         {
-            Object.DestroyImmediate(_gameObject);
+            _owner.DestroyImmediate();
         }
 
         public class RootSetup : BehaviorTreeTest
@@ -32,26 +34,26 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
             [Test]
             public void It_should_set_the_root_node_Owner_by_default()
             {
-                Assert.AreEqual(_gameObject, _tree.Root.Owner);
+                Assert.AreEqual(_owner, _tree.Root.Owner);
             }
         }
 
         public class SpliceMethod : BehaviorTreeTest
         {
-            private GameObject _owner;
+            private GameObjectOwner _owner;
             private BehaviorTree _treeAlt;
 
             [SetUp]
             public void SetupTreeAlt()
             {
-                _owner = new GameObject("BT");
+                _owner = new GameObjectOwner("BT");
                 _treeAlt = new BehaviorTree(_owner);
             }
 
             [TearDown]
             public void TeardownTreeAlt()
             {
-                Object.DestroyImmediate(_owner);
+                _owner.DestroyImmediate();
             }
 
             [Test]
@@ -73,7 +75,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
 
                 _tree.Splice(_tree.Root, _treeAlt);
 
-                nodes.ForEach((node) => Assert.AreEqual(_gameObject, node.Owner));
+                nodes.ForEach((node) => Assert.AreEqual(base._owner, node.Owner));
             }
 
             [Test]
@@ -89,7 +91,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
 
                 _tree.Splice(_tree.Root, _treeAlt);
 
-                nodes.ForEach((node) => Assert.AreEqual(_gameObject, node.Owner));
+                nodes.ForEach((node) => Assert.AreEqual(base._owner, node.Owner));
             }
 
             [Test]
@@ -128,7 +130,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
 
                 _tree.AddNode(_tree.Root, action);
 
-                _tree.Root.Children[0].Received(1).Owner = _gameObject;
+                _tree.Root.Children[0].Received(1).Owner = _owner;
             }
         }
 

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
-#if UNITY_2021_3_OR_NEWER
-using UnityEngine;
-#endif
+using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 
 namespace CleverCrow.Fluid.BTs.Trees
 {
@@ -20,20 +18,13 @@ namespace CleverCrow.Fluid.BTs.Trees
 
         private readonly List<ITask> _tasks = new(); //TODO: Starting size can reduce allocations
 
-#if UNITY_2021_3_OR_NEWER
-        private readonly GameObject _owner;
+        private readonly IOwner _owner;
 
-        public BehaviorTree(GameObject owner)
+        public BehaviorTree(IOwner owner = null)
         {
             _owner = owner;
             SyncNodes(Root);
         }
-#else
-        public BehaviorTree()
-        {
-            SyncNodes(Root);
-        }
-#endif
 
         public void AddActiveTask(ITask task)
         {
@@ -72,10 +63,7 @@ namespace CleverCrow.Fluid.BTs.Trees
         {
             parent.AddChild(child);
             child.ParentTree = this;
-
-#if UNITY_2021_3_OR_NEWER
             child.Owner = _owner;
-#endif
         }
 
         public void Splice(ITaskParent parent, BehaviorTree tree)
@@ -87,16 +75,12 @@ namespace CleverCrow.Fluid.BTs.Trees
 
         private void SyncNodes(ITaskParent taskParent)
         {
-#if UNITY_2021_3_OR_NEWER
             taskParent.Owner = _owner;
-#endif
             taskParent.ParentTree = this;
 
             foreach (var child in taskParent.Children)
             {
-#if UNITY_2021_3_OR_NEWER
                 child.Owner = _owner;
-#endif
                 child.ParentTree = this;
 
                 if (child is ITaskParent parent)

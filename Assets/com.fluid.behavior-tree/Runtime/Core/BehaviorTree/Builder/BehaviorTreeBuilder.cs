@@ -5,9 +5,7 @@ using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
-#if UNITY_2021_3_OR_NEWER
-using UnityEngine;
-#endif
+using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 
 namespace CleverCrow.Fluid.BTs.Trees
 {
@@ -39,20 +37,11 @@ namespace CleverCrow.Fluid.BTs.Trees
         private readonly List<ITaskParent> _pointers = new(); //TODO: Starting size can reduce allocations
         private readonly BehaviorTree _tree;
 
-
-#if UNITY_2021_3_OR_NEWER
-        public BehaviorTreeBuilder(GameObject owner)
+        public BehaviorTreeBuilder(IOwner owner = null)
         {
             _tree = new BehaviorTree(owner);
             _pointers.Add(_tree.Root);
         }
-#else
-        public BehaviorTreeBuilder()
-        {
-            _tree = new BehaviorTree();
-            _pointers.Add(_tree.Root);
-        }
-#endif
 
         /// <summary>
         /// Set a name for the tree manually. For debugging purposes and visualizer window naming

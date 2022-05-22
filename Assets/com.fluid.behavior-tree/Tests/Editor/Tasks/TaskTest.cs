@@ -1,6 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using CleverCrow.Fluid.BTs.Trees;
+using CleverCrow.Fluid.BTs.Trees.Runtime.Unity.Implementations;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
@@ -118,24 +119,24 @@ namespace CleverCrow.Fluid.BTs.Testing
 
             public class TreeTickCountChange : UpdateMethod
             {
-                private GameObject _go;
+                private GameObjectOwner _owner;
 
                 [SetUp]
                 public void BeforeEach()
                 {
-                    _go = new GameObject();
+                    _owner = new GameObjectOwner();
                 }
 
                 [TearDown]
                 public void AfterEach()
                 {
-                    Object.DestroyImmediate(_go);
+                    _owner.DestroyImmediate();
                 }
 
                 [Test]
                 public void Retriggers_start_if_tick_count_changes()
                 {
-                    var tree = new BehaviorTree(_go);
+                    var tree = new BehaviorTree(_owner);
                     tree.AddNode(tree.Root, _node);
 
                     tree.Tick();
@@ -149,7 +150,7 @@ namespace CleverCrow.Fluid.BTs.Testing
                 {
                     _node.status = TaskStatus.Continue;
 
-                    var tree = new BehaviorTree(_go);
+                    var tree = new BehaviorTree(_owner);
                     tree.AddNode(tree.Root, _node);
 
                     tree.Tick();

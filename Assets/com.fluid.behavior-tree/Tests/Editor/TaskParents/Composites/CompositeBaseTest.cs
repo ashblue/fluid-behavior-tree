@@ -1,6 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
+using CleverCrow.Fluid.BTs.Trees.Runtime.Unity.Implementations;
 using NSubstitute;
 using NUnit.Framework;
 using UnityEngine;
@@ -68,18 +69,18 @@ namespace CleverCrow.Fluid.BTs.Testing
 
         public class ResetMethod : CompositeBaseTest
         {
-            private GameObject _go;
+            private GameObjectOwner _owner;
 
             [SetUp]
             public void BeforEach()
             {
-                _go = new GameObject();
+                _owner = new GameObjectOwner();
             }
 
             [TearDown]
             public void AfterEach()
             {
-                Object.DestroyImmediate(_go);
+                _owner.DestroyImmediate();
             }
 
             [Test]
@@ -95,7 +96,7 @@ namespace CleverCrow.Fluid.BTs.Testing
             [Test]
             public void Resets_pointer_if_tick_count_changes()
             {
-                var tree = new BehaviorTree(_go);
+                var tree = new BehaviorTree(_owner);
                 tree.AddNode(tree.Root, _composite);
                 tree.AddNode(_composite, Substitute.For<ITask>());
 
@@ -110,7 +111,7 @@ namespace CleverCrow.Fluid.BTs.Testing
             public void Does_not_reset_pointer_if_tick_count_does_not_change()
             {
                 var task = Substitute.For<ITask>();
-                var tree = new BehaviorTree(_go);
+                var tree = new BehaviorTree(_owner);
                 tree.AddNode(tree.Root, _composite);
                 tree.AddNode(_composite, task);
                 _composite.status = TaskStatus.Continue;

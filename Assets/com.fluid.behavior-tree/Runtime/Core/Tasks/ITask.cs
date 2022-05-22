@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Trees;
-#if UNITY_2021_3_OR_NEWER
-using UnityEngine;
-#endif
+using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 
 namespace CleverCrow.Fluid.BTs.Tasks
 {
@@ -20,13 +18,11 @@ namespace CleverCrow.Fluid.BTs.Tasks
 
         string IconPath { get; }
 
-#if UNITY_2021_3_OR_NEWER
         /// <summary>
         /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
         /// GameObject reference
         /// </summary>
-        GameObject Owner { get; set; }
-#endif
+        IOwner Owner { get; set; }
 
         /// <summary>
         /// Tree this node belongs to

@@ -34,7 +34,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing
         public void It_should_run_the_custom_action()
         {
             var result = false;
-            var tree = new BehaviorTreeBuilder(null)
+            var tree = new BehaviorTreeBuilder()
                 .Sequence()
                 .ExampleAction("test", () => result = true)
                 .End()

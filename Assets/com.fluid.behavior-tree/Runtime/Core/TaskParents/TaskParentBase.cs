@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
-#if UNITY_2021_3_OR_NEWER
-using UnityEngine;
-#endif
+using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
 
 namespace CleverCrow.Fluid.BTs.TaskParents
 {
@@ -19,10 +17,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents
         public bool IsEnabled { get; set; } = true;
 
         public List<ITask> Children { get; } = new();
-
-#if UNITY_2021_3_OR_NEWER
-        public GameObject Owner { get; set; }
-#endif
+        public IOwner Owner { get; set; }
 
         private int _lastTickCount;
 
