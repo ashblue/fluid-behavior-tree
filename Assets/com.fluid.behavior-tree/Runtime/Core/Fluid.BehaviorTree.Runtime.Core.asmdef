@@ -1,0 +1,17 @@
+{
+    "name": "Fluid.BehaviorTree.Runtime.Core",
+    "rootNamespace": "CleverCrow.Fluid.BTs",
+    "references": [
+        "Fluid.BehaviorTree.Utils",
+        "Fluid.BehaviorTree.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

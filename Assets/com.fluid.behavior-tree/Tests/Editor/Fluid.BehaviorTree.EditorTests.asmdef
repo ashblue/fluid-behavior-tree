@@ -1,8 +1,8 @@
 {
     "name": "Fluid.BehaviorTree.EditorTests",
     "references": [
-        "Fluid.BehaviorTree",
-        "Fluid.BehaviorTree.Editor"
+        "Fluid.BehaviorTree.Editor",
+        "Fluid.BehaviorTree.Runtime.Core"
     ],
     "includePlatforms": [
         "Editor"

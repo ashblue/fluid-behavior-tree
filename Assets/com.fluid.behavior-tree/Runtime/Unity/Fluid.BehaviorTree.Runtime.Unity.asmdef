@@ -1,0 +1,18 @@
+{
+    "name": "Fluid.BehaviorTree.Runtime.Unity",
+    "rootNamespace": "Fluid.BehaviorTree.Runtime.Unity",
+    "references": [
+        "Fluid.BehaviorTree.Utils",
+        "Fluid.BehaviorTree.Core",
+        "Fluid.BehaviorTree.Runtime.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

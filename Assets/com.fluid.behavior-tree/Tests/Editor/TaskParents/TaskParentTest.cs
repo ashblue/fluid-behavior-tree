@@ -1,8 +1,10 @@
-﻿using CleverCrow.Fluid.BTs.TaskParents;
+﻿using System.Threading.Tasks;
+using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NSubstitute;
 using NUnit.Framework;
+using TaskStatus = CleverCrow.Fluid.BTs.Tasks.TaskStatus;
 
 namespace CleverCrow.Fluid.BTs.Testing
 {

@@ -1,7 +1,7 @@
 {
     "name": "Fluid.BehaviorTree.Editor",
     "references": [
-        "Fluid.BehaviorTree",
+        "Fluid.BehaviorTree.Runtime.Core",
         "Fluid.BehaviorTree.Utils"
     ],
     "optionalUnityReferences": [],
