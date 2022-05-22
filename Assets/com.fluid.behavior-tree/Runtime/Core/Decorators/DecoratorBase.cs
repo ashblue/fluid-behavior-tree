@@ -4,9 +4,6 @@ using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 using CleverCrow.Fluid.BTs.Trees.Core.Interfaces;
-#if UNITY_2021_3_OR_NEWER
-using UnityEngine;
-#endif
 
 namespace CleverCrow.Fluid.BTs.Decorators
 {
@@ -29,16 +26,7 @@ namespace CleverCrow.Fluid.BTs.Decorators
 
             if (Child == null)
             {
-                var shouldPrintWarning = true;
-
-#if UNITY_2021_3_OR_NEWER
-                shouldPrintWarning = Application.isPlaying;
-#endif
-                if (shouldPrintWarning)
-                {
-                    LogWriter.LogWarning($"Decorator {Name} has no child. Force returning failure. Please fix");
-                }
-
+                LogWriter.LogWarning($"Decorator {Name} has no child. Force returning failure. Please fix");
                 return TaskStatus.Failure;
             }
 
