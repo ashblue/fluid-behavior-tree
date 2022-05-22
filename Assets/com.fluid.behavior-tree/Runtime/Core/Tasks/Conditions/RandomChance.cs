@@ -6,10 +6,9 @@ namespace CleverCrow.Fluid.BTs.Tasks
 {
     public class RandomChance : ConditionBase
     {
-        // TODO: Convert into properties
-        public float Chance = 1;
-        public float OutOf = 1;
-        public int Seed;
+        public float Chance { get; set; } = 1;
+        public float OutOf { get; set; } = 1;
+        public int Seed { get; set; }
 
         // TODO: use global seed
         protected override bool OnUpdate()

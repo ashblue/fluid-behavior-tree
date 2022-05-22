@@ -7,8 +7,7 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions
 
         public override string IconPath => $"{PackageRoot}{Path.DirectorySeparatorChar}HourglassFill.png";
 
-        // TODO: Convert into property
-        public int Turns = 1;
+        public int Turns { get; set; } = 1;
 
         private int _ticks;
 

@@ -4,11 +4,10 @@ namespace CleverCrow.Fluid.BTs.Tasks
 {
     public class ConditionGeneric : ConditionBase
     {
-        // TODO: Convert into properties
-        public Action ExitLogic;
-        public Action InitLogic;
-        public Action StartLogic;
-        public Func<bool> UpdateLogic;
+        public Action ExitLogic { get; set; }
+        public Action InitLogic { get; set; }
+        public Action StartLogic { get; set; }
+        public Func<bool> UpdateLogic { get; set; }
 
         protected override bool OnUpdate() => UpdateLogic == null || UpdateLogic();
 

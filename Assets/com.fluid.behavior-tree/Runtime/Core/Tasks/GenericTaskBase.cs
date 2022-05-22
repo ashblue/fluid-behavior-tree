@@ -7,8 +7,7 @@ namespace CleverCrow.Fluid.BTs.Tasks
 {
     public abstract class GenericTaskBase
     {
-        // TODO: Fix path
-        protected const string PackageRoot = PathUtils.RootPlaceholder + "/Editor/Icons/Tasks";
+        protected static readonly string PackageRoot = Path.Combine(PathUtils.RootPlaceholder, "/Editor/Icons/Tasks");
 
         /// <summary>
         /// For custom project icons provide a path from assets to a Texture2D asset. Example `Assets/MyIcon.png`.
