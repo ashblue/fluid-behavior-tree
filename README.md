@@ -720,15 +720,20 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="http://blueashes.com"><img src="https://avatars2.githubusercontent.com/u/643307?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ash Blue</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=ashblue" title="Code">💻</a></td>
-    <td align="center"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/PureSaltProductions"><img src="https://avatars1.githubusercontent.com/u/52610924?v=4?s=100" width="100px;" alt=""/><br /><sub><b>PureSaltProductions</b></sub></a><br /><a href="#userTesting-PureSaltProductions" title="User Testing">📓</a></td>
-    <td align="center"><a href="https://github.com/mduvergey"><img src="https://avatars2.githubusercontent.com/u/18513379?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Martin Duvergey</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Amduvergey" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/call-stack"><img src="https://avatars1.githubusercontent.com/u/38575304?v=4?s=100" width="100px;" alt=""/><br /><sub><b>call-stack</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Acall-stack" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/piotr-j"><img src="https://avatars.githubusercontent.com/u/2499728?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Piotr Jastrzebski</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=piotr-j" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/hookSSi"><img src="https://avatars.githubusercontent.com/u/12372136?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sounghoo</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=hookSSi" title="Code">💻</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://blueashes.com"><img src="https://avatars2.githubusercontent.com/u/643307?v=4?s=100" width="100px;" alt="Ash Blue"/><br /><sub><b>Ash Blue</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=ashblue" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://jesse.tg"><img src="https://avatars0.githubusercontent.com/u/1175189?v=4?s=100" width="100px;" alt="Jesse Talavera-Greenberg"/><br /><sub><b>Jesse Talavera-Greenberg</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JesseTG" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/PureSaltProductions"><img src="https://avatars1.githubusercontent.com/u/52610924?v=4?s=100" width="100px;" alt="PureSaltProductions"/><br /><sub><b>PureSaltProductions</b></sub></a><br /><a href="#userTesting-PureSaltProductions" title="User Testing">📓</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mduvergey"><img src="https://avatars2.githubusercontent.com/u/18513379?v=4?s=100" width="100px;" alt="Martin Duvergey"/><br /><sub><b>Martin Duvergey</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Amduvergey" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/call-stack"><img src="https://avatars1.githubusercontent.com/u/38575304?v=4?s=100" width="100px;" alt="call-stack"/><br /><sub><b>call-stack</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Acall-stack" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/piotr-j"><img src="https://avatars.githubusercontent.com/u/2499728?v=4?s=100" width="100px;" alt="Piotr Jastrzebski"/><br /><sub><b>Piotr Jastrzebski</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=piotr-j" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/hookSSi"><img src="https://avatars.githubusercontent.com/u/12372136?v=4?s=100" width="100px;" alt="Sounghoo"/><br /><sub><b>Sounghoo</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=hookSSi" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/TNThomas"><img src="https://avatars.githubusercontent.com/u/9881915?v=4?s=100" width="100px;" alt="TNThomas"/><br /><sub><b>TNThomas</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3ATNThomas" title="Bug reports">🐛</a> <a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=TNThomas" title="Code">💻</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->
