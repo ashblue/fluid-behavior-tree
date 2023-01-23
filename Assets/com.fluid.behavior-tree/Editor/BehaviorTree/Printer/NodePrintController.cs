@@ -98,7 +98,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             var position = new Rect(
                 _divider.GlobalPositionX + _box.PaddingY / 2 + _node.DividerLeftOffset - 2, 
                 // @TODO Should not need to offset this
-                _divider.GlobalPositionY + _box.PaddingY / 2,
+                _divider.GlobalPositionY + _box.PaddingY / 2 - 2,
                 _divider.Width + graphicSizeIncrease, 
                 10);
             
@@ -107,21 +107,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private void PaintVerticalBottom () {
             if (_verticalBottom == null) {
-                _verticalBottom = CreateTexture(1, (int)_box.PaddingY, Color.black);
+                _verticalBottom = CreateTexture(1, (int)_box.PaddingY + 1, Color.black);
             }
 
             var position = new Rect(
                 _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2, 
                 _box.GlobalPositionY + _node.Height + _box.PaddingY - 1,
                 100, 
-                _box.PaddingY - 1);
+                _box.PaddingY);
             
             GUI.Label(position, _verticalBottom);
         }
         
         private void PaintVerticalTop () {
             if (_verticalTop == null) {
-                _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), Color.black);
+                _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2) + 1, Color.black);
             }
 
             var position = new Rect(
