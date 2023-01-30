@@ -107,7 +107,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private void PaintVerticalBottom () {
             if (_verticalBottom == null) {
-                _verticalBottom = CreateTexture(1, (int)_box.PaddingY + 1, Color.black);
+                _verticalBottom = CreateTexture(1, (int)_box.PaddingY, Color.black);
             }
 
             var position = new Rect(
