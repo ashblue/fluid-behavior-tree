@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Editor/VisualFluidBT.uss?fileID=7433441132597879392&amp;guid=b25f995569b5cecbea86085fd74ec1f6&amp;type=3#VisualFluidBT" />
+    <uie:Toolbar>
+        <uie:ToolbarMenu tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" text="Assets" />
+    </uie:Toolbar>
+    <ui:VisualElement style="flex-grow: 1;">
+        <SplitView fixed-pane-initial-dimension="300" style="height: 558px; width: 804px;">
+            <ui:VisualElement name="LeftPanel" style="flex-grow: 1; background-color: rgb(47, 47, 47);">
+                <InspectorView style="background-color: rgba(0, 0, 0, 0);" />
+                <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(188, 188, 188);" />
+                <uie:ToolbarSearchField focusable="true" />
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+            </ui:VisualElement>
+            <ui:VisualElement name="RightPanel" style="flex-grow: 1; background-color: rgb(47, 47, 47);">
+                <ui:Label tabindex="-1" text="Tree View" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(168, 168, 168); background-color: rgb(47, 47, 47);" />
+                <VisualFluidBTView focusable="true" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </SplitView>
+    </ui:VisualElement>
+</ui:UXML>

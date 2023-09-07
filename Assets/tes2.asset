@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7807281338244568267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes: []
+  children: []
+  guid: 7f88640bc20e3b9e59989f9b15a2c63a
+  position: {x: 0, y: 0}
+--- !u!114 &-4881784901940706244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes: []
+  children: []
+  guid: d7c7dd75560c33c0c85288b0b89fcbda
+  position: {x: 0, y: 0}
+--- !u!114 &-4642079509574634770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes: []
+  children: []
+  guid: b77320e69540d1cd2a7852bc87c14602
+  position: {x: 0, y: 0}
+--- !u!114 &-3227748158812417546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes: []
+  children: []
+  guid: 61bf3b1560fbce4c4a0392a952268e8d
+  position: {x: 45.119995, y: 110.6}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: tes2
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes:
+  - {fileID: -3227748158812417546}
+  - {fileID: -4881784901940706244}
+  - {fileID: -4642079509574634770}
+  - {fileID: -7807281338244568267}
+  children: []
+  guid: 
+  position: {x: 0, y: 0}

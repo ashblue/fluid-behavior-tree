@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9061544213171812257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes: []
+  children: []
+  guid: 089c0ae89e2eab91ea5614a7ebfc8f6b
+  position: {x: -16.100008, y: -64.40001}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  importantField: 1
+  importantString: asdasd
+  importantArray: 
+  nodes:
+  - {fileID: -9061544213171812257}
+  - {fileID: 2925408982463832158}
+  children: []
+  guid: 
+  position: {x: 0, y: 0}
+--- !u!114 &2925408982463832158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2863718f908160fb447ff2df0c4c0f, type: 3}
+  m_Name: TestStructure
+  m_EditorClassIdentifier: 
+  importantField: 0
+  importantString: 
+  importantArray: 
+  nodes: []
+  children: []
+  guid: 69fb70e07691b3b5f97e7eb56eb66b2a
+  position: {x: -202.49602, y: -64}
