@@ -1,27 +1,19 @@
-![Fluid Behavior Tree](fluid-behavior-tree.jpg)
+# Visual BT
 
-[![Build Status](https://travis-ci.org/ashblue/fluid-behavior-tree.svg?branch=master)](https://travis-ci.org/ashblue/fluid-behavior-tree)
+Visual implementation of behavior trees for Unity projects. This is an increment of [fluid BT](https://github.com/ashblue/Visual-behavior-tree), with the added programmable GUI and some new nodes.
 
-Behavior trees for Unity3D projects. Written with a code driven approach to maximize maintainability on large projects with the builder pattern. Inspired by Fluent Behavior Tree.
+**Expected new features**
 
-**Features**
+* Intuitive and programmable graphical interface, in the "drag-and-drop" style
+* Node arguments editor, allowing access to exposed parameters of the tree node classes
+* Real-time tree execution visualizer, for debbuging
+* New Interrupt node
+* Modified SelectorRandom node, making it actually random every time
+* Shared variables declaration, creating a "global" memory for the tree
 
-* Extendable, write your own custom re-usable nodes
-* Pre-built library of tasks to kickstart your AI
-* Tree visualizer to debug your trees at runtime
-* Heavily tested with TDD and unit tests
-* Tracks the last position of your behavior tree and restores it the next frame
-* Built for Unity (no integration overhead)
+## Code driven use
 
-**Support**
-
-Join the [Discord Community](https://discord.gg/8QHFfzn) if you have questions or need help.
-
-See upcoming features and development progress on the [Trello Board](https://trello.com/b/BCc33Bcs/fluid-behavior-tree).
-
-## Getting Started
-
-When creating trees you'll need to store them in a variable to properly cache all the necessary data.
+When creating trees via code, you'll need to store them in a variable to properly cache all the necessary data.
 
 ```C#
 using UnityEngine;
@@ -62,11 +54,13 @@ Depending on what you return for a task status different things will happen.
 
 ### Tree Visualizer
 
+**THIS WILL BE OBSOLETE**
+
 As long as your tree storage variable is set to `public` or has a `SerializeField` attribute. You'll be able to print a visualization of your tree while the game is running in the editor. Note that you cannot view trees while the game is not running. As the tree has to be built in order to be visualized.
 
 ![Visualizer](tree-visualizer.png)
 
-### Extending Trees
+### Extending Trees via code
 
 You can safely add new code to your behavior trees with several lines. Allowing you to customize BTs while supporting future version upgrades. 
 
@@ -101,7 +95,7 @@ public class ExampleUsage : MonoBehaviour {
 
 ### Installing
 
-Fluid Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Fluid Behavior Tree you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
+Visual Behavior Tree is used through [Unity's Package Manager](https://docs.unity3d.com/Manual/CustomPackages.html). In order to use it you'll need to add the following lines to your `Packages/manifest.json` file. After that you'll be able to visually control what specific version of Visual BT you're using from the package manager window in Unity. This has to be done so your Unity editor can connect to NPM's package registry.
 
 ```json
 {
@@ -125,7 +119,7 @@ Archives of specific versions and release notes are available on the [releases p
 ### Example Scene
 
 You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
-for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
+for a working example of how Visual Behavior Tree can be used in your project. It demonstrates real time usage
 with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
 ## Table of Contents
@@ -167,12 +161,12 @@ with units who attempt to capture the flag while grabbing power ups to try and g
 ## Example Scene
 
 You might want to look at the [capture the flag](https://github.com/ashblue/fluid-behavior-tree-ctf-example) example project 
-for a working example of how Fluid Behavior Tree can be used in your project. It demonstrates real time usage
+for a working example of how Visual Behavior Tree can be used in your project. It demonstrates real time usage
 with units who attempt to capture the flag while grabbing power ups to try and gain the upper hand.
 
 ## Library
 
-Fluid Behavior Tree comes with a robust library of pre-made actions, conditions, composites, and other nodes
+Visual Behavior Tree comes with a robust library of pre-made actions, conditions, composites, and other nodes
 to help speed up your development process.
 
 ### Actions
@@ -445,7 +439,7 @@ public class MyCustomAi : MonoBehaviour {
 
 ## Creating Custom Reusable Nodes
 
-What makes Fluid Behavior Tree so powerful is the ability to write your own nodes and add them to the builder without editing any source. You can even create Unity packages that add new builder functionality. For example we can write a new tree builder method like this that sets the target of your AI system with just a few lines of code.
+What makes Visual Behavior Tree so powerful is the ability to write your own nodes and add them to the builder without editing any source. You can even create Unity packages that add new builder functionality. For example we can write a new tree builder method like this that sets the target of your AI system with just a few lines of code.
 
 ```C#
 var tree = new BehaviorTreeBuilder(gameObject)
@@ -594,7 +588,7 @@ public static class BehaviorTreeBuilderExtensions {
 
 ### Custom Composites
 
-Fluid Behavior Tree isn't limited to just custom actions and conditions. You can create new composite types with a fairly
+Visual Behavior Tree isn't limited to just custom actions and conditions. You can create new composite types with a fairly
 simple API. Here is an example of a basic sequence.
 
 ```C#
