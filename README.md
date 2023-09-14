@@ -11,6 +11,9 @@ Visual implementation of behavior trees for Unity projects. This is an increment
 * Modified SelectorRandom node, making it actually random every time
 * Shared variables declaration, creating a "global" memory for the tree
 
+## Kanban
+https://trello.com/b/GKl44UAN/kanban-de-tarefas
+
 ## Code driven use
 
 When creating trees via code, you'll need to store them in a variable to properly cache all the necessary data.
