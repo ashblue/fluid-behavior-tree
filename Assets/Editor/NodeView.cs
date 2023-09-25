@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
+using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.Tasks;
 
 public class NodeView : UnityEditor.Experimental.GraphView.Node
 {
-    public TestStructure node;
+    public ITask node;
     public Port inputPort;
     public Port outputPort;
 
-    public NodeView(TestStructure node)
+    public NodeView(ITask node)
     {
         this.node = node;
-        this.title = node.name;
+        this.title = node.Name;
         this.viewDataKey = node.guid;
 
         style.left = node.position.x;
@@ -24,6 +26,8 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
 
     void CreateInputPorts()
     {
+        if (node is TaskRoot) return;
+
         inputPort = InstantiatePort(Orientation.Vertical, Direction.Input, Port.Capacity.Single, typeof(bool));
 
         if (inputPort != null)
@@ -35,6 +39,8 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
 
     void CreateOutputPorts()
     {
+        if (node is TaskBase) return;
+
         outputPort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
 
         if (outputPort != null)
@@ -47,7 +53,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     public override void SetPosition(Rect newPos)
     {
         base.SetPosition(newPos);
-        node.position.x = newPos.xMin;
-        node.position.y = newPos.yMin;
+        Vector2 pos = new Vector2(newPos.xMin, newPos.yMin);
+        node.SetPosition(pos);
     }
 }

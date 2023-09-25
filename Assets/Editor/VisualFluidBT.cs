@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using CleverCrow.Fluid.BTs.Trees;
+using System.Collections.Generic;
+using CleverCrow.Fluid.BTs.Tasks;
 
 public class VisualFluidBT : EditorWindow
 {
@@ -34,11 +37,12 @@ public class VisualFluidBT : EditorWindow
 
     private void OnSelectionChange()
     {
-        TestStructure testStructure = Selection.activeObject as TestStructure;
+        BehaviorTree tree = Selection.activeObject as BehaviorTree;
 
-        if (testStructure)
+        if (tree)
         {
-            visualFuildBTView.PopulateView(testStructure);
+            visualFuildBTView.PopulateView(tree);
+            tree.CreateRootNode();
         }
     }
 }

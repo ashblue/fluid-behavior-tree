@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using System.Linq;
+using CleverCrow.Fluid.BTs.Trees;
+using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks.Actions;
 
 public class VisualFluidBTView : GraphView
 {
     public new class UxmlFactory : UxmlFactory<VisualFluidBTView, GraphView.UxmlTraits> {}
 
-    TestStructure testStructure;
+    BehaviorTree tree;
 
     public VisualFluidBTView()
     {
@@ -28,8 +32,15 @@ public class VisualFluidBTView : GraphView
     {
         // base.BuildContextualMenu(evt);
 
-        var type = typeof(TestStructure);
-        evt.menu.AppendAction("Create node", (a) => CreateNode(type));
+        // var type = typeof(TestStructure);
+        // evt.menu.AppendAction("Create node", (a) => CreateNode(type));
+
+        var types = TypeCache.GetTypesDerivedFrom<ActionBase>();
+
+        foreach (var type in types)
+        {
+            evt.menu.AppendAction($"{type.BaseType.Name} {type.Name}", (a) => CreateNode(type));
+        }
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -41,27 +52,27 @@ public class VisualFluidBTView : GraphView
 
     void CreateNode(System.Type type)
     {
-        TestStructure node = testStructure.CreateNode(type);
+        ITask node = tree.CreateNode(type);
         CreateNodeView(node);
     }
 
-    NodeView FindNodeView(TestStructure node)
+    NodeView FindNodeView(ITask node)
     {
         return GetNodeByGuid(node.guid) as NodeView;
     }
 
-    public void PopulateView(TestStructure testStructure)
+    public void PopulateView(BehaviorTree tree)
     {
-        this.testStructure = testStructure;
+        this.tree = tree;
 
         graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
 
-        testStructure.nodes.ForEach(n => CreateNodeView(n));
+        tree.allNodes.ForEach(n => CreateNodeView(n));
 
-        testStructure.nodes.ForEach(n => {
-            var children = testStructure.GetChildren(n);
+        tree.allNodes.ForEach(n => {
+            var children = tree.GetChildren(n);
             children.ForEach(c => {
                 NodeView parentView = FindNodeView(n);
                 NodeView childView = FindNodeView(c);
@@ -80,7 +91,7 @@ public class VisualFluidBTView : GraphView
                 NodeView nodeView = elem as NodeView;
                 if (nodeView != null)
                 {
-                    testStructure.DeleteNode(nodeView.node);
+                    tree.DeleteNode(nodeView.node);
                 }
 
                 Edge edge = elem as Edge;
@@ -88,7 +99,7 @@ public class VisualFluidBTView : GraphView
                 {
                     NodeView parentView = edge.output.node as NodeView;
                     NodeView childView = edge.input.node as NodeView;
-                    testStructure.RemoveChild(parentView.node, childView.node);
+                    tree.RemoveChild(parentView.node, childView.node);
                 }
             });
         }
@@ -98,14 +109,15 @@ public class VisualFluidBTView : GraphView
             graphViewChange.edgesToCreate.ForEach(edge => {
                 NodeView parentView = edge.output.node as NodeView;
                 NodeView childView = edge.input.node as NodeView;
-                testStructure.AddChild(parentView.node, childView.node);
+                Debug.Log(childView);
+                tree.AddChild(parentView.node, childView.node);
             });
         }
 
         return graphViewChange;
     }
     
-    void CreateNodeView(TestStructure node)
+    void CreateNodeView(ITask node)
     {
         NodeView nodeView = new NodeView(node);
         AddElement(nodeView);
