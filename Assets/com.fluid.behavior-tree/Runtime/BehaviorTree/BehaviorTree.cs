@@ -2,43 +2,160 @@
 using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
+using UnityEditor;
 
 namespace CleverCrow.Fluid.BTs.Trees {
-    public interface IBehaviorTree {
-        string Name { get; }
-        TaskRoot Root { get; }
-        int TickCount { get; }
+    public class IBehaviorTree : ScriptableObject{
+        public string Name { get; set; }
+        public TaskRoot Root { get; set; }
+        public int TickCount { get; set; }
         
-        void AddActiveTask (ITask task);
-        void RemoveActiveTask (ITask task);
+        public virtual void AddActiveTask (ITask task) {}
+        public virtual void RemoveActiveTask (ITask task) {}
     }
-    
-    [System.Serializable]
+
+    [CreateAssetMenu(menuName = "ScriptableObjects/BehaviorTree")]
     public class BehaviorTree : IBehaviorTree {
         private readonly GameObject _owner;
-        private readonly List<ITask> _tasks = new List<ITask>();
-        
-        public int TickCount { get; private set; }
+        [SerializeField] public List<ITask> _tasks = new List<ITask>();
+        [SerializeField] public List<ITask> allNodes = new List<ITask>();
 
-        public string Name { get; set; }
-        public TaskRoot Root { get; } = new TaskRoot();
+        public List<int> teste = new List<int>();
+
         public IReadOnlyList<ITask> ActiveTasks => _tasks;
+        public bool isRunning = false;
+
+        void OnEnable()
+        {
+            Debug.Log(_tasks);
+        }
+
+        public void CreateRootNode()
+        {
+            if (Root != null) return;
+
+            Root = CreateNode(typeof(TaskRoot)) as TaskRoot;
+        }
 
         public BehaviorTree (GameObject owner) {
             _owner = owner;
             SyncNodes(Root);
         }
-        
+
+        public ITask CreateNode(System.Type type)
+        {
+
+            if (type.BaseType.BaseType == typeof(TaskBase))
+            {
+                TaskBase node = ScriptableObject.CreateInstance(type) as TaskBase;
+                node.name = type.Name;
+                node.guid = GUID.Generate().ToString();
+                node.Name = type.Name;
+
+                allNodes.Add(node);
+
+                AssetDatabase.AddObjectToAsset(node, this);
+                AssetDatabase.SaveAssets();
+
+                return node;
+            }
+            else if (type.BaseType.BaseType == typeof(TaskParentBase))
+            {
+                TaskParentBase node = ScriptableObject.CreateInstance(type) as TaskParentBase;
+                node.name = type.Name;
+                node.guid = GUID.Generate().ToString();
+                node.Name = type.Name;
+
+                allNodes.Add(node);
+
+                AssetDatabase.AddObjectToAsset(node, this);
+                AssetDatabase.SaveAssets();
+
+                return node;
+            }
+            else if (type == typeof(TaskRoot)) // Root node
+            {
+                TaskRoot node = ScriptableObject.CreateInstance(type) as TaskRoot;
+                node.name = type.Name;
+                node.guid = GUID.Generate().ToString();
+                node.Name = type.Name;
+
+                allNodes.Add(node);
+
+                AssetDatabase.AddObjectToAsset(node, this);
+                AssetDatabase.SaveAssets();
+
+                return node;
+            }
+            else // if (type.BaseType == typeof(Decorators.DecoratorBase))
+            {
+                Decorators.DecoratorBase node = ScriptableObject.CreateInstance(type) as Decorators.DecoratorBase;
+                node.name = type.Name;
+                node.guid = GUID.Generate().ToString();
+                node.Name = type.Name;
+
+                allNodes.Add(node);
+
+                AssetDatabase.AddObjectToAsset(node, this);
+                AssetDatabase.SaveAssets();
+
+                return node;
+            }
+        }
+
+        public List<ITask> GetChildren(ITask parent)
+        {
+            return parent.Children;
+        }
+
+        public void DeleteNode(ITask node)
+        {
+            allNodes.Remove(node);
+
+            if (node is TaskBase)
+            {
+                AssetDatabase.RemoveObjectFromAsset(node as TaskBase);
+                AssetDatabase.SaveAssets();
+            }
+            else if (node is TaskParentBase)
+            {
+                AssetDatabase.RemoveObjectFromAsset(node as TaskParentBase);
+                AssetDatabase.SaveAssets();
+            }
+            else // if (node is Decorators.DecoratorBase)
+            {
+                AssetDatabase.RemoveObjectFromAsset(node as Decorators.DecoratorBase);
+                AssetDatabase.SaveAssets();
+            }
+        }
+
+        public void RemoveChild(ITask parent, ITask child)
+        {
+            parent.Children.Remove(child);
+        }
+
+        public void AddChild(ITask parent, ITask child)
+        {
+            parent.Children.Add(child);
+        }
+
         public TaskStatus Tick () {
-            var status = Root.Update();
-            if (status != TaskStatus.Continue) {
-                Reset();
+            if (isRunning)
+            {
+                var status = Root.Update();
+                if (status != TaskStatus.Continue) {
+                    Reset();
+                }
+
+                return status;
             }
 
-            return status;
+            return TaskStatus.Success;
         }
 
         public void Reset () {
+            if (!isRunning) return;
+
             foreach (var task in _tasks) {
                 task.End();
             }
@@ -74,11 +191,11 @@ namespace CleverCrow.Fluid.BTs.Trees {
             }
         }
         
-        public void AddActiveTask (ITask task) {
+        public override void AddActiveTask (ITask task) {
             _tasks.Add(task);
         }
 
-        public void RemoveActiveTask (ITask task) {
+        public override void RemoveActiveTask (ITask task) {
             _tasks.Remove(task);
         }
     }

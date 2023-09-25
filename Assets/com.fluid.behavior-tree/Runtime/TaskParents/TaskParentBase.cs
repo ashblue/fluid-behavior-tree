@@ -4,20 +4,10 @@ using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.TaskParents {
-    public abstract class TaskParentBase : GenericTaskBase, ITaskParent {
+    public abstract class TaskParentBase : ITaskParent {
         private int _lastTickCount;
 
-        public IBehaviorTree ParentTree { get; set; }
-        public TaskStatus LastStatus { get; private set; }
-
-        public virtual string Name { get; set; }
-        public bool Enabled { get; set; } = true;
-
-        public List<ITask> Children { get; } = new List<ITask>();
-
         protected virtual int MaxChildren { get; } = -1;
-
-        public GameObject Owner { get; set; }
 
         public override TaskStatus Update () {
             base.Update();
@@ -44,7 +34,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             _lastTickCount = ParentTree.TickCount;
         }
 
-        public virtual void End () {
+        public override void End () {
             throw new System.NotImplementedException();
         }
 
@@ -52,10 +42,10 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             return TaskStatus.Success;
         }
 
-        public virtual void Reset () {
+        public override void Reset () {
         }
 
-        public virtual ITaskParent AddChild (ITask child) {
+        public override ITaskParent AddChild (ITask child) {
             if (!child.Enabled) {
                 return this;
             }

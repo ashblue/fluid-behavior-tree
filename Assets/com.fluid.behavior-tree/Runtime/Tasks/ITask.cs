@@ -3,56 +3,64 @@ using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Tasks {
-    public interface ITask {
+    public class ITask : ScriptableObject {
         /// <summary>
         /// Used for debugging and identification purposes
         /// </summary>
-        string Name { get; set; }
-        
+        public virtual string Name { get; set; }
+
+        public Vector2 position = new Vector2(0.0f, 0.0f);
+        public string guid;
+
+        public void SetPosition(Vector2 pos)
+        {
+            position = pos;
+        }
+
         /// <summary>
         /// Is this task enabled or not? Disabled tasks are excluded from the runtime
         /// </summary>
-        bool Enabled { get; set; }
+        public bool Enabled { get; set; }
         
-        string IconPath { get; }
+        public virtual string IconPath { get; }
 
         /// <summary>
         /// Reference to the behavior tree responsible for this node. Allows for dynamic variables such as adding a
         /// GameObject reference
         /// </summary>
-        GameObject Owner { get; set; }
+        public GameObject Owner { get; set; }
         
         /// <summary>
         /// Tree this node belongs to
         /// </summary>
-        IBehaviorTree ParentTree { get; set; }
+        public IBehaviorTree ParentTree { get; set; }
         
-        List<ITask> Children { get; }
+        [SerializeField] public List<ITask> Children { get; set; } = new List<ITask>();
 
         /// <summary>
         /// Last status returned by Update
         /// </summary>
-        TaskStatus LastStatus { get; }
+        public TaskStatus LastStatus;
         
-        EditorRuntimeUtilities EditorUtils { get; }
-        float IconPadding { get; }
-        bool HasBeenActive { get; }
+        public virtual EditorRuntimeUtilities EditorUtils { get; }
+        public virtual float IconPadding { get; }
+        public virtual bool HasBeenActive { get; set; }
 
         /// <summary>
         /// Triggered every tick
         /// </summary>
         /// <returns></returns>
-        TaskStatus Update ();
+        public virtual TaskStatus Update () { return TaskStatus.Success; }
 
         /// <summary>
         /// Forcibly end this task. Firing all necessary completion logic
         /// </summary>
-        void End ();
+        public virtual void End () {}
 
         /// <summary>
         /// Reset this task back to its initial state to run again. Triggered after the behavior
         /// tree finishes with a task status other than continue.
         /// </summary>
-        void Reset ();
+        public virtual void Reset () {}
     }
 }
