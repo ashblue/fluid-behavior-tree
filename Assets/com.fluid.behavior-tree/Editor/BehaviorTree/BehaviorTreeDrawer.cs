@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
-    [CustomPropertyDrawer(typeof(BehaviorTree))]
+    // [CustomPropertyDrawer(typeof(BehaviorTree))]
     public class BehaviorTreeDrawer : PropertyDrawer {
         public override void OnGUI (Rect position, SerializedProperty property, GUIContent label) {
             EditorGUI.BeginProperty(position, label, property);
