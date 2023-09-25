@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5869381065417885984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2f7e7cff54b5dab282922ff20297669, type: 3}
+  m_Name: DebugLogNode
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0}
+  guid: a5309889010859659a69e0228ac9e1ad
+  LastStatus: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e09d50cf948054d824c8ceee70cac6, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  _tasks: []
+  allNodes:
+  - {fileID: 5230031753943539031}
+  - {fileID: -5869381065417885984}
+  teste: 
+  isRunning: 0
+--- !u!114 &5230031753943539031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55fb286ffcf94e088a94f160119e5d52, type: 3}
+  m_Name: TaskRoot
+  m_EditorClassIdentifier: 
+  position: {x: -15.76001, y: 0}
+  guid: fcdd502ede45a57debe141b975d8cf58
+  LastStatus: 0
