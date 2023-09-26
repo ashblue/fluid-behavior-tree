@@ -7,11 +7,6 @@ public class BTRunner : MonoBehaviour
 {
     [SerializeField] BehaviorTree tree;
 
-    void Start()
-    {
-        tree.isRunning = true;
-    }
-
     void Update()
     {
         tree.Tick();

@@ -5,25 +5,23 @@ using UnityEngine;
 using UnityEditor;
 
 namespace CleverCrow.Fluid.BTs.Trees {
-    public class IBehaviorTree : ScriptableObject{
+    public abstract class IBehaviorTree : ScriptableObject{
         public string Name { get; set; }
         public TaskRoot Root { get; set; }
         public int TickCount { get; set; }
         
-        public virtual void AddActiveTask (ITask task) {}
-        public virtual void RemoveActiveTask (ITask task) {}
+        public abstract void AddActiveTask (ITask task);
+        public abstract void RemoveActiveTask (ITask task);
     }
 
     [CreateAssetMenu(menuName = "ScriptableObjects/BehaviorTree")]
+    [System.Serializable]
     public class BehaviorTree : IBehaviorTree {
         private readonly GameObject _owner;
         [SerializeField] public List<ITask> _tasks = new List<ITask>();
         [SerializeField] public List<ITask> allNodes = new List<ITask>();
 
-        public List<int> teste = new List<int>();
-
         public IReadOnlyList<ITask> ActiveTasks => _tasks;
-        public bool isRunning = false;
 
         void OnEnable()
         {
@@ -140,22 +138,15 @@ namespace CleverCrow.Fluid.BTs.Trees {
         }
 
         public TaskStatus Tick () {
-            if (isRunning)
-            {
-                var status = Root.Update();
-                if (status != TaskStatus.Continue) {
-                    Reset();
-                }
-
-                return status;
+            var status = Root.Update();
+            if (status != TaskStatus.Continue) {
+                Reset();
             }
 
-            return TaskStatus.Success;
+            return status;
         }
 
         public void Reset () {
-            if (!isRunning) return;
-
             foreach (var task in _tasks) {
                 task.End();
             }

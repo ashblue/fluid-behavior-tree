@@ -3,7 +3,7 @@ using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Tasks {
-    public class ITask : ScriptableObject {
+    public abstract class ITask : ScriptableObject {
         /// <summary>
         /// Used for debugging and identification purposes
         /// </summary>
@@ -20,7 +20,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// <summary>
         /// Is this task enabled or not? Disabled tasks are excluded from the runtime
         /// </summary>
-        public bool Enabled { get; set; }
+        public virtual bool Enabled { get; set; }
         
         public virtual string IconPath { get; }
 
@@ -35,7 +35,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// </summary>
         public IBehaviorTree ParentTree { get; set; }
         
-        [SerializeField] public List<ITask> Children { get; set; } = new List<ITask>();
+        public virtual List<ITask> Children { get; set; } = new List<ITask>();
 
         /// <summary>
         /// Last status returned by Update

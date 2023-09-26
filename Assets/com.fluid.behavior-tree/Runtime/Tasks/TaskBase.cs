@@ -10,6 +10,9 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         private int _lastTickCount;
         private bool _active;
 
+        public override bool Enabled { get; set; } = true;
+        public override List<ITask> Children { get; set; } = null;
+
         public override TaskStatus Update () {
             base.Update();
             UpdateTicks();
