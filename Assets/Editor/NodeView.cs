@@ -14,7 +14,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     public NodeView(ITask node)
     {
         this.node = node;
-        this.title = node.Name;
+        this.title = node.name;
         this.viewDataKey = node.guid;
 
         style.left = node.position.x;

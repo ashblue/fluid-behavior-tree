@@ -8,7 +8,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
         private int _lastTickCount;
 
         public override bool Enabled { get; set; } = true;
-        public override List<ITask> Children { set; get; } = new List<ITask>();
+        // public override List<ITask> Children { set; get; } = new List<ITask>();
 
         protected virtual int MaxChildren { get; } = -1;
 

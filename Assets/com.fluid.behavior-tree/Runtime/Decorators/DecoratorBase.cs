@@ -7,7 +7,6 @@ using UnityEngine;
 namespace CleverCrow.Fluid.BTs.Decorators {
     public abstract class DecoratorBase : ITaskParent {
         public override bool Enabled { get; set; } = true;
-        public override List<ITask> Children { get; set; } = new List<ITask>();
 
         public ITask Child => Children.Count > 0 ? Children[0] : null;
 
