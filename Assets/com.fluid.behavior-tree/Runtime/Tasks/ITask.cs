@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
@@ -61,6 +61,6 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// Reset this task back to its initial state to run again. Triggered after the behavior
         /// tree finishes with a task status other than continue.
         /// </summary>
-        public virtual void Reset () {}
+        public virtual void ResetTask () {}
     }
 }

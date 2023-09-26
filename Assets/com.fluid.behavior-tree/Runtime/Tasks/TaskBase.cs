@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
 
@@ -48,7 +48,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
             }
 
             if (_lastTickCount != ParentTree.TickCount) {
-                Reset();
+                ResetTask();
             }
 
             _lastTickCount = ParentTree.TickCount;
@@ -57,7 +57,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// <summary>
         /// Reset the node to be re-used
         /// </summary>
-        public override void Reset () {
+        public override void ResetTask () {
             _active = false;
             _start = false;
             _exit = false;
@@ -95,8 +95,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
             if (_exit) {
                 OnExit();
             }
-
-            Reset();
+            ResetTask();
         }
 
         /// <summary>

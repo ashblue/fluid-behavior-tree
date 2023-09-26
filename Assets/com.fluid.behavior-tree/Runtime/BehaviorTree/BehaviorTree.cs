@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace CleverCrow.Fluid.BTs.Trees {
     [CreateAssetMenu(menuName = "ScriptableObjects/BehaviorTree")]
     [System.Serializable]
     public class BehaviorTree : IBehaviorTree {
-        private readonly GameObject _owner;
+        private GameObject _owner;
         [SerializeField] public List<ITask> _tasks = new List<ITask>();
         [SerializeField] public List<ITask> allNodes = new List<ITask>();
 
@@ -35,8 +35,10 @@ namespace CleverCrow.Fluid.BTs.Trees {
             Root = CreateNode(typeof(TaskRoot)) as TaskRoot;
         }
 
-        public BehaviorTree (GameObject owner) {
+        public void SetOwner(GameObject owner) {
+            //AssetDatabase.CreateAsset(this, AssetDatabase.GetAssetP);
             _owner = owner;
+            CreateRootNode();
             SyncNodes(Root);
         }
 
@@ -52,8 +54,8 @@ namespace CleverCrow.Fluid.BTs.Trees {
 
                 allNodes.Add(node);
 
-                AssetDatabase.AddObjectToAsset(node, this);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.AddObjectToAsset(node, this);
+                //AssetDatabase.SaveAssets();
 
                 return node;
             }
@@ -66,8 +68,8 @@ namespace CleverCrow.Fluid.BTs.Trees {
 
                 allNodes.Add(node);
 
-                AssetDatabase.AddObjectToAsset(node, this);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.AddObjectToAsset(node, this);
+                //AssetDatabase.SaveAssets();
 
                 return node;
             }
@@ -80,8 +82,8 @@ namespace CleverCrow.Fluid.BTs.Trees {
 
                 allNodes.Add(node);
 
-                AssetDatabase.AddObjectToAsset(node, this);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.AddObjectToAsset(node, this);
+                //AssetDatabase.SaveAssets();
 
                 return node;
             }
@@ -94,8 +96,8 @@ namespace CleverCrow.Fluid.BTs.Trees {
 
                 allNodes.Add(node);
 
-                AssetDatabase.AddObjectToAsset(node, this);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.AddObjectToAsset(node, this);
+                //AssetDatabase.SaveAssets();
 
                 return node;
             }
@@ -112,18 +114,18 @@ namespace CleverCrow.Fluid.BTs.Trees {
 
             if (node is TaskBase)
             {
-                AssetDatabase.RemoveObjectFromAsset(node as TaskBase);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.RemoveObjectFromAsset(node as TaskBase);
+                //AssetDatabase.SaveAssets();
             }
             else if (node is TaskParentBase)
             {
-                AssetDatabase.RemoveObjectFromAsset(node as TaskParentBase);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.RemoveObjectFromAsset(node as TaskParentBase);
+                //AssetDatabase.SaveAssets();
             }
             else // if (node is Decorators.DecoratorBase)
             {
-                AssetDatabase.RemoveObjectFromAsset(node as Decorators.DecoratorBase);
-                AssetDatabase.SaveAssets();
+                //AssetDatabase.RemoveObjectFromAsset(node as Decorators.DecoratorBase);
+                //AssetDatabase.SaveAssets();
             }
         }
 
@@ -140,17 +142,16 @@ namespace CleverCrow.Fluid.BTs.Trees {
         public TaskStatus Tick () {
             var status = Root.Update();
             if (status != TaskStatus.Continue) {
-                Reset();
+                ResetTree();
             }
 
             return status;
         }
 
-        public void Reset () {
+        public void ResetTree () {
             foreach (var task in _tasks) {
                 task.End();
             }
-
             _tasks.Clear();
             TickCount++;
         }

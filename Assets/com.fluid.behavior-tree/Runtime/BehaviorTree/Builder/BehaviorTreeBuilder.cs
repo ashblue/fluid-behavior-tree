@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Decorators;
 using CleverCrow.Fluid.BTs.TaskParents;
@@ -20,7 +20,8 @@ namespace CleverCrow.Fluid.BTs.Trees {
         }
 
         public BehaviorTreeBuilder (GameObject owner) {
-            _tree = new BehaviorTree(owner);
+            _tree = ScriptableObject.CreateInstance<BehaviorTree>();
+            _tree.SetOwner(owner);
             _pointers.Add(_tree.Root);
         }
 

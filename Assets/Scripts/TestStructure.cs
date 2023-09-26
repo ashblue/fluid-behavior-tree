@@ -24,8 +24,8 @@ public class TestStructure : ScriptableObject
 
         nodes.Add(node);
 
-        AssetDatabase.AddObjectToAsset(node, this);
-        AssetDatabase.SaveAssets();
+        //AssetDatabase.AddObjectToAsset(node, this);
+        //AssetDatabase.SaveAssets();
 
         return node;
     }
@@ -33,8 +33,8 @@ public class TestStructure : ScriptableObject
     public void DeleteNode(TestStructure node)
     {
         nodes.Remove(node);
-        AssetDatabase.RemoveObjectFromAsset(node);
-        AssetDatabase.SaveAssets();
+        //AssetDatabase.RemoveObjectFromAsset(node);
+        //AssetDatabase.SaveAssets();
     }
 
     public void AddChild(TestStructure parent, TestStructure child)

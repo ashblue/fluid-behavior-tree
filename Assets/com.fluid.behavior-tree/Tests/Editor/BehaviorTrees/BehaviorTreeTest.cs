@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
@@ -15,7 +15,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
         [SetUp]
         public void BeforeEach () {
             _gameObject = new GameObject("BT");
-            _tree = new BehaviorTree(_gameObject);
+            _tree = ScriptableObject.CreateInstance<BehaviorTree>();
+            _tree.SetOwner(_gameObject);
         }
 
         [TearDown]
@@ -37,7 +38,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
             [SetUp]
             public void SetupTreeAlt () {
                 _owner = new GameObject("BT");
-                _treeAlt = new BehaviorTree(_owner);
+                _treeAlt = ScriptableObject.CreateInstance<BehaviorTree>();
+                _treeAlt.SetOwner(_owner);
             }
 
             [TearDown]
@@ -119,7 +121,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
         public class ResetMethod : BehaviorTreeTest {
             [Test]
             public void It_should_increase_the_tick_count () {
-                _tree.Reset();
+                _tree.ResetTree();
                 
                 Assert.AreEqual(1, _tree.TickCount);
             }
@@ -129,7 +131,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 var task = A.TaskStub().Build();
                 
                 _tree.AddActiveTask(task);
-                _tree.Reset();
+                _tree.ResetTree();
                 
                 task.Received(1).End();
             }
@@ -139,8 +141,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                 var task = A.TaskStub().Build();
                 
                 _tree.AddActiveTask(task);
-                _tree.Reset();
-                _tree.Reset();
+                _tree.ResetTree();
+                _tree.ResetTree();
 
                 task.Received(1).End();
             }
@@ -175,7 +177,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     _tree.Tick();
                     _tree.Tick();
 
-                    _action.Received(0).Reset();
+                    _action.Received(0).ResetTask();
                 }
                 
                 [Test]
@@ -236,8 +238,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Testing {
                     
                     _tree.Tick();
                     _tree.Tick();
-                    
-                    _actionAlt.Received(0).Reset();
+
+                    _actionAlt.Received(0).ResetTask();
                 }
             }
         }

@@ -1,8 +1,9 @@
-﻿using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using NSubstitute;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Testing {
     public class TaskParentTest {
@@ -10,7 +11,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
         [SetUp]
         public void SetTaskParent () {
-            taskParent = new TaskParentExample();
+            taskParent = ScriptableObject.CreateInstance<TaskParentExample>();
         }
 
         public class TaskParentExample : TaskParentBase {
@@ -24,7 +25,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 return status;
             }
 
-            public override void Reset () {
+            public override void ResetTask () {
                 resetCount += 1;
             }
         }
@@ -84,15 +85,15 @@ namespace CleverCrow.Fluid.BTs.Testing {
         public class AddChildMethod : TaskParentTest {
             [Test]
             public void Adds_a_child () {
-                taskParent.AddChild(new TaskExample());
+                taskParent.AddChild(ScriptableObject.CreateInstance<TaskExample>());
 
                 Assert.AreEqual(1, taskParent.Children.Count);
             }
 
             [Test]
             public void Adds_two_children () {
-                taskParent.AddChild(new TaskExample());
-                taskParent.AddChild(new TaskExample());
+                taskParent.AddChild(ScriptableObject.CreateInstance<TaskExample>());
+                taskParent.AddChild(ScriptableObject.CreateInstance<TaskExample>());
 
                 Assert.AreEqual(2, taskParent.Children.Count);
             }
@@ -101,8 +102,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             public void Ignores_overflowing_children () {
                 taskParent.childCount = 1;
 
-                taskParent.AddChild(new TaskExample());
-                taskParent.AddChild(new TaskExample());
+                taskParent.AddChild(ScriptableObject.CreateInstance<TaskExample>());
+                taskParent.AddChild(ScriptableObject.CreateInstance<TaskExample>());
 
                 Assert.AreEqual(1, taskParent.Children.Count);
             }

@@ -138,7 +138,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                     .AddChild(A.TaskStub().Build());
 
                 parallel.Update();
-                parallel.Reset();
+                parallel.ResetTask();
                 parallel.Update();
 
                 parallel.Children.ForEach((child) => child.Received(2).Update());
@@ -150,7 +150,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                     .AddChild(A.TaskStub().Build())
                     .AddChild(A.TaskStub().Build());
 
-                parallel.Reset();
+                parallel.ResetTask();
 
                 parallel.Children.ForEach((child) => child.Received(0).End());
             }

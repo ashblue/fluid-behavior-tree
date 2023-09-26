@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
@@ -19,7 +19,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             var status = OnUpdate();
             LastStatus = status;
             if (status != TaskStatus.Continue) {
-                Reset();
+                ResetTask();
             }
 
             return status;
@@ -31,7 +31,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             }
 
             if (_lastTickCount != ParentTree.TickCount) {
-                Reset();
+                ResetTask();
             }
 
             _lastTickCount = ParentTree.TickCount;
@@ -45,7 +45,7 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
             return TaskStatus.Success;
         }
 
-        public override void Reset () {
+        public override void ResetTask () {
         }
 
         public override ITaskParent AddChild (ITask child) {

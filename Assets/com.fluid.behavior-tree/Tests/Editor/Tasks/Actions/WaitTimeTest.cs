@@ -31,7 +31,7 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions.Editors.Tests {
 
                 timeMonitor.DeltaTime.Returns(2);
                 waitTime.Update();
-                waitTime.Reset();
+                waitTime.ResetTask();
                 timeMonitor.DeltaTime.Returns(0);
                 
                 Assert.AreEqual(TaskStatus.Continue, waitTime.Update());

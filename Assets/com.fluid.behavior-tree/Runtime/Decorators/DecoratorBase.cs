@@ -32,7 +32,7 @@ namespace CleverCrow.Fluid.BTs.Decorators {
             Child.End();
         }
 
-        public override void Reset () {
+        public override void ResetTask () {
         }
 
         public override ITaskParent AddChild (ITask child) {
