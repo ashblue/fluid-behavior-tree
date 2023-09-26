@@ -76,13 +76,17 @@ public class VisualFluidBTView : GraphView
 
         tree.allNodes.ForEach(n => {
             var children = tree.GetChildren(n);
-            children.ForEach(c => {
-                NodeView parentView = FindNodeView(n);
-                NodeView childView = FindNodeView(c);
 
-                Edge edge = parentView.outputPort.ConnectTo(childView.inputPort);
-                AddElement(edge);
-            });
+            if (children != null)
+            {
+                children.ForEach(c => {
+                    NodeView parentView = FindNodeView(n);
+                    NodeView childView = FindNodeView(c);
+
+                    Edge edge = parentView.outputPort.ConnectTo(childView.inputPort);
+                    AddElement(edge);
+                });
+            }
         });
     }
 
