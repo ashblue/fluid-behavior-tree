@@ -9,7 +9,7 @@
                 <InspectorView style="background-color: rgba(0, 0, 0, 0);" />
                 <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(188, 188, 188);" />
                 <uie:ToolbarSearchField focusable="true" />
-                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                <ui:Button text="Save" parse-escape-sequences="true" display-tooltip-when-elided="true" />
             </ui:VisualElement>
             <ui:VisualElement name="RightPanel" style="flex-grow: 1; background-color: rgb(47, 47, 47);">
                 <ui:Label tabindex="-1" text="Tree View" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(168, 168, 168); background-color: rgb(47, 47, 47);" />

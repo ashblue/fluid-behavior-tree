@@ -33,6 +33,25 @@ public class VisualFluidBT : EditorWindow
         inspectorView =  root.Q<InspectorView>();
 
         OnSelectionChange();
+        SetupButtonHandler();
+    }
+
+    void SetupButtonHandler()
+    {
+        VisualElement root = rootVisualElement;
+
+        var buttons = root.Query<Button>();
+        buttons.ForEach(RegisterHandler);
+    }
+
+    void RegisterHandler(Button button)
+    {
+        button.RegisterCallback<ClickEvent>(SaveTree);
+    }
+
+    void SaveTree(ClickEvent evt)
+    {
+        visualFuildBTView.SaveTree();
     }
 
     private void OnSelectionChange()
@@ -42,7 +61,6 @@ public class VisualFluidBT : EditorWindow
         if (tree)
         {
             visualFuildBTView.PopulateView(tree);
-            tree.CreateRootNode();
         }
     }
 }

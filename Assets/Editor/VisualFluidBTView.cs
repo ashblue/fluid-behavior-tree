@@ -8,6 +8,7 @@ using System.Linq;
 using CleverCrow.Fluid.BTs.Trees;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
+using CleverCrow.Fluid.BTs.TaskParents;
 
 public class VisualFluidBTView : GraphView
 {
@@ -41,6 +42,8 @@ public class VisualFluidBTView : GraphView
         {
             evt.menu.AppendAction($"{type.BaseType.Name} {type.Name}", (a) => CreateNode(type));
         }
+
+        evt.menu.AppendAction("Root Node", (a) => tree.CreateRootNode());
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -121,5 +124,10 @@ public class VisualFluidBTView : GraphView
     {
         NodeView nodeView = new NodeView(node);
         AddElement(nodeView);
+    }
+
+    public void SaveTree()
+    {
+        tree.SaveTree();
     }
 }
