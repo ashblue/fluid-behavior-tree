@@ -9,8 +9,8 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// </summary>
         public virtual string Name { get; set; }
 
-        public Vector2 position = new Vector2(0.0f, 0.0f);
-        public string guid;
+        [SerializeField] public Vector2 position = new Vector2(0.0f, 0.0f);
+        [SerializeField] public string guid;
 
         public void SetPosition(Vector2 pos)
         {
@@ -34,8 +34,9 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         /// Tree this node belongs to
         /// </summary>
         public IBehaviorTree ParentTree { get; set; }
-        
-        public virtual List<ITask> Children { get; set; } = new List<ITask>();
+
+        [SerializeField] private List<ITask> _Children = new List<ITask>();
+        public virtual List<ITask> Children { get => _Children; }
 
         /// <summary>
         /// Last status returned by Update

@@ -11,7 +11,7 @@ namespace CleverCrow.Fluid.BTs.Tasks {
         private bool _active;
 
         public override bool Enabled { get; set; } = true;
-        public override List<ITask> Children { get; set; } = null;
+        public override List<ITask> Children { get; } = null;
 
         public override TaskStatus Update () {
             base.Update();
