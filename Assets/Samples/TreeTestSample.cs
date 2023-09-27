@@ -17,6 +17,9 @@ namespace CleverCrow.Fluid.BTs.Samples {
         private BehaviorTree _treeC;
 
         [SerializeField]
+        private BehaviorTree _treeD;
+
+        [SerializeField]
         private bool _condition = false;
 
         private void Awake () {
@@ -58,6 +61,16 @@ namespace CleverCrow.Fluid.BTs.Samples {
                     .Do("Continue", () => _condition ? TaskStatus.Continue : TaskStatus.Success)
                 .End()
                 .Build();
+
+            _treeD = new BehaviorTreeBuilder(gameObject)
+                .Sequence()
+                    .TrueSelectorRandom()
+                        .Do("Action A", () => TaskStatus.Success)
+                        .Do("Action B", () => TaskStatus.Success)
+                    .End()
+                    .WaitTime(2.0f)
+                .End()
+                .Build();
         }
 
         private void Update () {
@@ -65,6 +78,7 @@ namespace CleverCrow.Fluid.BTs.Samples {
             _treeA.Tick();
             _treeB.Tick();
             _treeC.Tick();
+            _treeD.Tick();
         }
     }
 }

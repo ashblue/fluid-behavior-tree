@@ -101,6 +101,11 @@ namespace CleverCrow.Fluid.BTs.Trees {
         public BehaviorTreeBuilder SelectorRandom (string name = "selector random") {
             return ParentTask<SelectorRandom>(name);
         }
+
+        public BehaviorTreeBuilder TrueSelectorRandom (string name = "true selector random")
+        {
+            return ParentTask<TrueSelectorRandom>(name);
+        }
         
         public BehaviorTreeBuilder Parallel (string name = "parallel") {
             return ParentTask<Parallel>(name);
