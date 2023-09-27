@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
@@ -44,10 +44,10 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
             return TaskStatus.Continue;
         }
 
-        public override void Reset () {
+        public override void ResetTask () {
             _childStatus.Clear();
 
-            base.Reset();
+            base.ResetTask();
         }
 
         public override void End () {

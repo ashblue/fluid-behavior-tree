@@ -1,4 +1,6 @@
-﻿namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
+using UnityEngine;
+
+namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public abstract class CompositeBase : TaskParentBase {
         public int ChildIndex { get; protected set; }
 
@@ -8,10 +10,9 @@
             }
         }
         
-        public override void Reset () {
+        public override void ResetTask () {
             ChildIndex = 0;
-
-            base.Reset();
+            base.ResetTask();
         }
     }
 }

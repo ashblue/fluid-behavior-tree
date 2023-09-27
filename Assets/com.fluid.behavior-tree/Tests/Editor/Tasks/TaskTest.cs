@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using CleverCrow.Fluid.BTs.Trees;
 using NSubstitute;
@@ -69,7 +69,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                     _node.ParentTree = tree;
 
                     _node.Update();
-                    _node.Reset();
+                    _node.ResetTask();
                     _node.Update();
 
                     tree.Received(2).AddActiveTask(_node);
@@ -116,7 +116,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                 [Test]
                 public void Retriggers_start_if_tick_count_changes () {
-                    var tree = new BehaviorTree(_go);
+                    var tree = ScriptableObject.CreateInstance<BehaviorTree>();
+                    tree.SetOwner(_go);
                     tree.AddNode(tree.Root, _node);
 
                     tree.Tick();
@@ -129,7 +130,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 public void Does_not_retrigger_start_if_tick_count_stays_the_same () {
                     _node.status = TaskStatus.Continue;
 
-                    var tree = new BehaviorTree(_go);
+                    var tree = ScriptableObject.CreateInstance<BehaviorTree>();
+                    tree.SetOwner(_go);
                     tree.AddNode(tree.Root, _node);
 
                     tree.Tick();
@@ -152,7 +154,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                     _node.status = TaskStatus.Continue;
 
                     _node.Update();
-                    _node.Reset();
+                    _node.ResetTask();
                     _node.Update();
 
                     Assert.AreEqual(2, _node.StartCount);
@@ -179,7 +181,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
 
                 [Test]
                 public void Does_not_trigger_on_reset () {
-                    _node.Reset();
+                    _node.ResetTask();
                     _node.Update();
 
                     Assert.AreEqual(1, _node.InitCount);
@@ -263,7 +265,7 @@ namespace CleverCrow.Fluid.BTs.Testing {
                 task.status = TaskStatus.Continue;
 
                 task.Update();
-                task.Reset();
+                task.ResetTask();
                 task.End();
 
                 Assert.AreEqual(0, task.ExitCount);

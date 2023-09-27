@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 using NSubstitute;
@@ -72,14 +72,15 @@ namespace CleverCrow.Fluid.BTs.Testing {
             public void Resets_child_node_pointer () {
                 _composite.SetChildIndex(2);
                 
-                _composite.Reset();
+                _composite.ResetTask();
 
                 Assert.AreEqual(0, _composite.ChildIndex);
             }
 
             [Test]
             public void Resets_pointer_if_tick_count_changes () {
-                var tree = new BehaviorTree(_go);
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
+                tree.SetOwner(_go);
                 tree.AddNode(tree.Root, _composite);
                 tree.AddNode(_composite, Substitute.For<ITask>());
                     
@@ -93,7 +94,8 @@ namespace CleverCrow.Fluid.BTs.Testing {
             [Test]
             public void Does_not_reset_pointer_if_tick_count_does_not_change () {
                 var task = Substitute.For<ITask>();
-                var tree = new BehaviorTree(_go);
+                var tree = ScriptableObject.CreateInstance<BehaviorTree>();
+                tree.SetOwner(_go);
                 tree.AddNode(tree.Root, _composite);
                 tree.AddNode(_composite, task);
                 _composite.status = TaskStatus.Continue;

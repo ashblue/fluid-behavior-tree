@@ -1,5 +1,6 @@
-﻿using CleverCrow.Fluid.BTs.Trees;
+using CleverCrow.Fluid.BTs.Trees;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Tasks.Actions.Testing {
     public class WaitTest {
@@ -31,7 +32,9 @@ namespace CleverCrow.Fluid.BTs.Tasks.Actions.Testing {
 
         [Test]
         public void It_should_trigger_continue_after_tree_restarts () {
-            var tree = new BehaviorTree(null);
+            var tree = ScriptableObject.CreateInstance<BehaviorTree>();
+            tree.SetOwner(null);
+
             tree.AddNode(tree.Root, new Wait());
 
             Assert.AreEqual(TaskStatus.Continue, tree.Tick());
