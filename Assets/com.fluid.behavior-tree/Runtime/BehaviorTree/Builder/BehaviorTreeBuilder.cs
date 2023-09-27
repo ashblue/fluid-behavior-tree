@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Decorators;
 using CleverCrow.Fluid.BTs.TaskParents;
@@ -99,6 +99,11 @@ namespace CleverCrow.Fluid.BTs.Trees {
         /// <returns></returns>
         public BehaviorTreeBuilder SelectorRandom (string name = "selector random") {
             return ParentTask<SelectorRandom>(name);
+        }
+
+        public BehaviorTreeBuilder TrueSelectorRandom (string name = "true selector random")
+        {
+            return ParentTask<TrueSelectorRandom>(name);
         }
         
         public BehaviorTreeBuilder Parallel (string name = "parallel") {
