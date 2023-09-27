@@ -42,10 +42,9 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites
             return TaskStatus.Failure;
         }
 
-        public override void Reset()
-        {
-            base.Reset();
-
+        public override void ResetTask () {
+            base.ResetTask();
+                        
             ShuffleChildren();
         }
 
