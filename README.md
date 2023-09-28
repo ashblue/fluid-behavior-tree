@@ -710,7 +710,27 @@ npm run commit
 Please see the [Contributing Guidelines](CONTRIBUTING.md) document for more info.
 
 ## Contributor Credits
+### Visual BT
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Andregnl"><img src="https://avatars.githubusercontent.com/u/90276375?v=4" width="100px;" alt="André Gustavo Nakagomi Lopez"/><br /><sub><b>André Gustavo Nakagomi Lopez</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=andregnl" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/gabrielsrd"><img src="https://avatars.githubusercontent.com/u/55808341?v=4" width="100px;" alt="Gabriel da Silva Alves"/><br /><sub><b>Gabriel da Silva Alves</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=gabrielsrd" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JohnnyLima67"><img src="https://avatars.githubusercontent.com/u/64144848?v=4" width="100px;" alt="Johnny da Silva Lima"/><br /><sub><b>Johnny da Silva Lima</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=JohnnyLima67" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Lincoln-Yuji"><img src="https://avatars.githubusercontent.com/u/63720047?v=4" width="100px;" alt="Lincoln Yuji de Oliveira"/><br /><sub><b>Lincoln Yuji de Oliveira</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=Lincoln-Yuji" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/mateusfreire1"><img src="https://avatars.githubusercontent.com/u/85056792?v=4" width="100px;" alt="Mateus Santos Freire"/><br /><sub><b>Mateus Santos Freire</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=mateusfreire1" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/MuriloAndre2000"><img src="https://avatars.githubusercontent.com/u/40254653?v=4" width="100px;" alt="Murilo André Gomes Felipe"/><br /><sub><b>Murilo André Gomes Felipe</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=MuriloAndre2000" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rvbatt"><img src="https://avatars.githubusercontent.com/u/62215634?v=4" width="100px;" alt="Rodrigo Volpe Battistin"/><br /><sub><b>Rodrigo Volpe Battistin</b></sub></a><br /><a href="https://github.com/IpeBT/fluid-behavior-tree-visual/commits?author=rvbatt" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
 
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+### Fluid BT
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
