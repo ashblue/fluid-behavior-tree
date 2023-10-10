@@ -1,22 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4863579342711430606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2f7e7cff54b5dab282922ff20297669, type: 3}
-  m_Name: DebugLogNode
-  m_EditorClassIdentifier: 
-  position: {x: -184.92001, y: 0}
-  guid: 7c2211e37dd92783f8441e5fe95eb0d9
-  _Children: []
-  LastStatus: 0
---- !u!114 &-1054054927485361171
+--- !u!114 &-8369424519437331371
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28,10 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fb286ffcf94e088a94f160119e5d52, type: 3}
   m_Name: TaskRoot
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
-  guid: ef46b75cea2023df3a0c82b01415d404
+  position: {x: 46.839996, y: 110.32}
+  guid: ab10646cfe4e306d8b68ac84e7254429
   _Children:
-  - {fileID: -4863579342711430606}
+  - {fileID: -1659396939612907476}
+  LastStatus: 0
+--- !u!114 &-1659396939612907476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2f7e7cff54b5dab282922ff20297669, type: 3}
+  m_Name: DebugLogNode
+  m_EditorClassIdentifier: 
+  position: {x: 273.52, y: 110.000015}
+  guid: 2acca781a92e30c5b92559d7a18af4a2
+  _Children: []
   LastStatus: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -43,10 +43,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02e09d50cf948054d824c8ceee70cac6, type: 3}
-  m_Name: test3
+  m_Name: test1
   m_EditorClassIdentifier: 
   _tasks: []
   allNodes:
-  - {fileID: -1054054927485361171}
-  - {fileID: -4863579342711430606}
+  - {fileID: -8369424519437331371}
+  - {fileID: -1659396939612907476}
   nodesToSave: []
