@@ -7,7 +7,9 @@ using UnityEditor;
 namespace CleverCrow.Fluid.BTs.Trees {
     public abstract class IBehaviorTree : ScriptableObject {
         public string Name { get; set; }
-        public virtual TaskRoot Root { get; set; }
+
+        [SerializeField] private TaskRoot _Root;
+        public virtual TaskRoot Root { get => _Root;  set => _Root = value; }
         public int TickCount { get; set; }
         
         public abstract void AddActiveTask (ITask task);

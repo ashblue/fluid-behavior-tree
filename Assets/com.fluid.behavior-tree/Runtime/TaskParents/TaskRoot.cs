@@ -1,6 +1,7 @@
 ﻿using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents {
+    [System.Serializable]
     public class TaskRoot : TaskParentBase {
         public override string Name { get; set; } = "Root";
         protected override int MaxChildren { get; } = 1;
