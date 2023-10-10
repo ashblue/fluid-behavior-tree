@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnablePreReleasePackages: 0
-  m_EnablePackageDependencies: 0
   m_AdvancedSettingsExpanded: 1
   m_ScopedRegistriesSettingsExpanded: 1
   m_SeeAllPackageVersions: 0
+  m_DismissPreviewPackagesInUse: 0
   oneTimeWarningShown: 0
   m_Registries:
   - m_Id: main
@@ -25,29 +25,20 @@ MonoBehaviour:
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
-  - m_Id: scoped:NPM
+    m_ConfigSource: 0
+  - m_Id: scoped:project:NPM
     m_Name: NPM
     m_Url: https://registry.npmjs.org
     m_Scopes:
     - clever-crow
     m_IsDefault: 0
     m_Capabilities: 0
-  m_UserSelectedRegistryName: 
+    m_ConfigSource: 4
+  m_UserSelectedRegistryName: NPM
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
-    m_ErrorMessage: 
-    m_Original:
-      m_Id: scoped:NPM
-      m_Name: NPM
-      m_Url: https://registry.npmjs.org
-      m_Scopes:
-      - clever-crow
-      m_IsDefault: 0
-      m_Capabilities: 0
     m_Modified: 0
-    m_Name: NPM
-    m_Url: https://registry.npmjs.org
-    m_Scopes:
-    - clever-crow
-    m_SelectedScopeIndex: 0
+    m_ErrorMessage: 
+    m_UserModificationsInstanceId: -834
+    m_OriginalInstanceId: -838
   m_LoadAssets: 0
