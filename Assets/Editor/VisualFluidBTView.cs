@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ using CleverCrow.Fluid.BTs.Trees;
 using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using CleverCrow.Fluid.BTs.TaskParents;
+using CleverCrow.Fluid.BTs.TaskParents.Composites;
 
 public class VisualFluidBTView : GraphView
 {
@@ -36,14 +38,18 @@ public class VisualFluidBTView : GraphView
         // var type = typeof(TestStructure);
         // evt.menu.AppendAction("Create node", (a) => CreateNode(type));
 
-        var types = TypeCache.GetTypesDerivedFrom<ActionBase>();
+        AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<ActionBase>().ToList());
+        AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<CompositeBase>().ToList());
 
+        evt.menu.AppendAction("Root Node", (a) => { tree.CreateRootNode(); PopulateView(tree); });
+    }
+
+    private void AddTypesToMenu(ContextualMenuPopulateEvent evt, List<Type> types)
+    {
         foreach (var type in types)
         {
             evt.menu.AppendAction($"{type.BaseType.Name} {type.Name}", (a) => CreateNode(type));
         }
-
-        evt.menu.AppendAction("Root Node", (a) => { tree.CreateRootNode(); PopulateView(tree); });
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)

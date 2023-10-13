@@ -17,7 +17,26 @@ MonoBehaviour:
   allNodes:
   - {fileID: 8648247992410989263}
   - {fileID: 5269720137847692117}
+  - {fileID: 7660639143530429562}
+  - {fileID: 2599138244310678246}
   nodesToSave: []
+--- !u!114 &2599138244310678246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c284d3cab8841379f4a02abee439d6f, type: 3}
+  m_Name: WaitTime
+  m_EditorClassIdentifier: 
+  position: {x: 382.7844, y: 194.4075}
+  guid: ae26efd8b88d7334dbf9538712d8b363
+  _Children: []
+  LastStatus: 0
+  time: 0
 --- !u!114 &5269720137847692117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30,9 +49,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f7e7cff54b5dab282922ff20297669, type: 3}
   m_Name: DebugLogNode
   m_EditorClassIdentifier: 
-  position: {x: 256.96, y: 120}
+  position: {x: 374.6775, y: 47.2625}
   guid: 1c0dba49924b5cc729b50476e56984ce
   _Children: []
+  LastStatus: 0
+--- !u!114 &7660639143530429562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 887f54327b8d14ed5a7cd909fb8bb077, type: 3}
+  m_Name: Sequence
+  m_EditorClassIdentifier: 
+  position: {x: 223, y: 121}
+  guid: cd15e317732d67f43b0abc45cf409f61
+  _Children:
+  - {fileID: 5269720137847692117}
+  - {fileID: 2599138244310678246}
   LastStatus: 0
 --- !u!114 &8648247992410989263
 MonoBehaviour:
@@ -49,5 +86,5 @@ MonoBehaviour:
   position: {x: 69.119995, y: 119.68}
   guid: f0b7a297c73e94c88ba2da2399af0e36
   _Children:
-  - {fileID: 5269720137847692117}
+  - {fileID: 7660639143530429562}
   LastStatus: 0
