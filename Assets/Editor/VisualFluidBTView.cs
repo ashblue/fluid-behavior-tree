@@ -11,6 +11,7 @@ using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Tasks.Actions;
 using CleverCrow.Fluid.BTs.TaskParents;
 using CleverCrow.Fluid.BTs.TaskParents.Composites;
+using CleverCrow.Fluid.BTs.Decorators;
 
 public class VisualFluidBTView : GraphView
 {
@@ -40,6 +41,7 @@ public class VisualFluidBTView : GraphView
 
         AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<ActionBase>().ToList());
         AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<CompositeBase>().ToList());
+        AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<DecoratorBase>().ToList());
 
         evt.menu.AppendAction("Root Node", (a) => { tree.CreateRootNode(); PopulateView(tree); });
     }
