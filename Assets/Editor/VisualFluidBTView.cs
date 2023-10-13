@@ -42,6 +42,7 @@ public class VisualFluidBTView : GraphView
         AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<ActionBase>().ToList());
         AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<CompositeBase>().ToList());
         AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<DecoratorBase>().ToList());
+        AddTypesToMenu(evt, TypeCache.GetTypesDerivedFrom<ConditionBase>().ToList());
 
         evt.menu.AppendAction("Root Node", (a) => { tree.CreateRootNode(); PopulateView(tree); });
     }
