@@ -158,6 +158,7 @@ with units who attempt to capture the flag while grabbing power ups to try and g
     + [Custom Conditions](#custom-conditions)
     + [Custom Composites](#custom-composites)
     + [Custom Decorators](#custom-decorators)
+  * [Formatting Issues](#formatting-issues)
   * [Nightly Builds](#nightly-builds)
   * [Development Environment](#development-environment)
     + [Submitting your own actions, conditions, ect](#making-commits)
@@ -673,6 +674,25 @@ public static class BehaviorTreeBuilderExtensions {
         return builder.ParentTask<CustomInverter>(name);
     }
 }
+```
+
+## Formatting Issues
+
+If you are using an auto formatter it will probably mangle your code formatting with the builder syntax. To avoid this you can turn off formatting like so in JetBrains Rider. If you need a specific IDE, it shouldn't be too hard to google the specific formatting disable comment you need.
+
+```c#
+// @formatter:off
+_tree = new BehaviorTreeBuilder(gameObject)
+    .Sequence()
+        .Condition("Custom Condition", () => {
+            return true;
+        })
+        .Do("Custom Action", () => {
+            return TaskStatus.Success;
+        })
+    .End()
+    .Build();
+// @formatter:on
 ```
 
 ## Nightly Builds
