@@ -1,0 +1,27 @@
+{
+  "name": "com.fluid.behavior-tree",
+  "version": "0.0.0",
+  "displayName": "Fluid Behavior Tree",
+  "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
+  "unity": "2018.1",
+  "keywords": [
+    "ai",
+    "behavior tree",
+    "builder pattern"
+  ],
+  "author": {
+    "name": "Ash Blue",
+    "email": "ash@blueashes.com",
+    "url": "https://twitter.com/ashbluewd"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashblue/fluid-behavior-tree.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ashblue/fluid-behavior-tree/issues"
+  },
+  "homepage": "https://github.com/ashblue/fluid-behavior-tree#readme",
+  "dependencies": {}
+}
