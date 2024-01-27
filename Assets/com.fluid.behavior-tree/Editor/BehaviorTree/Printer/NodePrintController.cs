@@ -1,6 +1,7 @@
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
 using UnityEngine;
+using UnityEditor;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class NodePrintController {
@@ -14,8 +15,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private Texture2D _dividerGraphic;
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
-
-        private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
 
         public NodePrintController (VisualTask node) {
             _node = node;
@@ -40,25 +39,38 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             var prevBackgroundColor = GUI.backgroundColor;
             
             var rect = new Rect(
-                _box.GlobalPositionX + _box.PaddingX, 
+                _box.GlobalPositionX + _box.PaddingX,
                 _box.GlobalPositionY + _box.PaddingY,
-                _box.Width - _box.PaddingX, 
+                _box.Width - _box.PaddingX,
                 _box.Height - _box.PaddingY);
 
             if (_node.Task.HasBeenActive) {
                 GUI.backgroundColor = _faders.BackgroundFader.CurrentColor;
-                GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
+
+                if (EditorGUIUtility.isProSkin) {
+                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.darkModeBoxStyle));
+                }
+                else {
+                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.lightModeBoxStyle));
+                }
+
                 GUI.backgroundColor = prevBackgroundColor;
-                
                 PrintLastStatus(rect);
-            } else {
-                GUI.Box(rect, GUIContent.none, Styles.BoxInactive.Style);
             }
-            
+            else {
+                if (EditorGUIUtility.isProSkin) {
+                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.darkModeBoxStyle));
+                }
+                else {
+                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.lightModeBoxStyle));
+                }
+            }
+
             PrintIcon();
 
-            Styles.Title.normal.textColor = _faders.TextFader.CurrentColor;
-            GUI.Label(rect, _node.Task.Name, Styles.Title);
+            var textFormat = DisplaySettings.taskFontFormat;
+            textFormat.normal.textColor = _faders.TextFader.CurrentColor;
+            GUI.Label(rect, _node.Task.Name, textFormat);
         }
 
         private void PrintLastStatus (Rect rect) {

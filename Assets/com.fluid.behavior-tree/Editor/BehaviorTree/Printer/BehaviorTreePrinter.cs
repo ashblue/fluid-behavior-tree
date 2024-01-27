@@ -8,22 +8,20 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private readonly Rect _containerSize;
 
         private Vector2 _scrollPosition;
-        
+
         public static StatusIcons StatusIcons { get; private set; }
-        public static GuiStyleCollection SharedStyles { get; private set; }
 
 
         public BehaviorTreePrinter (IBehaviorTree tree, Vector2 windowSize) {
             StatusIcons = new StatusIcons();
-            SharedStyles = new GuiStyleCollection();
             
             var container = new GraphContainerVertical();
             container.SetGlobalPosition(SCROLL_PADDING, SCROLL_PADDING);
             _root = new VisualTask(tree.Root, container);
             container.CenterAlignChildren();
-            
-            _containerSize = new Rect(0, 0, 
-                container.Width + SCROLL_PADDING * 2, 
+
+            _containerSize = new Rect(0, 0,
+                container.Width + SCROLL_PADDING * 2,
                 container.Height + SCROLL_PADDING * 2);
 
             CenterScrollView(windowSize, container);
@@ -37,8 +35,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         public void Print (Vector2 windowSize) {
             _scrollPosition = GUI.BeginScrollView(
-                new Rect(0, 0, windowSize.x, windowSize.y), 
-                _scrollPosition, 
+                new Rect(0, 0, windowSize.x, windowSize.y),
+                _scrollPosition,
                 _containerSize);
             _root.Print();
             GUI.EndScrollView();
