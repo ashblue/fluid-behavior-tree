@@ -6,7 +6,7 @@
     "behavior tree",
     "builder pattern"
   ],
-  "oysterVersion": "2.1.0",
+  "oysterVersion": "3.0.2",
   "packageName": "com.fluid.behavior-tree",
   "packageScope": "com.fluid",
   "unityVersion": "2018.1",
