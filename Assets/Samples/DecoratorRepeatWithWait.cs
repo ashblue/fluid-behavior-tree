@@ -1,15 +1,15 @@
 ﻿using CleverCrow.Fluid.BTs.Tasks;
 using CleverCrow.Fluid.BTs.Trees;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace CleverCrow.Fluid.BTs.Samples {
     public class DecoratorRepeatWithWait : MonoBehaviour {
         [SerializeField]
         private BehaviorTree _tree;
 
+        [Tooltip("Setting to success will cause the task to succeed")]
         [SerializeField]
-        private bool _toggle;
+        private bool _isTaskSuccess;
 
         void Start () {
             _tree = new BehaviorTreeBuilder(gameObject)
@@ -17,24 +17,18 @@ namespace CleverCrow.Fluid.BTs.Samples {
                     .Parallel()
 
                         .Sequence()
-                            .Do(() => {
-                                _toggle = true;
-                                return TaskStatus.Success;
-                            })
+                            .Do(() => TaskStatus.Success)
                             .WaitTime()
-                            .Do(() => {
-                                _toggle = false;
-                                return TaskStatus.Success;
-                            })
+                            .Do(() => TaskStatus.Success)
                             .WaitTime()
                         .End()
 
-                        .Sequence()
+                        .Sequence("Repeat until success is checked")
                             .Do(() => TaskStatus.Success)
                             .RepeatUntilSuccess()
                                 .Sequence()
                                     .WaitTime()
-                                    .Do(() => Random.value > 0.5f ? TaskStatus.Success : TaskStatus.Failure)
+                                    .Do(() => _isTaskSuccess ? TaskStatus.Success : TaskStatus.Failure)
                                 .End()
                             .End()
                         .End()
