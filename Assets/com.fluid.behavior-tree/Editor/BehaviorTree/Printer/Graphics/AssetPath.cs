@@ -6,7 +6,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
     /// Determine if this is a package of the Unity Editor since Unity has no API to determine this
     /// </summary>
     public static class AssetPath {
-        private const string PATH_PROJECT = "Assets/FluidBehaviorTree";
+        private const string PATH_PROJECT = "Assets/com.fluid.behavior-tree";
         private const string PATH_PACKAGE = "Packages/com.fluid.behavior-tree";
         private const string PATH_PACKAGE2 = "Assets/com.fluid.behavior-tree";
 
