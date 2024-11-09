@@ -98,11 +98,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             }
 
             var position = new Rect(
-                _divider.GlobalPositionX + _box.PaddingY / 2 + _node.DividerLeftOffset - 2,
-                // @TODO Should not need to offset this
+                _divider.GlobalPositionX + _box.PaddingX / 2 + _node.DividerLeftOffset - 2,
                 _divider.GlobalPositionY + _box.PaddingY / 2,
                 _divider.Width + graphicSizeIncrease,
-                10);
+                // @NOTE I have no clue why 3 works here...
+                3);
 
             GUI.Label(position, _dividerGraphic);
         }
@@ -116,7 +116,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
                 _box.GlobalPositionY + _node.Height + _box.PaddingY - 1,
                 100,
-                _box.PaddingY - 1);
+                _box.PaddingY);
 
             GUI.Label(position, _verticalBottom);
         }
@@ -130,7 +130,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
                 _box.GlobalPositionY + _box.PaddingY / 2,
                 100,
-                10);
+                _box.PaddingY / 2);
 
             GUI.Label(position, _verticalTop);
         }
