@@ -1,7 +1,6 @@
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
 using UnityEngine;
-using UnityEditor;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
     public class NodePrintController {
@@ -16,19 +15,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private Texture2D _verticalBottom;
         private Texture2D _verticalTop;
 
+        private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
+
         public NodePrintController (VisualTask node) {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
             _iconMain = new TextureLoader(_node.Task.IconPath);
         }
-        
+
         public void Print (bool taskIsActive) {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
             _faders.Update(taskIsActive);
-            
+
             PaintBody();
-            
+
             if (_node.Children.Count > 0) {
                 PaintDivider();
                 PaintVerticalBottom();
@@ -37,7 +38,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private void PaintBody () {
             var prevBackgroundColor = GUI.backgroundColor;
-            
+
             var rect = new Rect(
                 _box.GlobalPositionX + _box.PaddingX,
                 _box.GlobalPositionY + _box.PaddingY,
@@ -46,31 +47,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             if (_node.Task.HasBeenActive) {
                 GUI.backgroundColor = _faders.BackgroundFader.CurrentColor;
-
-                if (EditorGUIUtility.isProSkin) {
-                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.darkModeBoxStyle));
-                }
-                else {
-                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.lightModeBoxStyle));
-                }
-
+                GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
                 GUI.backgroundColor = prevBackgroundColor;
+
                 PrintLastStatus(rect);
-            }
-            else {
-                if (EditorGUIUtility.isProSkin) {
-                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.darkModeBoxStyle));
-                }
-                else {
-                    GUI.Box(rect, GUIContent.none, new GUIStyle(DisplaySettings.lightModeBoxStyle));
-                }
+            } else {
+                GUI.Box(rect, GUIContent.none, Styles.BoxInactive.Style);
             }
 
             PrintIcon();
 
-            var textFormat = DisplaySettings.taskFontFormat;
-            textFormat.normal.textColor = _faders.TextFader.CurrentColor;
-            GUI.Label(rect, _node.Task.Name, textFormat);
+            Styles.Title.normal.textColor = _faders.TextFader.CurrentColor;
+            GUI.Label(rect, _node.Task.Name, Styles.Title);
         }
 
         private void PrintLastStatus (Rect rect) {
@@ -99,21 +87,21 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private void PaintDivider () {
             const int graphicSizeIncrease = 5;
-            
+
             if (_dividerGraphic == null) {
                 _dividerGraphic = CreateTexture(
-                    (int)_divider.Width + graphicSizeIncrease, 
-                    1, 
+                    (int)_divider.Width + graphicSizeIncrease,
+                    1,
                     Color.black);
             }
 
             var position = new Rect(
-                _divider.GlobalPositionX + _box.PaddingY / 2 + _node.DividerLeftOffset - 2, 
+                _divider.GlobalPositionX + _box.PaddingY / 2 + _node.DividerLeftOffset - 2,
                 // @TODO Should not need to offset this
                 _divider.GlobalPositionY + _box.PaddingY / 2,
-                _divider.Width + graphicSizeIncrease, 
+                _divider.Width + graphicSizeIncrease,
                 10);
-            
+
             GUI.Label(position, _dividerGraphic);
         }
 
@@ -123,33 +111,33 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             }
 
             var position = new Rect(
-                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2, 
+                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
                 _box.GlobalPositionY + _node.Height + _box.PaddingY - 1,
-                100, 
+                100,
                 _box.PaddingY - 1);
-            
+
             GUI.Label(position, _verticalBottom);
         }
-        
+
         private void PaintVerticalTop () {
             if (_verticalTop == null) {
                 _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), Color.black);
             }
 
             var position = new Rect(
-                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2, 
+                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
                 _box.GlobalPositionY + _box.PaddingY / 2,
-                100, 
+                100,
                 10);
-            
+
             GUI.Label(position, _verticalTop);
         }
-        
+
         private static Texture2D CreateTexture (int width, int height, Color color) {
             var texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
             texture.SetPixels(Enumerable.Repeat(color, width * height).ToArray());
             texture.Apply();
-            
+
             return texture;
         }
     }
