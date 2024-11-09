@@ -82,8 +82,18 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "angstr0m",
+      "name": "angstr0m",
+      "avatar_url": "https://avatars.githubusercontent.com/u/733176?v=4",
+      "profile": "https://github.com/angstr0m",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs"
 }
