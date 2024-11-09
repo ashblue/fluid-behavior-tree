@@ -10,12 +10,16 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             texture.SetPixels(1, 1, 17, 17,
                 Enumerable.Repeat(background, 17 * 17).ToArray());
             texture.Apply();
-            
-            Style = new GUIStyle(GUI.skin.box) {
+
+            Style = new GUIStyle {
                 border = new RectOffset(1, 1, 1, 1),
                 normal = {
                     background = texture,
+                    textColor = Color.white,
                 },
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 12,
+                padding = new RectOffset(5, 5, 5, 5),
             };
         }
 
@@ -23,7 +27,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             var texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
             texture.SetPixels(Enumerable.Repeat(color, width * height).ToArray());
             texture.Apply();
-            
+
             return texture;
         }
     }

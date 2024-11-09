@@ -1,5 +1,6 @@
 using System.Linq;
 using CleverCrow.Fluid.BTs.TaskParents;
+using UnityEditor;
 using UnityEngine;
 
 namespace CleverCrow.Fluid.BTs.Trees.Editors {
@@ -16,6 +17,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private Texture2D _verticalTop;
 
         private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
+        private static Color LineColor => EditorGUIUtility.isProSkin ? Color.white : Color.black;
 
         public NodePrintController (VisualTask node) {
             _node = node;
@@ -23,13 +25,13 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _divider = node.Divider;
             _iconMain = new TextureLoader(_node.Task.IconPath);
         }
-        
+
         public void Print (bool taskIsActive) {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
             _faders.Update(taskIsActive);
-            
+
             PaintBody();
-            
+
             if (_node.Children.Count > 0) {
                 PaintDivider();
                 PaintVerticalBottom();
@@ -38,23 +40,23 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private void PaintBody () {
             var prevBackgroundColor = GUI.backgroundColor;
-            
+
             var rect = new Rect(
-                _box.GlobalPositionX + _box.PaddingX, 
+                _box.GlobalPositionX + _box.PaddingX,
                 _box.GlobalPositionY + _box.PaddingY,
-                _box.Width - _box.PaddingX, 
+                _box.Width - _box.PaddingX,
                 _box.Height - _box.PaddingY);
 
             if (_node.Task.HasBeenActive) {
                 GUI.backgroundColor = _faders.BackgroundFader.CurrentColor;
                 GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
                 GUI.backgroundColor = prevBackgroundColor;
-                
+
                 PrintLastStatus(rect);
             } else {
                 GUI.Box(rect, GUIContent.none, Styles.BoxInactive.Style);
             }
-            
+
             PrintIcon();
 
             Styles.Title.normal.textColor = _faders.TextFader.CurrentColor;
@@ -87,57 +89,57 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         private void PaintDivider () {
             const int graphicSizeIncrease = 5;
-            
+
             if (_dividerGraphic == null) {
                 _dividerGraphic = CreateTexture(
-                    (int)_divider.Width + graphicSizeIncrease, 
-                    1, 
-                    Color.black);
+                    (int)_divider.Width + graphicSizeIncrease,
+                    1,
+                    LineColor);
             }
 
             var position = new Rect(
-                _divider.GlobalPositionX + _box.PaddingY / 2 + _node.DividerLeftOffset - 2, 
-                // @TODO Should not need to offset this
+                _divider.GlobalPositionX + _box.PaddingX / 2 + _node.DividerLeftOffset - 2,
                 _divider.GlobalPositionY + _box.PaddingY / 2,
-                _divider.Width + graphicSizeIncrease, 
-                10);
-            
+                _divider.Width + graphicSizeIncrease,
+                // @NOTE I have no clue why 3 works here...
+                3);
+
             GUI.Label(position, _dividerGraphic);
         }
 
         private void PaintVerticalBottom () {
             if (_verticalBottom == null) {
-                _verticalBottom = CreateTexture(1, (int)_box.PaddingY, Color.black);
+                _verticalBottom = CreateTexture(1, (int)_box.PaddingY, LineColor);
             }
 
             var position = new Rect(
-                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2, 
+                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
                 _box.GlobalPositionY + _node.Height + _box.PaddingY - 1,
-                100, 
-                _box.PaddingY - 1);
-            
+                100,
+                _box.PaddingY);
+
             GUI.Label(position, _verticalBottom);
         }
-        
+
         private void PaintVerticalTop () {
             if (_verticalTop == null) {
-                _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), Color.black);
+                _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), LineColor);
             }
 
             var position = new Rect(
-                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2, 
+                _box.GlobalPositionX + _node.Width / 2 + _box.PaddingX - 2,
                 _box.GlobalPositionY + _box.PaddingY / 2,
-                100, 
-                10);
-            
+                100,
+                _box.PaddingY / 2);
+
             GUI.Label(position, _verticalTop);
         }
-        
+
         private static Texture2D CreateTexture (int width, int height, Color color) {
             var texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
             texture.SetPixels(Enumerable.Repeat(color, width * height).ToArray());
             texture.Apply();
-            
+
             return texture;
         }
     }
