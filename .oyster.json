@@ -1,0 +1,22 @@
+{
+  "description": "A micro-framework for creating Behavior Trees based upon the builder pattern",
+  "displayName": "Fluid Behavior Tree",
+  "keywords": [
+    "ai",
+    "behavior tree",
+    "builder pattern"
+  ],
+  "oysterVersion": "3.0.2",
+  "packageName": "com.fluid.behavior-tree",
+  "packageScope": "com.fluid",
+  "unityVersion": "2018.1",
+  "author": {
+    "name": "Ash Blue",
+    "email": "ash@blueashes.com",
+    "url": "https://twitter.com/ashbluewd"
+  },
+  "repo": {
+    "gitUrl": "https://github.com/ashblue/fluid-behavior-tree",
+    "gitUrlNoHttp": "github.com/ashblue/fluid-behavior-tree"
+  }
+}

@@ -63,7 +63,64 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "hookSSi",
+      "name": "Sounghoo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12372136?v=4",
+      "profile": "https://github.com/hookSSi",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "TNThomas",
+      "name": "TNThomas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9881915?v=4",
+      "profile": "https://github.com/TNThomas",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "Ownez",
+      "name": "Ownez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10993641?v=4",
+      "profile": "https://github.com/Ownez",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "angstr0m",
+      "name": "angstr0m",
+      "avatar_url": "https://avatars.githubusercontent.com/u/733176?v=4",
+      "profile": "https://github.com/angstr0m",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "darkgnostic",
+      "name": "Izzy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4980221?v=4",
+      "profile": "https://github.com/darkgnostic",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "JeremyVansnick",
+      "name": "JeremyVansnick",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23563794?v=4",
+      "profile": "https://github.com/JeremyVansnick",
+      "contributions": [
+        "code"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "commitType": "docs"
 }

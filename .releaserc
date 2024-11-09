@@ -4,29 +4,35 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
-      "@semantic-release/exec",
+      "@semantic-release/npm",
       {
-        "verifyConditionsCmd": "npm run build",
-        "prepareCmd": "npm run build"
+        "npmPublish": false
       }
     ],
-    "@semantic-release/git",
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "npm run build"
+      }
+    ],
     [
       "@semantic-release/npm",
       {
-        "pkgRoot": "dist"
+        "pkgRoot": "Assets/com.fluid.behavior-tree"
       }
     ],
     [
-      "@semantic-release/github",
+      "@semantic-release/git",
       {
         "assets": [
-          {
-            "path": "dist.zip",
-            "label": "Package Build"
-          }
+          "CHANGELOG.md",
+          "package.json",
+          "package-lock.json",
+          "npm-shrinkwrap.json",
+          "Assets/**/*"
         ]
       }
-    ]
+    ],
+    "@semantic-release/github"
   ]
 }

@@ -1,0 +1,40 @@
+name: Release
+
+on:
+    push:
+        branches:
+            - main
+            - master
+
+permissions:
+    contents: read
+
+jobs:
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            issues: write
+            pull-requests: write
+            id-token: write
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+                  persist-credentials: false
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+            - name: Install dependencies
+              run: HUSKY=0 npm ci && npm run build
+            - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+              run: npm audit signatures
+            - name: Release
+              env:
+                  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: npm run semantic-release

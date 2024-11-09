@@ -8,18 +8,14 @@
   "scripts": {
     "build": "node build.js",
     "semantic-release": "semantic-release",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "prepare": "husky install"
   },
   "keywords": [
     "ai",
     "behavior tree",
     "builder pattern"
   ],
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ashblue/fluid-behavior-tree.git"
@@ -35,22 +31,20 @@
   },
   "homepage": "https://github.com/ashblue/fluid-behavior-tree#readme",
   "devDependencies": {
-    "@commitlint/cli": "^7.6.1",
-    "@commitlint/config-conventional": "^7.6.0",
-    "@commitlint/travis-cli": "^7.6.1",
-    "@semantic-release/changelog": "^3.0.2",
-    "@semantic-release/commit-analyzer": "^6.1.0",
-    "@semantic-release/exec": "^3.3.2",
-    "@semantic-release/git": "^7.0.8",
-    "@semantic-release/github": "^5.2.10",
-    "@semantic-release/npm": "^5.1.7",
-    "@semantic-release/release-notes-generator": "^7.1.4",
-    "all-contributors-cli": "^6.20.0",
-    "commitizen": "^3.1.1",
-    "cz-conventional-changelog": "^2.1.0",
-    "husky": "^2.3.0",
-    "semantic-release": "^15.13.12",
-    "upm-package-populator": "^1.0.0"
+    "@commitlint/cli": "~17.1.2",
+    "@commitlint/config-conventional": "~17.1.0",
+    "@semantic-release/changelog": "~6.0.1",
+    "@semantic-release/commit-analyzer": "~9.0.2",
+    "@semantic-release/exec": "~6.0.3",
+    "@semantic-release/git": "~10.0.1",
+    "@semantic-release/github": "~8.0.6",
+    "@semantic-release/npm": "~9.0.1",
+    "@semantic-release/release-notes-generator": "~10.0.3",
+    "commitizen": "^4.2.5",
+    "cz-conventional-changelog": "~3.3.0",
+    "husky": "^8.0.1",
+    "semantic-release": "~19.0.5",
+    "upm-package-populator": "^2.0.0"
   },
   "config": {
     "commitizen": {
