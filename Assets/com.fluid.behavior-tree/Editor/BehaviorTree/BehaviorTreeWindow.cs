@@ -22,7 +22,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             if (!Application.isPlaying) {
                 ClearView();
             }
-            
+
             GUILayout.Label($"Behavior Tree: {_name}", EditorStyles.boldLabel);
             _printer?.Print(position.size);
         }
@@ -36,6 +36,20 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             if (Application.isPlaying) {
                 Repaint();
             }
+        }
+
+        void OnEnable() {
+            EditorApplication.update += OnEditorUpdate;
+        }
+
+        void OnDisable() {
+            EditorApplication.update -= OnEditorUpdate;
+        }
+
+        private void OnEditorUpdate() {
+            // Update faders separately so the current state is maintained when the game is paused
+            if (!EditorApplication.isPaused)
+                _printer?.UpdateFaders();
         }
     }
 }
