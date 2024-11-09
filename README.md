@@ -755,6 +755,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Ownez"><img src="https://avatars.githubusercontent.com/u/10993641?v=4?s=100" width="100px;" alt="Ownez"/><br /><sub><b>Ownez</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=Ownez" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/angstr0m"><img src="https://avatars.githubusercontent.com/u/733176?v=4?s=100" width="100px;" alt="angstr0m"/><br /><sub><b>angstr0m</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Aangstr0m" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/darkgnostic"><img src="https://avatars.githubusercontent.com/u/4980221?v=4?s=100" width="100px;" alt="Izzy"/><br /><sub><b>Izzy</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/issues?q=author%3Adarkgnostic" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/JeremyVansnick"><img src="https://avatars.githubusercontent.com/u/23563794?v=4?s=100" width="100px;" alt="JeremyVansnick"/><br /><sub><b>JeremyVansnick</b></sub></a><br /><a href="https://github.com/ashblue/fluid-behavior-tree/commits?author=JeremyVansnick" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

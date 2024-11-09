@@ -109,6 +109,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "JeremyVansnick",
+      "name": "JeremyVansnick",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23563794?v=4",
+      "profile": "https://github.com/JeremyVansnick",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
