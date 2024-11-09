@@ -28,7 +28,6 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         public void Print (bool taskIsActive) {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
-            _faders.Update(taskIsActive);
 
             PaintBody();
 
@@ -141,6 +140,10 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             texture.Apply();
 
             return texture;
+        }
+
+        public void SyncFade (bool taskIsActive) {
+            _faders.Update(taskIsActive);
         }
     }
 }

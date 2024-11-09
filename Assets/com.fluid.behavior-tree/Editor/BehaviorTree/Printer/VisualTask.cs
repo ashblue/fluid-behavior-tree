@@ -9,10 +9,10 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         public ITask Task { get; }
         public IReadOnlyList<VisualTask> Children => _children;
-        
+
         public float Width { get; } = 70;
         public float Height { get; } = 50;
-        
+
         public IGraphBox Box { get; private set; }
         public IGraphBox Divider { get; private set; }
         public float DividerLeftOffset { get; private set; }
@@ -20,7 +20,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public VisualTask (ITask task, IGraphContainer parentContainer) {
             Task = task;
             BindTask();
-            
+
             var container = new GraphContainerVertical();
 
             AddBox(container);
@@ -30,13 +30,13 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 foreach (var child in task.Children) {
                     _children.Add(new VisualTask(child, childContainer));
                 }
-                
+
                 AddDivider(container, childContainer);
                 container.AddBox(childContainer);
             }
 
             parentContainer.AddBox(container);
-            
+
             _printer = new NodePrintController(this);
         }
 
@@ -46,7 +46,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         public void RecursiveTaskUnbind () {
             Task.EditorUtils.EventActive.RemoveListener(UpdateTaskActiveStatus);
-            
+
             foreach (var child in _children) {
                 child.RecursiveTaskUnbind();
             }
@@ -79,10 +79,18 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
         public void Print () {
             _printer.Print(_taskActive);
-            _taskActive = false;
 
             foreach (var child in _children) {
                 child.Print();
+            }
+        }
+
+        public void UpdateFaders () {
+            _printer.SyncFade(_taskActive);
+            _taskActive = false;
+
+            foreach (var child in _children) {
+                child.UpdateFaders();
             }
         }
     }
