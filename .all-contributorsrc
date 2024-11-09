@@ -82,8 +82,18 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "Ownez",
+      "name": "Ownez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10993641?v=4",
+      "profile": "https://github.com/Ownez",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "skipCi": true
+  "skipCi": true,
+  "commitType": "docs"
 }
