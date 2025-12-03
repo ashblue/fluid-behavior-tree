@@ -21,9 +21,13 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
 
                 switch (child.Update()) {
                     case TaskStatus.Success:
+                        NotifyChildEnd(ChildIndex);
                         return TaskStatus.Success;
                     case TaskStatus.Continue:
                         return TaskStatus.Continue;
+                    case TaskStatus.Failure:
+                        NotifyChildEnd(ChildIndex);
+                        break;
                 }
 
                 ChildIndex++;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Decorators;
 using CleverCrow.Fluid.BTs.TaskParents;
@@ -179,7 +179,9 @@ namespace CleverCrow.Fluid.BTs.Trees {
         }
 
         public BehaviorTreeBuilder Splice (BehaviorTree tree) {
-            _tree.Splice(PointerCurrent, tree);
+            if (tree != null && tree.Root != null) {
+                _tree.Splice(PointerCurrent, tree);
+            }
 
             return this;
         }

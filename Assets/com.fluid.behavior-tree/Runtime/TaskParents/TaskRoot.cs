@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents {
     public class TaskRoot : TaskParentBase {
@@ -16,6 +16,8 @@ namespace CleverCrow.Fluid.BTs.TaskParents {
         }
 
         public override void End () {
+            var child = Children[0];
+            child.End();
         }
     }
 }

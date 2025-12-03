@@ -1,4 +1,4 @@
-﻿using CleverCrow.Fluid.BTs.Tasks;
+using CleverCrow.Fluid.BTs.Tasks;
 
 namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public class Sequence : CompositeBase {
@@ -9,8 +9,17 @@ namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
                 var child = Children[ChildIndex];
 
                 var status = child.Update();
-                if (status != TaskStatus.Success) {
-                    return status;
+                switch (status) {
+                    case TaskStatus.Success:
+                        NotifyChildEnd(ChildIndex);
+                        break;
+                    case TaskStatus.Failure:
+                        NotifyChildEnd(ChildIndex);
+                        return status;
+                    case TaskStatus.Continue:
+                        return status;
+                    default:
+                        break;
                 }
 
                 ChildIndex++;

@@ -25,7 +25,7 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             AddBox(container);
 
-            if (task.Children != null) {
+            if (task.Children != null && task.Children.Count > 0) {
                 var childContainer = new GraphContainerHorizontal();
                 foreach (var child in task.Children) {
                     _children.Add(new VisualTask(child, childContainer));

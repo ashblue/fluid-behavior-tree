@@ -1,4 +1,4 @@
-﻿namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
+namespace CleverCrow.Fluid.BTs.TaskParents.Composites {
     public abstract class CompositeBase : TaskParentBase {
         public int ChildIndex { get; protected set; }
 
@@ -12,6 +12,10 @@
             ChildIndex = 0;
 
             base.Reset();
+        }
+
+        protected void NotifyChildEnd(int childEnding) {
+            Children[childEnding].End();
         }
     }
 }
