@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using CleverCrow.Fluid.BTs.Tasks;
 
-namespace CleverCrow.Fluid.BTs.Trees.Editors {
-    public class VisualTask {
+namespace CleverCrow.Fluid.BTs.Trees.Editors
+{
+    public class VisualTask
+    {
         private readonly List<VisualTask> _children = new List<VisualTask>();
         private readonly NodePrintController _printer;
         private bool _taskActive;
@@ -17,7 +19,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         public IGraphBox Divider { get; private set; }
         public float DividerLeftOffset { get; private set; }
 
-        public VisualTask (ITask task, IGraphContainer parentContainer) {
+        public VisualTask(ITask task, IGraphContainer parentContainer)
+        {
             Task = task;
             BindTask();
 
@@ -25,9 +28,11 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
 
             AddBox(container);
 
-            if (task.Children != null) {
+            if (task.Children != null)
+            {
                 var childContainer = new GraphContainerHorizontal();
-                foreach (var child in task.Children) {
+                foreach (var child in task.Children)
+                {
                     _children.Add(new VisualTask(child, childContainer));
                 }
 
@@ -40,29 +45,35 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             _printer = new NodePrintController(this);
         }
 
-        private void BindTask () {
+        private void BindTask()
+        {
             Task.EditorUtils.EventActive.AddListener(UpdateTaskActiveStatus);
         }
 
-        public void RecursiveTaskUnbind () {
+        public void RecursiveTaskUnbind()
+        {
             Task.EditorUtils.EventActive.RemoveListener(UpdateTaskActiveStatus);
 
-            foreach (var child in _children) {
+            foreach (var child in _children)
+            {
                 child.RecursiveTaskUnbind();
             }
         }
 
-        private void UpdateTaskActiveStatus () {
+        private void UpdateTaskActiveStatus()
+        {
             _taskActive = true;
         }
 
-        private void AddDivider (IGraphContainer parent, IGraphContainer children) {
-            Divider = new GraphBox {
+        private void AddDivider(IGraphContainer parent, IGraphContainer children)
+        {
+            Divider = new GraphBox
+            {
                 SkipCentering = true,
             };
 
-            DividerLeftOffset = children.ChildContainers[0].Width / 2;
-            var dividerRightOffset = children.ChildContainers[children.ChildContainers.Count - 1].Width / 2;
+            DividerLeftOffset = children.ChildContainers.Count > 0 ? children.ChildContainers[0].Width / 2 : 0;
+            var dividerRightOffset = children.ChildContainers.Count > 0 ? children.ChildContainers[children.ChildContainers.Count - 1].Width / 2 : 0;
             var width = children.Width - DividerLeftOffset - dividerRightOffset;
 
             Divider.SetSize(width, 1);
@@ -70,26 +81,31 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             parent.AddBox(Divider);
         }
 
-        private void AddBox (IGraphContainer parent) {
+        private void AddBox(IGraphContainer parent)
+        {
             Box = new GraphBox();
             Box.SetSize(Width, Height);
             Box.SetPadding(10, 10);
             parent.AddBox(Box);
         }
 
-        public void Print () {
+        public void Print()
+        {
             _printer.Print(_taskActive);
 
-            foreach (var child in _children) {
+            foreach (var child in _children)
+            {
                 child.Print();
             }
         }
 
-        public void UpdateFaders () {
+        public void UpdateFaders()
+        {
             _printer.SyncFade(_taskActive);
             _taskActive = false;
 
-            foreach (var child in _children) {
+            foreach (var child in _children)
+            {
                 child.UpdateFaders();
             }
         }
