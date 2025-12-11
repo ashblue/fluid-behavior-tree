@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
-using Unity.Properties;
+using System.Collections;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,47 +17,75 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors
             GUI.enabled = Application.isPlaying;
             if (GUI.Button(position, "View Tree"))
             {
-                object value = fieldInfo.GetValue(property.serializedObject.targetObject);
+                object value = GetTargetObjectOfProperty(property);
                 if (value is IBehaviorTree tree)
                 {
                     BehaviorTreeWindow.ShowTree(tree, tree.Name ?? property.displayName);
                 }
-                else if (value is IList<BehaviorTree> list)
+                else
                 {
-                    if (TryGetArrayIndex(property.propertyPath, out int index) && list[index] is IBehaviorTree childTree)
-                    {
-                        BehaviorTreeWindow.ShowTree(childTree, childTree.Name ?? property.displayName);
-                    }
+                    Debug.LogWarning($"BehaviorTreeDrawer: cannot resolve runtime value for property '{property.propertyPath}'.");
                 }
             }
             GUI.enabled = true;
 
             EditorGUI.EndProperty();
         }
-        private bool TryGetArrayIndex(string path, out int index)
+        public object GetTargetObjectOfProperty(SerializedProperty prop)
         {
-            const string arrayData = ".Array.data[";
-            int arrayIndex = path.IndexOf(arrayData, StringComparison.Ordinal);
-            if (arrayIndex < 0)
+            if (prop == null) return null;
+
+            object obj = prop.serializedObject.targetObject;
+            if (obj == null) return null;
+
+            string path = prop.propertyPath.Replace(".Array.data[", "[");
+            string[] elements = path.Split('.');
+
+            foreach (string element in elements)
             {
-                index = -1;
-                return false;
+                if (element.Contains("["))
+                {
+                    int indexStart = element.IndexOf("[", StringComparison.Ordinal);
+                    string memberName = element.Substring(0, indexStart);
+                    string indexStr = element.Substring(indexStart)
+                                             .Trim('[', ']');
+
+                    obj = GetMemberValue(obj, memberName);
+
+                    if (obj is IList list && int.TryParse(indexStr, out int index) && index >= 0 && index < list.Count)
+                    {
+                        obj = list[index];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    obj = GetMemberValue(obj, element);
+                }
+
+                if (obj == null)
+                    return null;
             }
 
-            arrayIndex += arrayData.Length;
-            int endIndex = path.IndexOf("]", arrayIndex, StringComparison.Ordinal);
-            if (endIndex < 0)
-            {
-                index = -1;
-                return false;
-            }
+            return obj;
+        }
 
-            string indexStr = path.Substring(arrayIndex, endIndex - arrayIndex);
-            if (int.TryParse(indexStr, out index))
-                return true;
+        private object GetMemberValue(object source, string name)
+        {
+            if (source == null)
+                return null;
+            var type = source.GetType();
 
-            index = -1;
-            return false;
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+            FieldInfo field = type.GetField(name, flags);
+            if (field != null)
+                return field.GetValue(source);
+
+            return null;
         }
     }
 }
