@@ -3,8 +3,10 @@ using CleverCrow.Fluid.BTs.TaskParents;
 using UnityEditor;
 using UnityEngine;
 
-namespace CleverCrow.Fluid.BTs.Trees.Editors {
-    public class NodePrintController {
+namespace CleverCrow.Fluid.BTs.Trees.Editors
+{
+    public class NodePrintController
+    {
         private readonly VisualTask _node;
         private readonly IGraphBox _box;
         private readonly IGraphBox _divider;
@@ -19,25 +21,29 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
         private static GuiStyleCollection Styles => BehaviorTreePrinter.SharedStyles;
         private static Color LineColor => EditorGUIUtility.isProSkin ? Color.white : Color.black;
 
-        public NodePrintController (VisualTask node) {
+        public NodePrintController(VisualTask node)
+        {
             _node = node;
             _box = node.Box;
             _divider = node.Divider;
             _iconMain = new TextureLoader(_node.Task.IconPath);
         }
 
-        public void Print (bool taskIsActive) {
+        public void Print(bool taskIsActive)
+        {
             if (!(_node.Task is TaskRoot)) PaintVerticalTop();
 
             PaintBody();
 
-            if (_node.Children.Count > 0) {
+            if (_node.Children.Count > 0)
+            {
                 PaintDivider();
                 PaintVerticalBottom();
             }
         }
 
-        private void PaintBody () {
+        private void PaintBody()
+        {
             var prevBackgroundColor = GUI.backgroundColor;
 
             var rect = new Rect(
@@ -46,13 +52,16 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _box.Width - _box.PaddingX,
                 _box.Height - _box.PaddingY);
 
-            if (_node.Task.HasBeenActive) {
+            if (_node.Task.HasBeenActive)
+            {
                 GUI.backgroundColor = _faders.BackgroundFader.CurrentColor;
                 GUI.Box(rect, GUIContent.none, Styles.BoxActive.Style);
                 GUI.backgroundColor = prevBackgroundColor;
 
                 PrintLastStatus(rect);
-            } else {
+            }
+            else
+            {
                 GUI.Box(rect, GUIContent.none, Styles.BoxInactive.Style);
             }
 
@@ -62,7 +71,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             GUI.Label(rect, _node.Task.Name, Styles.Title);
         }
 
-        private void PrintLastStatus (Rect rect) {
+        private void PrintLastStatus(Rect rect)
+        {
             const float sidePadding = 1.5f;
 
             var icon = BehaviorTreePrinter.StatusIcons.GetIcon(_node.Task.LastStatus);
@@ -74,7 +84,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 new Color(1, 1, 1, 0.7f));
         }
 
-        private void PrintIcon () {
+        private void PrintIcon()
+        {
             const float iconWidth = 35;
             const float iconHeight = 35;
             _iconMain.Paint(
@@ -86,12 +97,17 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 _faders.MainIconFader.CurrentColor);
         }
 
-        private void PaintDivider () {
+        private void PaintDivider()
+        {
             const int graphicSizeIncrease = 5;
 
-            if (_dividerGraphic == null) {
+            int width = (int)_divider.Width + graphicSizeIncrease;
+            if (_dividerGraphic == null)
+            {
+                if (width > SystemInfo.maxTextureSize)
+                    width = SystemInfo.maxTextureSize;
                 _dividerGraphic = CreateTexture(
-                    (int)_divider.Width + graphicSizeIncrease,
+                    width > SystemInfo.maxTextureSize ? SystemInfo.maxTextureSize : width,
                     1,
                     LineColor);
             }
@@ -103,11 +119,27 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
                 // @NOTE I have no clue why 3 works here...
                 3);
 
-            GUI.Label(position, _dividerGraphic);
+            if (width > SystemInfo.maxTextureSize)
+            {
+                int count = width / SystemInfo.maxTextureSize;
+                int remain = SystemInfo.maxTextureSize - (width - count * SystemInfo.maxTextureSize);
+                for (int i = 0; i < count; i++)
+                {
+                    GUI.Label(position, _dividerGraphic);
+                    position.x = position.x + SystemInfo.maxTextureSize;
+                }
+                int overlay = SystemInfo.maxTextureSize - remain;
+                position.x = position.x - overlay;
+                GUI.Label(position, _dividerGraphic);
+            }
+            else
+                GUI.Label(position, _dividerGraphic);
         }
 
-        private void PaintVerticalBottom () {
-            if (_verticalBottom == null) {
+        private void PaintVerticalBottom()
+        {
+            if (_verticalBottom == null)
+            {
                 _verticalBottom = CreateTexture(1, (int)_box.PaddingY, LineColor);
             }
 
@@ -120,8 +152,10 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             GUI.Label(position, _verticalBottom);
         }
 
-        private void PaintVerticalTop () {
-            if (_verticalTop == null) {
+        private void PaintVerticalTop()
+        {
+            if (_verticalTop == null)
+            {
                 _verticalTop = CreateTexture(1, Mathf.RoundToInt(_box.PaddingY / 2), LineColor);
             }
 
@@ -134,7 +168,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             GUI.Label(position, _verticalTop);
         }
 
-        private static Texture2D CreateTexture (int width, int height, Color color) {
+        private static Texture2D CreateTexture(int width, int height, Color color)
+        {
             var texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
             texture.SetPixels(Enumerable.Repeat(color, width * height).ToArray());
             texture.Apply();
@@ -142,7 +177,8 @@ namespace CleverCrow.Fluid.BTs.Trees.Editors {
             return texture;
         }
 
-        public void SyncFade (bool taskIsActive) {
+        public void SyncFade(bool taskIsActive)
+        {
             _faders.Update(taskIsActive);
         }
     }
