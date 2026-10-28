@@ -43,7 +43,7 @@ namespace CleverCrow.Fluid.BTs.Decorators {
         }
 
         public ITaskParent AddChild (ITask child) {
-            if (Child == null) {
+            if (Child == null && child.Enabled) {
                 Children.Add(child);
             }
 

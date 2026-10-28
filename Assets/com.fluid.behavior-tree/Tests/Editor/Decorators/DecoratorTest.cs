@@ -52,6 +52,20 @@ namespace CleverCrow.Fluid.BTs.Testing {
             }
         }
 
+        public class AddChildMethod : DecoratorTest {
+            [Test]
+            public void Does_not_add_disabled_child () {
+                var disabledChild = A.TaskStub()
+                    .WithEnabled(false)
+                    .Build();
+                var decorator = new DecoratorExample();
+
+                decorator.AddChild(disabledChild);
+
+                Assert.AreEqual(0, decorator.Children.Count);
+            }
+        }
+
         public class EndMethod : DecoratorTest {
             [Test]
             public void Calls_end_on_child () {
